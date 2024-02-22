@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <iostream>
+#include "AlsaBufferConverter.h"
 
 int main()
 {
@@ -9,9 +10,11 @@ int main()
 
     int32_t val;
 
+    AlsaBufferConverter test;
+
     for (int index = 0; index < numOfValues; index++)
     {
-        val = ((buf[index][0] << 24) | (buf[index][1] << 16) | (buf[index][2] << 8)) >> 8;
+        val = test.getInt32FromBuffer(buf[index]);
 
         std::cout << std::dec << val << std::endl;
         std::cout << std::hex << val << "\n" << std::endl;
