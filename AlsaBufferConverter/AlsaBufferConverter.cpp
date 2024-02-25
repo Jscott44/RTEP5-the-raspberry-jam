@@ -24,5 +24,22 @@ int32_t AlsaBufferConverter::getInt32FromBuffer(uint8_t* buffer)
 
 uint8_t* AlsaBufferConverter::getBufferFromInt32(int32_t desired_value)
 {
-    return 0;
+    const int32_t MAX_INT_24 = 0x7FFFFF;
+    const int32_t MIN_INT_24 = 0Xff800000;
+
+    if (desired_value < MIN_INT_24)
+    {
+        desired_value = MIN_INT_24;
+    }
+    else if (desired_value > MAX_INT_24)
+    {
+        desired_value = MAX_INT_24;
+    }
+    
+    uint8_t retBuffer[3];
+    retBuffer[0] = desired_value >> 16;
+    retBuffer[1] = desired_value >> 8;
+    retBuffer[2] = desired_value;
+
+    return retBuffer;
 }
