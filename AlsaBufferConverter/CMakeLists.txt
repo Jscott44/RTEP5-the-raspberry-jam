@@ -1,0 +1,2 @@
+add_library(AlsaBufferConverter STATIC AlsaBufferConverter.cpp)
+target_include_directories(AlsaBufferConverter PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

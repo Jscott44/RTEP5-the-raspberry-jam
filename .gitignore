@@ -33,3 +33,5 @@
 
 # Visual Studio Development
 .vscode
+.vs
+out
