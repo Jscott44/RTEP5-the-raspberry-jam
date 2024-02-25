@@ -22,8 +22,13 @@ int32_t AlsaBufferConverter::getInt32FromBuffer(uint8_t* buffer)
     return retVal;
 }
 
+/// @brief Converts signed 32 bit integer into 3 byte buffer containing the values for a signed 24 int value
+/// @param buffer int32 value that should be converted into signed 24 int buffer
+/// @return buffer containing 24 bit signed value stored as uint8s
 uint8_t* AlsaBufferConverter::getBufferFromInt32(int32_t desired_value)
 {
+    // Ensure desired_value is not greater than the maximum or less that the minimum signed 24 bit values
+    //If they are, alter value to be max/min
     const int32_t MAX_INT_24 = 0x7FFFFF;
     const int32_t MIN_INT_24 = 0Xff800000;
 
@@ -36,6 +41,7 @@ uint8_t* AlsaBufferConverter::getBufferFromInt32(int32_t desired_value)
         desired_value = MAX_INT_24;
     }
     
+    // Perform bitwise shifts to store relevant values in our return buffer
     uint8_t retBuffer[3];
     retBuffer[0] = desired_value >> 16;
     retBuffer[1] = desired_value >> 8;
