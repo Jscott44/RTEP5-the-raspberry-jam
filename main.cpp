@@ -1,6 +1,10 @@
+/* Use the newer ALSA API */
+#define ALSA_PCM_NEW_HW_PARAMS_API
+
 #include <cstdint>
 #include <iostream>
 #include "AlsaBufferConverter.h"
+#include <alsa/asoundlib.h>
 
 int main()
 {
