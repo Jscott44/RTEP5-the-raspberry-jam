@@ -8,28 +8,58 @@
 
 int main()
 {
-    const size_t numOfHexValues = 5;
-    const size_t numOfBytes = 3 * numOfHexValues;
+   int size;
+   snd_pcm_t *handle;
+   snd_pcm_hw_params_t *params;
+   unsigned int val;
+   int dir;
+   snd_pcm_uframes_t frames;
+   char *buffer;
 
-    //uint8_t buf[numOfHexValues][3] = {{0x7F, 0xFF, 0xFF},{0x40, 0x00, 0x00},{0x00, 0x00, 0x00},{0xc0, 0x00, 0x00},{0x80, 0x00, 0x00}};
-    uint8_t buf[numOfBytes] = { 0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00,0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 };
+    
+    /* To hold error code that is retuened */
+    int err; 
+    
+    /* Device Handle */
+    snd_pcm_t *pcm_handle
+    
+    /* Device Name */
+    const char *device_name = "default";
 
-    int32_t val;
+    /* Open the device */
+    err = snd_pcm_open (&pcm_handle, device_name, SND_PCM_STREAM_CAPTURE, 0);
+    if (rc < 0) {
+    fprintf(stderr,
+            "unable to open pcm device: %s\n",
+            snd_strerror(rc));
+    exit(1);
+  }
+    
+  /* Allocate a hardware parameters object. */
+  snd_pcm_hw_params_alloca(&params);
 
-    AlsaBufferConverter test;
+  /* Fill it in with default values. */
+  snd_pcm_hw_params_any(handle, params);
 
-    for (int index = 0; index < numOfBytes; index+=3)
-    {
-        std::cout << "Int24 to Int32" << std::endl;
+  /* Set the desired hardware parameters. */
 
-        val = test.getInt32FromBuffer(buf+index);
+  /* Interleaved mode */
+  snd_pcm_hw_params_set_access(handle, params, SND_PCM_ACCESS_RW_INTERLEAVED);
 
-        std::cout << std::dec << val << std::endl;
-        std::cout << std::hex << val << "\n" << std::endl;
+  /* Signed 24-bit big-endian format (I2S) */
+  snd_pcm_hw_params_set_format(handle, params, SND_PCM_FORMAT_S24_BE);
 
-        std::cout << "Int32 to Int24" << std::endl;
+  /* Two channels (stereo) */
+  snd_pcm_hw_params_set_channels(handle, params, 2);
 
-        uint8_t* valBuf = test.getBufferFromInt32(val);
-        printf("%02X%02X%02X \n\n\n", valBuf[0], valBuf[1], valBuf[2]);
-    }
+  /* 44100 bits/second sampling rate (CD quality) */
+  val = 44100;
+  snd_pcm_hw_params_set_rate_near(handle, params, &val, &dir);
+
+  /* Set period size to 32 frames. */
+  frames = 32;
+  snd_pcm_hw_params_set_period_size_near(handle, params, &frames, &dir);
+
+    
+    
 }
