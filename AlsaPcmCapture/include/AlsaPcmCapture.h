@@ -1,7 +1,7 @@
-#define ALSA_PCM_NEW_HW_PARAMS_API
-
 #include <alsa/asoundlib.h>
 
+#ifndef ALSAPCMCAPTURE_H
+#define ALSAPCMCAPTURE_H
 class PcmCapture:
 {
 public:
@@ -9,3 +9,5 @@ public:
 
 private:
 };
+
+#endif
