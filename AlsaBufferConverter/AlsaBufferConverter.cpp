@@ -10,6 +10,44 @@ AlsaBufferConverter::~AlsaBufferConverter()
     
 }
 
+std::unique_ptr<int32_t> AlsaBufferConverter::getSamples(uint8_t* buffer)
+{
+    int32_t* rawSample = new int32_t[SAMPLES_PER_BUFFER];
+    
+    for (unsigned int sampleIndex = 0; sampleIndex < SAMPLES_PER_BUFFER; ++sampleIndex)
+    {
+        unsigned int bufferIndex = sampleIndex * 3;
+
+        rawSample[sampleIndex] = getInt32FromBuffer(buffer + bufferIndex);
+    }
+
+
+    return std::unique_ptr<int32_t>(rawSample);
+}
+
+
+std::unique_ptr<uint8_t> AlsaBufferConverter::getBuffer(int32_t* samples)
+{
+    uint8_t* rawBytes = new uint8_t[BYTES_PER_SAMPLE * SAMPLES_PER_BUFFER];
+
+    for (int sampleIndex = 0; sampleIndex < SAMPLES_PER_BUFFER; ++sampleIndex)
+    {
+        int32_t currentSample = samples[sampleIndex];
+
+        unsigned int bufferIndex = sampleIndex * 3;
+
+        uint8_t* functionReturn = getBufferFromInt32(currentSample);
+
+        rawBytes[bufferIndex + 0] = functionReturn[0];
+        rawBytes[bufferIndex + 1] = functionReturn[1];
+        rawBytes[bufferIndex + 2] = functionReturn[2];
+
+    }
+
+    return std::unique_ptr<uint8_t>(rawBytes);
+}
+
+
 /// @brief Converts signed int buffer into signed 32 bit integer
 /// @param buffer Buffer containing signed integer obtained by ALSA
 /// @return Signed 32 bit integer that can be used in C++
