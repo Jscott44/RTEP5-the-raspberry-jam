@@ -5,5 +5,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project ("RTEP-the-raspberry-jam")
 
 add_subdirectory(AlsaBufferConverter)
+
 add_executable(rpj main.cpp)
 target_link_libraries(rpj PUBLIC AlsaBufferConverter)
+
+enable_testing()
+add_test(NAME MyTest COMMAND Test)

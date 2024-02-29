@@ -19,8 +19,8 @@ private:
     int32_t getInt32FromBuffer(uint8_t* buffer);
     uint8_t* getBufferFromInt32(int32_t desired_value);
 
-    static const uint8_t BYTES_PER_SAMPLE = 3; // = 3; For 24 bit I2S messages
-    static const uint16_t SAMPLES_PER_BUFFER = 44; // = 44; Buffer will fill every 1ms when ADC is transmitting at 44kHz
+    const uint8_t BYTES_PER_SAMPLE = 3; // = 3; For 24 bit I2S messages
+    const uint16_t SAMPLES_PER_BUFFER = 44; // = 44; Buffer will fill every 1ms when ADC is transmitting at 44kHz
 };
 
 #endif

@@ -10,41 +10,50 @@ AlsaBufferConverter::~AlsaBufferConverter()
     
 }
 
+/// @brief Get int32 sample array containing the equivalent int32 values as the int24 values that were stored in a uint8 buffer.
+/// @param Uint8 buffer containing the int24 data that should be converted into usable int32s
+/// @return Unique ptr to an array storing int32 equivalent values
 std::unique_ptr<int32_t> AlsaBufferConverter::getSamples(uint8_t* buffer)
 {
-    int32_t* rawSample = new int32_t[SAMPLES_PER_BUFFER];
+    // Store on heap as unique pointer will be passed around
+    std::unique_ptr<int32_t> retSamples(new int32_t[SAMPLES_PER_BUFFER]);
     
+    // Loop through all samples stored int the uint8 buffer
     for (unsigned int sampleIndex = 0; sampleIndex < SAMPLES_PER_BUFFER; ++sampleIndex)
     {
-        unsigned int bufferIndex = sampleIndex * 3;
+        // Calculate the buffer index based on the bytes per sample
+        unsigned int bufferIndex = sampleIndex * BYTES_PER_SAMPLE;
 
-        rawSample[sampleIndex] = getInt32FromBuffer(buffer + bufferIndex);
+        // Store calculated samples in array
+        retSamples.get()[sampleIndex] = getInt32FromBuffer(buffer + bufferIndex);
     }
 
-
-    return std::unique_ptr<int32_t>(rawSample);
+    return retSamples;
 }
 
-
+/// @brief Get buffer containing int24s stored as uint8s that are equivalent to the original sample values.
+/// @param Int32 array containing samples that should be converted.
+/// @return Unique ptr to the buffer. If the sample is greater/less than the max/min of int24s, the returned value is capped.
 std::unique_ptr<uint8_t> AlsaBufferConverter::getBuffer(int32_t* samples)
 {
-    uint8_t* rawBytes = new uint8_t[BYTES_PER_SAMPLE * SAMPLES_PER_BUFFER];
+    // Store on heap as unique pointer will be passed around
+    std::unique_ptr<uint8_t> retBuffer(new uint8_t[BYTES_PER_SAMPLE * SAMPLES_PER_BUFFER]);
 
-    for (int sampleIndex = 0; sampleIndex < SAMPLES_PER_BUFFER; ++sampleIndex)
+    // Loop through all int32 samples
+    for (unsigned int sampleIndex = 0; sampleIndex < SAMPLES_PER_BUFFER; ++sampleIndex)
     {
-        int32_t currentSample = samples[sampleIndex];
+        // For each sample, obtain the uint8 buffer equivalent
+        uint8_t* functionReturn = getBufferFromInt32(samples[sampleIndex]);
 
-        unsigned int bufferIndex = sampleIndex * 3;
-
-        uint8_t* functionReturn = getBufferFromInt32(currentSample);
-
-        rawBytes[bufferIndex + 0] = functionReturn[0];
-        rawBytes[bufferIndex + 1] = functionReturn[1];
-        rawBytes[bufferIndex + 2] = functionReturn[2];
-
+        // Store values into return buffer at correct index
+        unsigned int rawBytesIndex = sampleIndex * BYTES_PER_SAMPLE;
+        for (int byteIndex = 0; byteIndex < BYTES_PER_SAMPLE; ++byteIndex)
+        {
+            retBuffer.get()[rawBytesIndex + byteIndex] = functionReturn[byteIndex];
+        }
     }
 
-    return std::unique_ptr<uint8_t>(rawBytes);
+    return retBuffer;
 }
 
 
