@@ -6,4 +6,10 @@ project ("RTEP-the-raspberry-jam")
 
 add_subdirectory(AlsaBufferConverter)
 add_executable(rpj main.cpp)
-target_link_libraries(rpj PUBLIC AlsaBufferConverter)
+#target_link_libraries(rpj PUBLIC AlsaBufferConverter)
+
+find_package(ALSA REQUIRED)
+if (ALSA_FOUND)
+	include_directories(${ALSA_INCLUDE_DIRS})
+	target_link_libraries(rpj PUBLIC ${ALSA_LIBRARIES} AlsaBufferConverter)
+endif(ALSA_FOUND)
