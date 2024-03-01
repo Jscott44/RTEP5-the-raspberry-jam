@@ -43,9 +43,11 @@ int buffer_size;
 class PcmCapture
 {
 	public:
+	
+		/*starts background capture of data, callback when buffer is full/ready */
 		void startI2S(){}
 		
-		/*callback for when buffer that is wriiten to after read is full */
+		/*callback for when buffer that is written to after read is full */
 		virtual void bufferReady() = 0;
 			
 	
