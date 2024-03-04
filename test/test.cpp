@@ -1,10 +1,11 @@
-#include <iostream>
+#define BOOST_TEST_MODULE AlsaBufferConverterTests
+#include <boost/test/unit_test.hpp>
 #include "AlsaBufferConverter.h"
-#include <memory>
 
-int main()
+
+BOOST_AUTO_TEST_CASE(PassTest)
 {
-    uint8_t buf[] = { 0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
+    uint8_t originalData[] = { 0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
@@ -26,19 +27,15 @@ int main()
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 };
-    
-    AlsaBufferConverter test;
 
-    ChannelSamples egSamples = test.getSamples(buf);
-    for (int index = 0; index < test.getFramesPerBuffer(); ++index)
-    {
-        std::cout << egSamples.getLeftElement(index) << " " << egSamples.getRightElement(index) << std::endl;
-    }
 
-    std::unique_ptr<uint8_t> egBuffer = test.getBuffer(egSamples);
-    for (int index = 0; index < (test.getBytesPerSample() * test.getSamplesPerFrame() * test.getFramesPerBuffer()); index += 6)
+	AlsaBufferConverter test;
+    ChannelSamples exampleSamples = test.getSamples(buf);
+    std::unique_ptr<uint8_t> returnedData = test.getBuffer(egSamples);
+	
+    for (int index = 0; index < (test.getBytesPerSample() * test.getSamplesPerFrame * test.getFramesPerBuffer()); ++index)
     {
-        printf(" %02X%02X%02X  %02X%02X%02X \n", egBuffer.get()[index + 0], egBuffer.get()[index + 1], egBuffer.get()[index + 2], egBuffer.get()[index + 3], egBuffer.get()[index + 4], egBuffer.get()[index + 5]);
+        BOOST_CHECK_EQUAL(originalData[index],returnedData.get()[index]);
     }
-    
 }
+
