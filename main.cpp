@@ -1,5 +1,6 @@
 #include <iostream>
 #include "AlsaBufferConverter.h"
+#include "EffectsManager.h"
 #include <memory>
 
 int main()
@@ -26,9 +27,10 @@ int main()
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 };
-    
+
     AlsaBufferConverter test;
 
+    // TEST 1
     ChannelSamples egSamples = test.getSamples(buf);
     for (int index = 0; index < test.getFramesPerBuffer(); ++index)
     {
@@ -40,5 +42,24 @@ int main()
     {
         printf(" %02X%02X%02X  %02X%02X%02X \n", egBuffer.get()[index + 0], egBuffer.get()[index + 1], egBuffer.get()[index + 2], egBuffer.get()[index + 3], egBuffer.get()[index + 4], egBuffer.get()[index + 5]);
     }
+
+
+    // TEST 2
+    EffectsManager effectsTest;
+    EffectBase* basePtr = effectsTest.addEffect(DistortionIndx);
+    ChannelSamples funcOut = effectsTest.applyEffect(egSamples);
+    effectsTest.removeEffect(basePtr);
+
+    for (int index = 0; index < test.getFramesPerBuffer(); ++index)
+    {
+        std::cout << funcOut.getLeftElement(index) << " " << funcOut.getRightElement(index) << std::endl;
+    }
+
+    std::unique_ptr<uint8_t> egBuffer2 = test.getBuffer(funcOut);
+    for (int index = 0; index < (test.getBytesPerSample() * test.getSamplesPerFrame() * test.getFramesPerBuffer()); index += 6)
+    {
+        printf(" %02X%02X%02X  %02X%02X%02X \n", egBuffer2.get()[index + 0], egBuffer2.get()[index + 1], egBuffer2.get()[index + 2], egBuffer2.get()[index + 3], egBuffer2.get()[index + 4], egBuffer2.get()[index + 5]);
+    }
     
+
 }

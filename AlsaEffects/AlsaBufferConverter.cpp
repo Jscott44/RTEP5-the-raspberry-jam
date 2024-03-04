@@ -1,5 +1,4 @@
-#include "include\AlsaBufferConverter.h"
-#include "AlsaBufferConverter.h"
+#include "include/AlsaBufferConverter.h"
 
 AlsaBufferConverter::AlsaBufferConverter()
 {
@@ -102,13 +101,27 @@ std::unique_ptr<uint8_t> AlsaBufferConverter::getBufferFromInt32(int32_t desired
 }
 
 
+
+
+
+
+
+
+
+
 /// @brief Creates object storing samples for each channel. 
 /// @param num_of_frames The number of frames that should be stored (each channel stores this many samples)
 ChannelSamples::ChannelSamples(uint16_t num_of_frames)
+    : m_framesCount(num_of_frames)
 {
     // Reserve memory once so that the program does not need to constantly find and area large enough to store all values
     left.reserve(num_of_frames);
     right.reserve(num_of_frames);
+}
+
+uint16_t ChannelSamples::getFramesCount()
+{
+    return m_framesCount;
 }
 
 /// @brief Appends value onto the end of the left channel

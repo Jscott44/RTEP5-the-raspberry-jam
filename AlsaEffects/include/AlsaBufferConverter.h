@@ -13,9 +13,11 @@ public:
     void appendRight(int32_t value);
     int32_t getLeftElement(uint16_t index);
     int32_t getRightElement(uint16_t index);
+    uint16_t getFramesCount();
 private:
     std::vector<int32_t> left;
     std::vector<int32_t> right;
+    uint16_t m_framesCount;
 };
 
 class AlsaBufferConverter
