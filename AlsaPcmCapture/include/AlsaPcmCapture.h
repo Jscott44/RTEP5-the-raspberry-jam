@@ -52,7 +52,7 @@ class PcmAudioDriver
 			
 		}
 		
-		void openPcmDevice ()
+		virtual void openPcmDevice ();
 		
 		~PcmAudioDriver() //destructor
 		{
