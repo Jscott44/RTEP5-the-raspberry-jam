@@ -20,7 +20,7 @@ The realtime Raspberry PI powered digital guitar effects pedal.
 
 </div>
 
-# **Key Features **
+# **Key Features**
 - Realtime audio loop
 - Cutsomisable effects
 - User profiles
