@@ -1,4 +1,4 @@
-#ifndef EFFECTBASE_H
+ #ifndef EFFECTBASE_H
 #define EFFECTBASE_H
 #include <cstdint>
 
