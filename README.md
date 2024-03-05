@@ -20,6 +20,12 @@ The realtime Raspberry PI powered digital guitar effects pedal.
 
 </div>
 
+# **Key Features **
+- Realtime audio loop
+- Cutsomisable effects
+- User profiles
+- Specialised audio electronics design 
+
 # **Social Media Links**
 [![instagram](https://github.com/shikhar1020jais1/Git-Social/blob/master/Icons/Instagram.png (Instagram))][2]
 [![github](https://github.com/shikhar1020jais1/Git-Social/blob/master/Icons/Github.png (Github))][5]
