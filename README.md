@@ -20,11 +20,16 @@ The realtime Raspberry PI powered digital guitar effects pedal.
 
 </div>
 
+# **Usage**
+
 # **Key Features**
 - Realtime audio loop
 - Cutsomisable effects
 - User profiles
-- Specialised audio electronics design 
+- Specialised audio electronics design
+![RJ_Schematic_v1 0](https://github.com/Jscott44/RTEP5-the-raspberry-jam/assets/122903573/62d96636-ebfb-40e5-95e0-d459cd9fca2a)
+
+
 
 # **Social Media Links**
 [![instagram](https://github.com/shikhar1020jais1/Git-Social/blob/master/Icons/Instagram.png (Instagram))][2]
