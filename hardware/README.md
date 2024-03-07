@@ -10,5 +10,5 @@ The Rasberry Jam includes a specialised audio sound card for the capture and pla
 - 2x stereo outputs (speakers)
 - 1x stereo output (headphones with volume control)
 
-# **Audio Inputs and Outputs **
+# **Audio Inputs and Outputs**
 The current version of the sound card supports one single ended mono instrument input up to 2Vrms. 
