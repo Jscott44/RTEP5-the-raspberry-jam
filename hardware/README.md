@@ -25,4 +25,86 @@ The output also support a headphone driver with analogue volume to control to ad
 
 # **CODEC**
 
+![cdc](https://github.com/Jscott44/RTEP5-the-raspberry-jam/assets/122903573/2c777151-9825-4673-8def-be6ddb6971c3)
 
+<h2>CS4271 Sample Rate Truth Table</h2>
+
+<table>
+  <tr>
+    <th>Resistor R49</th>
+    <th>Resistor R50</th>
+    <th>Resistor R10</th>
+    <th>Resistor R11</th>
+    <th>M1</th>
+    <th>M0</th>
+    <th>Sample Rate (kHz)</th>
+  </tr>
+  <tr>
+    <td>Not Populated</td>
+    <td>Not Populated</td>
+    <td>Populated</td>
+    <td>Populated</td>
+    <td>0</td>
+    <td>0</td>
+    <td>44.1</td>
+  </tr>
+  <tr>
+    <td>Not Populated</td>
+    <td>Populated</td>
+    <td>Populated</td>
+    <td>Not Populated</td>
+    <td>0</td>
+    <td>1</td>
+    <td>48</td>
+  </tr>
+  <tr>
+    <td>Populated</td>
+    <td>Not Populated</td>
+    <td>Not Populated</td>
+    <td>Populated</td>
+    <td>1</td>
+    <td>0</td>
+    <td>96</td>
+  </tr>
+  <tr>
+    <td>Populated</td>
+    <td>Populated</td>
+    <td>Not Populated</td>
+    <td>Not Populated</td>
+    <td>1</td>
+    <td>1</td>
+    <td>192</td>
+  </tr>
+</table>
+
+</body>
+</html>
+</html>
+
+<h2>CS4271 Audio Mode Truth Table</h2>
+
+<table>
+  <tr>
+    <th>R9 </th>
+    <th>R32 </th>
+    <th>ADO </th>
+    <th>Audio Mode</th>
+  </tr>
+  <tr>
+    <td>Populated</td>
+    <td>Not Populated</td>
+    <td>1</td>
+    <td>I2S</td>
+  </tr>
+  <tr>
+    <td>Not Populated</td>
+    <td>Populated</td>
+    <td>0</td>
+    <td>Left Justified</td>
+  </tr>
+
+  </tr>
+</table>
+
+</body>
+</html>
