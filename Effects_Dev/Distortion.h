@@ -3,7 +3,7 @@
 #ifndef DISTORTION_H
 #define DISTORTION_H
 
-#include <cmath>
+//#include <cmath>
 #include <cstdint>
 #include <iostream>
 
@@ -30,7 +30,7 @@ public:
 	
 	int32_t applyEffect(int32_t current_sample) override;
 
-	void changeParam(int32_t param, int32_t val) override;
+	void changeParam(int32_t param, float val) override;
 		
 
 private:
