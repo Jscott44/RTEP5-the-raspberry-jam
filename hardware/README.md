@@ -1,5 +1,5 @@
 # **Hardware**
-The Rasberry Jam includes a specialised audio sound card for the capture and playback of high fidelity audio. The impact of the hardware is designed to be as inaudible as possible and all of the effects are achieved digitally in software. The hardware design is modular in nature allowing the cutsomisation to suit different applications.
+The Raspberry Jam includes a specialised audio sound card for the capture and playback of high fidelity audio. The impact of the hardware is designed to be as inaudible as possible and all of the effects are achieved digitally in software. The hardware design is modular in nature allowing the cutsomisation to suit different applications.
 
 # **Features**
 - Highly integrated stereo audio CODEC
