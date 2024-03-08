@@ -1,2 +1,2 @@
-add_library(AlsaEffects STATIC AlsaBufferConverter.cpp EffectsManager.cpp AlsaEffects.cpp SafeQueue.cpp)
+add_library(AlsaEffects STATIC AlsaBufferConverter.cpp EffectsManager.cpp AlsaEffects.cpp SafeQueue.cpp "AlsaListener.cpp" "include/AlsaListener.h" "include/EffectListener.h" "include/GuiListener.h" "include/ThreadBlocker.h" "ThreadBlocker.cpp")
 target_include_directories(AlsaEffects PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

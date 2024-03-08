@@ -59,6 +59,26 @@ std::unique_ptr<uint8_t> AlsaBufferConverter::getBuffer(ChannelSamples samples)
     return retBuffer;
 }
 
+void AlsaBufferConverter::getBuffer(ChannelSamples samples, uint8_t* ret_buffer)
+{
+    // Loop through all int32 samples
+    for (unsigned int sampleIndex = 0; sampleIndex < FRAMES_PER_BUFFER; ++sampleIndex)
+    {
+        // For each sample, obtain the uint8 buffer equivalent
+        std::unique_ptr<uint8_t> leftBuffer = getBufferFromInt32(samples.getLeftElement(sampleIndex));
+        std::unique_ptr<uint8_t> rightBuffer = getBufferFromInt32(samples.getRightElement(sampleIndex));
+
+        // Store values into return buffer at correct index
+        unsigned int rawBytesIndex = sampleIndex * BYTES_PER_SAMPLE * SAMPLES_PER_FRAME;
+        for (int byteIndex = 0; byteIndex < BYTES_PER_SAMPLE; ++byteIndex)
+        {
+            ret_buffer[rawBytesIndex + byteIndex] = leftBuffer.get()[byteIndex];
+            ret_buffer[rawBytesIndex + byteIndex + BYTES_PER_SAMPLE] = rightBuffer.get()[byteIndex];
+        }
+    }
+
+}
+
 
 /// @brief Converts signed int buffer into signed 32 bit integer
 /// @param buffer Buffer containing signed integer obtained by ALSA
