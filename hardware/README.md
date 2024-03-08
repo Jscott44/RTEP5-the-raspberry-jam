@@ -108,3 +108,13 @@ The output also support a headphone driver with analogue volume to control to ad
 
 </body>
 </html>
+
+
+# **Digital Audio Format**
+
+
+By default the digital audio interface will operate using the I2S protocol
+- MSB first (big endian)
+- Signed 24-bits per channel
+- 2 channels
+- Interleaved channels
