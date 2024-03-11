@@ -1,4 +1,4 @@
-#ifndef EFFECTBASE_H
+ #ifndef EFFECTBASE_H
 #define EFFECTBASE_H
 #include <cstdint>
 
@@ -7,6 +7,14 @@ enum EffectIndx
 	DistortionIndx = 0,
 	ReverbIndx
 };
+
+enum ParamIndx
+{
+	eVolume = 0,
+	eGain
+};
+
+
 
 class EffectBase
 {
