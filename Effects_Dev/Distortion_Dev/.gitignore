@@ -2,4 +2,4 @@ sine_wave_gen/
 
 *.wav
 
-CMakeFiles
+CMakeFiles/
