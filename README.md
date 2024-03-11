@@ -16,7 +16,7 @@ The realtime Raspberry PI powered digital guitar effects pedal.
 
 <div style="float:left;margin:0 1px 1px 0" markdown="2">
 
-![logoPic](https://github.com/Jscott44/RTEP5-the-raspberry-jam/assets/122903573/dc734104-55fb-4f15-a044-787479a8cce3)
+![logoPicBlkStrip](https://github.com/Jscott44/RTEP5-the-raspberry-jam/assets/122903573/d662a7d8-005c-4412-90bc-d30af63cd982)
 
 </div>
 
