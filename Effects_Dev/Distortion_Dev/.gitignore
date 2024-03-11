@@ -3,3 +3,5 @@ sine_wave_gen/
 *.wav
 
 CMakeFiles/
+CmakeCache.txt
+Makefile
