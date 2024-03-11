@@ -28,7 +28,7 @@ public:
 
     ChannelSamples getSamples(uint8_t* buffer);
     std::unique_ptr<uint8_t> getBuffer(ChannelSamples samples);
-    void getBuffer(ChannelSamples samples, uint8_t* ret_buffer);
+    void getBuffer(uint8_t* ret_buffer, ChannelSamples samples);
 
     const uint8_t getBytesPerSample() { return BYTES_PER_SAMPLE; };
     const uint16_t getSamplesPerFrame() { return SAMPLES_PER_FRAME; };
