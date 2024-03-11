@@ -8,6 +8,14 @@ enum EffectIndx
 	ReverbIndx
 };
 
+enum ParamIndx
+{
+	eVolume = 0,
+	eGain
+};
+
+
+
 class EffectBase
 {
 public:
