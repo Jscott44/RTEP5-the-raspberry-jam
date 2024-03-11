@@ -1,0 +1,5 @@
+/Users/eperets/rtep5/RTEP5-the-raspberry-jam/Effects_Dev/Distortion_Dev/CMakeFiles/Distortion.dir
+/Users/eperets/rtep5/RTEP5-the-raspberry-jam/Effects_Dev/Distortion_Dev/CMakeFiles/edit_cache.dir
+/Users/eperets/rtep5/RTEP5-the-raspberry-jam/Effects_Dev/Distortion_Dev/CMakeFiles/rebuild_cache.dir
+/Users/eperets/rtep5/RTEP5-the-raspberry-jam/Effects_Dev/Distortion_Dev/sine_wave_gen/CMakeFiles/edit_cache.dir
+/Users/eperets/rtep5/RTEP5-the-raspberry-jam/Effects_Dev/Distortion_Dev/sine_wave_gen/CMakeFiles/rebuild_cache.dir
