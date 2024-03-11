@@ -22,6 +22,26 @@ The realtime Raspberry PI powered digital guitar effects pedal.
 
 # **Usage**
 
+Ensure the Raspberry Pi is updated:
+
+```bash
+# Update package lists
+sudo apt update
+
+# Upgrade installed packages
+sudo apt upgrade
+
+# Remove unused packages
+sudo apt autoremove
+
+# Clean up package cache
+sudo apt clean
+```
+
+
+
+
+
 # **Key Features**
 - Realtime audio loop
 - Cutsomisable effects
