@@ -5,25 +5,23 @@
 
 struct PcmAudioSettings 
 {
+	/* device name (default pcm device) */
+	const char *device_name;
 
-/* device name (default pcm device) */
-const char *device_name;
+	/* number of audio frames stored in buffer (period size))*/
+	snd_pcm_uframes_t frames;
 
-/* number of audio frames stored in buffer (period size))*/
-snd_pcm_uframes_t frames;
+	/* sample rate */
+	unsigned int rate;
 
-/* sample rate */
-unsigned int rate;
+	/* number of channels */
+	unsigned int nchannels;
 
-/* number of channels */
-unsigned int nchannels;
+	/* buffer size should be enough to contain one period */
+	int buffer_size;
 
-/* buffer size should be enough to contain one period */
-int buffer_size;
-
-/* digital audio format */
-snd_pcm_format_t format;
-
+	/* digital audio format */
+	snd_pcm_format_t format;
 };
 
 class PcmAudioDriver
