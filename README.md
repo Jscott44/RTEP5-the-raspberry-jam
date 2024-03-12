@@ -45,6 +45,22 @@ sudo apt-get install git -y
 # Verify Git installation
 git --version
 ```
+Install ALSA resources
+```bash
+# Install ALSA utilities and libraries
+sudo apt-get install alsa-utils libasound2-dev -y
+
+# Verify ALSA installation
+aplay --version
+```
+Install CMake in order to build the project
+```bash
+# Install CMake
+sudo apt-get install cmake -y
+
+# Verify CMake installation
+cmake --version
+```
 Clone the repository
 ```bash
 # Clone the repository from GitHub
@@ -56,8 +72,18 @@ cd RTEP5-the-raspberry-jam
 # List files in the repository
 ls
 ```
+Bulding the project with CMake
+```bash 
+# Create a build directory (optional)
+mkdir -p build
+cd build
 
+# Configure the build using CMake
+cmake ..
 
+# Build the project
+make
+```
 # **Key Features**
 - Realtime audio loop
 - Cutsomisable effects
