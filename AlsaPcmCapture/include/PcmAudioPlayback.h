@@ -9,10 +9,11 @@ public:
 	PcmAudioPlayback();
 	~PcmAudioPlayback();
 
-	void initPcmStream() override;
-
 private:
+	void initPcmStream() override;
+	void createBuffer() override;
 
+	void hasAlteredBuffer(uint8_t* buffer) override;
 };
 
 // PLACEHOLDER: DELETE LATER

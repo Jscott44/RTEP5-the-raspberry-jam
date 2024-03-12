@@ -14,6 +14,14 @@ void PcmAudioCapture::initPcmStream()
 	m_settings->direction = SND_PCM_STREAM_CAPTURE;
 }
 
+void PcmAudioCapture::createBuffer()
+{
+	if (m_buffer == nullptr) 
+	{
+		m_buffer = new uint8_t[getBufferSize()];
+	}
+}
+
 void PcmAudioCapture::registerCallback(AlsaListener* callback_ptr)
 {
 	m_callbackPtr = callback_ptr;
@@ -25,7 +33,7 @@ void PcmAudioCapture::pcmLoop()
 
 	while (m_running) 
 	{
-		rc = snd_pcm_readi(getPcmHandle(), getBuffer(), getFrames());
+		rc = snd_pcm_readi(getPcmHandle(), m_buffer, getFrames());
 		if (rc < 0) {
 			fprintf(stderr, "error from readi: %s\n", snd_strerror(rc));
 		}
@@ -39,7 +47,7 @@ void PcmAudioCapture::pcmLoop()
 		//	snd_pcm_prepare(handle);
 		//}
 
-		m_callbackPtr->hasBuffer(getBuffer());
+		m_callbackPtr->hasBuffer(m_buffer);
 	}
 
 	snd_pcm_drain(getPcmHandle());

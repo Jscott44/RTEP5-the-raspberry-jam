@@ -2,6 +2,7 @@
 
 PcmAudioBase::PcmAudioBase()
 	: m_settings(new PcmAudioSettings),
+	  m_buffer(nullptr),
 	  m_pcmThread(nullptr),
 	  m_running(false)
 {
@@ -24,6 +25,7 @@ void PcmAudioBase::start()
 	if (m_running = false && m_pcmThread == nullptr)
 	{
 		initSettings();
+		createBuffer();
 		openPcmDevice();
 
 		m_running = true;
@@ -54,8 +56,6 @@ void PcmAudioBase::initSettings()
 	m_settings->nchannels = 2;
 	m_settings->frames = 44;
 	m_settings->buffer_size = m_settings->frames * 3 * 2; /*3 bytes per channel, 2 channels */
-
-	m_buffer = new uint8_t[buffer_size];
 }
 
 void PcmAudioBase::openPcmDevice()
@@ -120,11 +120,6 @@ snd_pcm_t* PcmAudioBase::getPcmHandle()
 int PcmAudioBase::getBufferSize()
 {
 	return m_settings->buffer_size;
-}
-
-uint8_t* PcmAudioBase::getBuffer()
-{
-	return m_buffer;
 }
 
 snd_pcm_uframes_t PcmAudioBase::getFrames()

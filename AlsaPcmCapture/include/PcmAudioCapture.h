@@ -11,9 +11,10 @@ public:
 	~PcmAudioCapture();
 
 	void registerCallback(AlsaListener* callback_ptr);
-
-	void initPcmStream() override;
 private:
+	void initPcmStream() override;
+	void createBuffer() override;
+
 	AlsaListener* m_callbackPtr;
 };
 

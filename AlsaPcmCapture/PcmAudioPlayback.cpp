@@ -14,11 +14,18 @@ void PcmAudioPlayback::initPcmStream()
 	m_settings->direction = SND_PCM_STREAM_PLAYBACK;
 }
 
+void PcmAudioPlayback::createBuffer()
+{
+	return; // We use buffer obtained in callback and therefore do not need to create our own
+}
+
 void PcmAudioPlayback::pcmLoop()
 {
 	while (m_running)
 	{
-		rc = snd_pcm_writei(getPcmHandle(), getBuffer(), getFrames());
+		// Blocking method here
+
+		rc = snd_pcm_writei(getPcmHandle(), m_buffer, getFrames());
 		if (rc == -EPIPE) {
 			/* EPIPE means underrun */
 			fprintf(stderr, "underrun occurred\n");
@@ -36,4 +43,11 @@ void PcmAudioPlayback::pcmLoop()
 	}
 
 	snd_pcm_drain(getPcmHandle());
+}
+
+void PcmAudioPlayback::hasAlteredBuffer(uint8_t* buffer)
+{
+	m_buffer = buffer;
+
+	// Unblock pcmLoop
 }

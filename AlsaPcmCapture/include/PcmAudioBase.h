@@ -18,21 +18,21 @@ public:
 protected:
 	snd_pcm_t* getPcmHandle();
 	int getBufferSize();
-	uint8_t* getBuffer();
 	snd_pcm_uframes_t getFrames();
-
-private:
-	virtual void pcmLoop() = 0;
-	virtual void initPcmStream() = 0; // Initialises Pcm Stream Direction. Must be initialised for each child to ensure the stream is desired
-
-	void initSettings();
-	void openPcmDevice();
 
 	// Buffer to store samples
 	uint8_t* m_buffer;
 
 	/* settings object */
 	PcmAudioSettings* m_settings;
+
+private:
+	virtual void pcmLoop() = 0;
+	virtual void initPcmStream() = 0; // Initialises Pcm Stream Direction. Must be initialised for each child to ensure the stream is desired
+	virtual void createBuffer() = 0; // Only create buffer if required
+
+	void initSettings();
+	void openPcmDevice();
 
 	std::thread* m_pcmThread;
 	bool m_running;
