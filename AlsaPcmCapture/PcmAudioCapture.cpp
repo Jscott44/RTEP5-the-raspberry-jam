@@ -30,23 +30,28 @@ void PcmAudioCapture::registerCallback(AlsaListener* callback_ptr)
 
 void PcmAudioCapture::pcmLoop()
 {
+	// Inspired by:
+	//	   https://www.linuxjournal.com/article/6735
+
 	int rc;
 
 	while (m_running) 
 	{
-		rc = snd_pcm_readi(m_handle, m_buffer, getFrames());
-		if (rc < 0) {
+		rc = snd_pcm_readi(m_handle, m_buffer, getFrames()); // Blocking
+		if (rc == -EPIPE)
+		{
+			/* EPIPE means underrun */
+			fprintf(stderr, "underrun occurred\n");
+			snd_pcm_prepare(m_handle);
+		}
+		else if (rc < 0)
+		{
 			fprintf(stderr, "error from readi: %s\n", snd_strerror(rc));
 		}
-		else if (rc != (int)getFrames()) {
+		else if (rc != (int)getFrames())
+		{
 			fprintf(stderr, "short read, read %d frames\n", rc);
 		}
-
-		//if (rc == -EPIPE) {
-		//	/* EPIPE means underrun */
-		//	fprintf(stderr, "underrun occurred\n");
-		//	snd_pcm_prepare(handle);
-		//}
 
 		m_callbackPtr->hasBuffer(m_buffer);
 	}

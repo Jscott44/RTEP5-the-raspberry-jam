@@ -16,6 +16,9 @@ snd_pcm_stream_t PcmAudioPlayback::getStreamDirection()
 
 void PcmAudioPlayback::pcmLoop()
 {
+	// Inspired by:
+	//	   https://www.linuxjournal.com/article/6735
+
 	int rc;
 
 	while (m_running)
@@ -23,19 +26,19 @@ void PcmAudioPlayback::pcmLoop()
 		// Blocking method here
 
 		rc = snd_pcm_writei(m_handle, m_buffer, getFrames());
-		if (rc == -EPIPE) {
+		if (rc == -EPIPE)
+		{
 			/* EPIPE means underrun */
 			fprintf(stderr, "underrun occurred\n");
 			snd_pcm_prepare(m_handle);
 		}
-		else if (rc < 0) {
-			fprintf(stderr,
-				"error from writei: %s\n",
-				snd_strerror(rc));
+		else if (rc < 0)
+		{
+			fprintf(stderr, "error from writei: %s\n", snd_strerror(rc));
 		}
-		else if (rc != (int)getFrames()) {
-			fprintf(stderr,
-				"short write, write %d frames\n", rc);
+		else if (rc != (int)getFrames())
+		{
+			fprintf(stderr, "short write, write %d frames\n", rc);
 		}
 	}
 
