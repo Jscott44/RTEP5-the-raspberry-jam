@@ -12,9 +12,10 @@ public:
 
 	void registerCallback(AlsaListener* callback_ptr);
 private:
-	void initPcmStream() override;
-	void createBuffer() override;
+	// Pcm Audio Base
+	snd_pcm_stream_t getStreamDirection() override;
 
+	// Callbacks
 	AlsaListener* m_callbackPtr;
 };
 

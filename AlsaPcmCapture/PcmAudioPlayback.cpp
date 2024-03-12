@@ -9,14 +9,9 @@ PcmAudioPlayback::~PcmAudioPlayback()
 {
 }
 
-void PcmAudioPlayback::initPcmStream()
+snd_pcm_stream_t PcmAudioPlayback::getStreamDirection()
 {
-	m_settings->direction = SND_PCM_STREAM_PLAYBACK;
-}
-
-void PcmAudioPlayback::createBuffer()
-{
-	return; // We use buffer obtained in callback and therefore do not need to create our own
+	return SND_PCM_STREAM_PLAYBACK;
 }
 
 void PcmAudioPlayback::pcmLoop()
@@ -25,11 +20,11 @@ void PcmAudioPlayback::pcmLoop()
 	{
 		// Blocking method here
 
-		rc = snd_pcm_writei(getPcmHandle(), m_buffer, getFrames());
+		rc = snd_pcm_writei(m_handle, m_buffer, getFrames());
 		if (rc == -EPIPE) {
 			/* EPIPE means underrun */
 			fprintf(stderr, "underrun occurred\n");
-			snd_pcm_prepare(handle);
+			snd_pcm_prepare(m_handle);
 		}
 		else if (rc < 0) {
 			fprintf(stderr,
@@ -42,7 +37,7 @@ void PcmAudioPlayback::pcmLoop()
 		}
 	}
 
-	snd_pcm_drain(getPcmHandle());
+	snd_pcm_drain(m_handle);
 }
 
 void PcmAudioPlayback::hasAlteredBuffer(uint8_t* buffer)

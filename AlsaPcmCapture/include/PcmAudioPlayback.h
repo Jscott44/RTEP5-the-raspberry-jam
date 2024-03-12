@@ -10,9 +10,10 @@ public:
 	~PcmAudioPlayback();
 
 private:
-	void initPcmStream() override;
-	void createBuffer() override;
+	// Pcm Audio Base
+	snd_pcm_stream_t getStreamDirection() override;
 
+	// Effect Listener
 	void hasAlteredBuffer(uint8_t* buffer) override;
 };
 

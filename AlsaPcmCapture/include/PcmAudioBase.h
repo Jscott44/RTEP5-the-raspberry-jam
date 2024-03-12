@@ -16,34 +16,33 @@ public:
 	void start();
 	void stop();
 protected:
-	snd_pcm_t* getPcmHandle();
 	int getBufferSize();
 	snd_pcm_uframes_t getFrames();
+
+	snd_pcm_t* m_handle;
 
 	// Buffer to store samples
 	uint8_t* m_buffer;
 
-	/* settings object */
-	PcmAudioSettings* m_settings;
+	bool m_running;
 
 private:
 	virtual void pcmLoop() = 0;
-	virtual void initPcmStream() = 0; // Initialises Pcm Stream Direction. Must be initialised for each child to ensure the stream is desired
-	virtual void createBuffer() = 0; // Only create buffer if required
+	virtual snd_pcm_stream_t getStreamDirection() = 0; // Initialises Pcm Stream Direction. Must be initialised for each child to ensure the stream is desired
 
-	void initSettings();
+	void initBaseSettings();
 	void openPcmDevice();
 
+	/* settings object */
+	PcmAudioSettings* m_settings;
+
 	std::thread* m_pcmThread;
-	bool m_running;
 };
 
 
 struct PcmAudioSettings
 {
 	const char* device_name; /* device name (default pcm device) */
-	snd_pcm_t* pcm_handle;
-	snd_pcm_stream_t direction;
 	snd_pcm_access_t access;
 	snd_pcm_format_t format;/* digital audio format */
 	snd_pcm_uframes_t frames; /* number of audio frames stored in buffer (period size))*/
