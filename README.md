@@ -37,9 +37,25 @@ sudo apt autoremove
 # Clean up package cache
 sudo apt clean
 ```
+Install Git 
+```bash
+# Install Git
+sudo apt-get install git -y
 
+# Verify Git installation
+git --version
+```
+Clone the repository
+```bash
+# Clone the repository from GitHub
+git clone https://github.com/Jscott44/RTEP5-the-raspberry-jam.git
 
+# Change directory to the cloned repository
+cd RTEP5-the-raspberry-jam
 
+# List files in the repository
+ls
+```
 
 
 # **Key Features**
