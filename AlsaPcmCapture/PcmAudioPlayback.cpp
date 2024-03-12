@@ -16,6 +16,8 @@ snd_pcm_stream_t PcmAudioPlayback::getStreamDirection()
 
 void PcmAudioPlayback::pcmLoop()
 {
+	int rc;
+
 	while (m_running)
 	{
 		// Blocking method here
