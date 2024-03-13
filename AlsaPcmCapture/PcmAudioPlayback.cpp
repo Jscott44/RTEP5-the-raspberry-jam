@@ -14,40 +14,30 @@ snd_pcm_stream_t PcmAudioPlayback::getStreamDirection()
 	return SND_PCM_STREAM_PLAYBACK;
 }
 
-void PcmAudioPlayback::pcmLoop()
+void PcmAudioPlayback::hasAlteredBuffer(uint8_t* buffer)
 {
 	// Inspired by:
 	//	   https://www.linuxjournal.com/article/6735
 
-	int rc;
-
-	while (m_running)
+	int rc = snd_pcm_writei(getHandlePtr(), buffer, getFrames());
+	if (rc == -EPIPE)
 	{
-		// Blocking method here
-
-		rc = snd_pcm_writei(m_handle, m_buffer, getFrames());
-		if (rc == -EPIPE)
-		{
-			/* EPIPE means underrun */
-			fprintf(stderr, "underrun occurred\n");
-			snd_pcm_prepare(m_handle);
-		}
-		else if (rc < 0)
-		{
-			fprintf(stderr, "error from writei: %s\n", snd_strerror(rc));
-		}
-		else if (rc != (int)getFrames())
-		{
-			fprintf(stderr, "short write, write %d frames\n", rc);
-		}
+		/* EPIPE means underrun */
+		fprintf(stderr, "underrun occurred\n");
+		snd_pcm_prepare(getHandlePtr());
+	}
+	else if (rc < 0)
+	{
+		fprintf(stderr, "error from writei: %s\n", snd_strerror(rc));
+	}
+	else if (rc != (int)getFrames())
+	{
+		fprintf(stderr, "short write, write %d frames\n", rc);
+	}
+	else
+	{
+		fprint(stdout, "i2s write successful");
 	}
 
-	snd_pcm_drain(m_handle);
-}
-
-void PcmAudioPlayback::hasAlteredBuffer(uint8_t* buffer)
-{
-	m_buffer = buffer;
-
-	// Unblock pcmLoop
+	snd_pcm_drain(getHandlePtr());
 }

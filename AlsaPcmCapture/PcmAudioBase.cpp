@@ -2,47 +2,18 @@
 
 PcmAudioBase::PcmAudioBase()
 	: m_handle(),
-	  m_buffer(nullptr),
-	  m_settings(new PcmAudioSettings),
-	  m_running(false),
-	  m_pcmThread(nullptr)
+	  m_settings(new PcmAudioSettings)
 {
 	initBaseSettings();
+	openPcmDevice();
 }
 
 PcmAudioBase::~PcmAudioBase()
 {
-	stop();
-
 	if (m_settings != nullptr)
 	{
 		delete m_settings;
 		m_settings = nullptr;
-	}
-}
-
-
-void PcmAudioBase::start()
-{
-	if (m_running = false && m_pcmThread == nullptr)
-	{
-		openPcmDevice();
-
-		m_running = true;
-		m_pcmThread = new std::thread(PcmAudioBase::pcmLoop, this);
-	}
-}
-
-void PcmAudioBase::stop()
-{
-	if (m_running = true)
-	{
-		m_running = false;
-		m_pcmThread->join();
-		snd_pcm_close(m_handle);
-
-		delete m_pcmThread;
-		m_pcmThread == nullptr;
 	}
 }
 
@@ -62,8 +33,8 @@ void PcmAudioBase::openPcmDevice()
 	// Inspired by:
 	//	   https://www.linuxjournal.com/article/6735
 
-	int rc;
 	snd_pcm_hw_params_t* params;
+	int rc;
 	int dir;
 
 	/* Open PCM device for playback. */
@@ -120,3 +91,9 @@ snd_pcm_uframes_t PcmAudioBase::getFrames()
 {
 	return m_settings->frames;
 }
+
+snd_pcm_t* PcmAudioBase::getHandlePtr()
+{
+	return m_handle;
+}
+

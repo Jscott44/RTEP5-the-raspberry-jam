@@ -1,16 +1,17 @@
 #include "include/PcmAudioCapture.h"
 
 PcmAudioCapture::PcmAudioCapture()
-	: PcmAudioBase()
+	: PcmAudioBase(),
+	  m_running(false),
+	  m_thread(nullptr),
+	  m_buffer(new uint8_t[getBufferSize()])
 {
-	if (m_buffer == nullptr)
-	{
-		m_buffer = new uint8_t[getBufferSize()];
-	}
 }
 
 PcmAudioCapture::~PcmAudioCapture()
 {
+	stop();
+
 	if (m_buffer != nullptr)
 	{
 		delete m_buffer;
@@ -28,6 +29,33 @@ void PcmAudioCapture::registerCallback(AlsaListener* callback_ptr)
 	m_callbackPtr = callback_ptr;
 }
 
+void PcmAudioCapture::start()
+{
+	if (m_callbackPtr == nullptr)
+	{
+		fprintf(stderr, "Callback not registered");
+		return;
+	}
+	if (m_running = false && m_pcmThread == nullptr)
+	{
+		m_running = true;
+		m_pcmThread = new std::thread(PcmAudioBase::pcmLoop, this);
+	}
+}
+
+void PcmAudioCapture::stop()
+{
+	if (m_running = true)
+	{
+		m_running = false;
+		m_pcmThread->join();
+		snd_pcm_close(m_handle);
+
+		delete m_pcmThread;
+		m_pcmThread == nullptr;
+	}
+}
+
 void PcmAudioCapture::pcmLoop()
 {
 	// Inspired by:
@@ -37,12 +65,12 @@ void PcmAudioCapture::pcmLoop()
 
 	while (m_running) 
 	{
-		rc = snd_pcm_readi(m_handle, m_buffer, getFrames()); // Blocking
+		rc = snd_pcm_readi(getHandlePtr(), m_buffer, getFrames()); // Blocking
 		if (rc == -EPIPE)
 		{
 			/* EPIPE means underrun */
 			fprintf(stderr, "underrun occurred\n");
-			snd_pcm_prepare(m_handle);
+			snd_pcm_prepare(getHandlePtr());
 		}
 		else if (rc < 0)
 		{
@@ -52,9 +80,13 @@ void PcmAudioCapture::pcmLoop()
 		{
 			fprintf(stderr, "short read, read %d frames\n", rc);
 		}
+		else
+		{
+			fprint(stdout, "i2s read successful");
+		}
 
 		m_callbackPtr->hasBuffer(m_buffer);
 	}
 
-	snd_pcm_drain(getPcmHandle());
+	snd_pcm_drain(getHandlePtr());
 }
