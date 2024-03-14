@@ -1,3 +1,4 @@
+#include <alsa/asoundlib.h>
 #include <iostream>
 #include "AlsaEffects/include/AlsaBufferConverter.h"
 #include <memory>
