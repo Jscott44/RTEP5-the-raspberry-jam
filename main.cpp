@@ -1,5 +1,6 @@
 #include <iostream>
 #include "AlsaBufferConverter.h"
+#include "EffectsManager.h"
 #include <memory>
 
 int main()
@@ -26,9 +27,10 @@ int main()
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 };
-    
+
     AlsaBufferConverter test;
 
+    // TEST 1
     ChannelSamples egSamples = test.getSamples(buf);
     for (int index = 0; index < test.getFramesPerBuffer(); ++index)
     {
@@ -40,5 +42,5 @@ int main()
     {
         printf(" %02X%02X%02X  %02X%02X%02X \n", egBuffer.get()[index + 0], egBuffer.get()[index + 1], egBuffer.get()[index + 2], egBuffer.get()[index + 3], egBuffer.get()[index + 4], egBuffer.get()[index + 5]);
     }
-    
+
 }

@@ -1,5 +1,4 @@
-#include "include\AlsaBufferConverter.h"
-#include "AlsaBufferConverter.h"
+#include "include/AlsaBufferConverter.h"
 
 AlsaBufferConverter::AlsaBufferConverter()
 {
@@ -60,6 +59,26 @@ std::unique_ptr<uint8_t> AlsaBufferConverter::getBuffer(ChannelSamples samples)
     return retBuffer;
 }
 
+void AlsaBufferConverter::getBuffer(uint8_t* ret_buffer, ChannelSamples samples)
+{
+    // Loop through all int32 samples
+    for (unsigned int sampleIndex = 0; sampleIndex < FRAMES_PER_BUFFER; ++sampleIndex)
+    {
+        // For each sample, obtain the uint8 buffer equivalent
+        std::unique_ptr<uint8_t> leftBuffer = getBufferFromInt32(samples.getLeftElement(sampleIndex));
+        std::unique_ptr<uint8_t> rightBuffer = getBufferFromInt32(samples.getRightElement(sampleIndex));
+
+        // Store values into return buffer at correct index
+        unsigned int rawBytesIndex = sampleIndex * BYTES_PER_SAMPLE * SAMPLES_PER_FRAME;
+        for (int byteIndex = 0; byteIndex < BYTES_PER_SAMPLE; ++byteIndex)
+        {
+            ret_buffer[rawBytesIndex + byteIndex] = leftBuffer.get()[byteIndex];
+            ret_buffer[rawBytesIndex + byteIndex + BYTES_PER_SAMPLE] = rightBuffer.get()[byteIndex];
+        }
+    }
+
+}
+
 
 /// @brief Converts signed int buffer into signed 32 bit integer
 /// @param buffer Buffer containing signed integer obtained by ALSA
@@ -102,13 +121,27 @@ std::unique_ptr<uint8_t> AlsaBufferConverter::getBufferFromInt32(int32_t desired
 }
 
 
+
+
+
+
+
+
+
+
 /// @brief Creates object storing samples for each channel. 
 /// @param num_of_frames The number of frames that should be stored (each channel stores this many samples)
 ChannelSamples::ChannelSamples(uint16_t num_of_frames)
+    : m_framesCount(num_of_frames)
 {
     // Reserve memory once so that the program does not need to constantly find and area large enough to store all values
     left.reserve(num_of_frames);
     right.reserve(num_of_frames);
+}
+
+uint16_t ChannelSamples::getFramesCount()
+{
+    return m_framesCount;
 }
 
 /// @brief Appends value onto the end of the left channel

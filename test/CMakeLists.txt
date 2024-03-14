@@ -1,5 +1,5 @@
 find_package(Boost COMPONENTS system filesystem unit_test_framework REQUIRED)
-include_directories(${DEMO_SOURCE_DIR}/AlsaBufferConverter ${Boost_INCLUDE_DIRS} )
+include_directories(${DEMO_SOURCE_DIR}/AlsaEffects ${Boost_INCLUDE_DIRS} )
 add_definitions(-DBOOST_TEST_DYN_LINK)
 
 add_executable (Test test.cpp)
