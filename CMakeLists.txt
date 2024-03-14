@@ -23,6 +23,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(RJ
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        reverbtab.h reverbtab.cpp reverbtab.ui
+        distortiontab.h distortiontab.cpp distortiontab.ui
+        delaytab.h delaytab.cpp delaytab.ui
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET RJ APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
