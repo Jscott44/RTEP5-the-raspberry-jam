@@ -38,6 +38,4 @@ void PcmAudioPlayback::hasAlteredBuffer(uint8_t* buffer)
 	{
 		fprint(stdout, "i2s write successful");
 	}
-
-	snd_pcm_drain(getHandlePtr());
 }

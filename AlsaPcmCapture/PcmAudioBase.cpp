@@ -10,6 +10,9 @@ PcmAudioBase::PcmAudioBase()
 
 PcmAudioBase::~PcmAudioBase()
 {
+	snd_pcm_drain(m_handle);
+	snd_pcm_close(m_handle);
+
 	if (m_settings != nullptr)
 	{
 		delete m_settings;

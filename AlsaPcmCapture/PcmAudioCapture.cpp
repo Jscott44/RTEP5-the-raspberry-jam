@@ -49,7 +49,6 @@ void PcmAudioCapture::stop()
 	{
 		m_running = false;
 		m_pcmThread->join();
-		snd_pcm_close(m_handle);
 
 		delete m_pcmThread;
 		m_pcmThread == nullptr;
@@ -87,6 +86,4 @@ void PcmAudioCapture::pcmLoop()
 
 		m_callbackPtr->hasBuffer(m_buffer);
 	}
-
-	snd_pcm_drain(getHandlePtr());
 }
