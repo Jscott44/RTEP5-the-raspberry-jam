@@ -1,6 +1,5 @@
 #include <iostream>
-#include "AlsaBufferConverter.h"
-#include "EffectsManager.h"
+#include "AlsaEffects/include/AlsaBufferConverter.h"
 #include <memory>
 
 int main()
