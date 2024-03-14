@@ -1,3 +1,0 @@
-/home/user/repos/RTEP5-the-raspberry-jam/AlsaPcmCapture/CMakeFiles/rebuild_cache.dir
-/home/user/repos/RTEP5-the-raspberry-jam/AlsaPcmCapture/CMakeFiles/edit_cache.dir
-/home/user/repos/RTEP5-the-raspberry-jam/AlsaPcmCapture/CMakeFiles/AlsaPcmCapture.dir
