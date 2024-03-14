@@ -18,12 +18,6 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_badButton_clicked();
-
-    void on_badButton_pressed();
-
-    void on_badButton_released();
-
     void on_badButton_2_pressed();
 
     void on_badButton_2_released();
@@ -31,6 +25,12 @@ private slots:
     void on_badButton_3_pressed();
 
     void on_badButton_3_released();
+
+    void on_comboBox_currentIndexChanged(int index);
+
+    void on_badButton_2_clicked();
+
+    void on_badButton_3_clicked();
 
 private:
     Ui::MainWindow *ui;
