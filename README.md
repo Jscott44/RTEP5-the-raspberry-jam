@@ -103,8 +103,8 @@ make
 [5]: https://github.com/Jscott44/RTEP5-the-raspberry-jam
 
 # **Authors**
--Jed Scott
--Dario Petinella
--Alan Hamilton
--Elad Perets
--Matthew Stewart
+- Jed Scott
+- Dario Petinella
+- Alan Hamilton
+- Elad Perets
+- Matthew Stewart
