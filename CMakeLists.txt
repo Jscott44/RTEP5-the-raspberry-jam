@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project ("RTEP-the-raspberry-jam")
 
 add_subdirectory(AlsaEffects)
+add_subdirectory(test)
 
 add_executable(rpj main.cpp)
 

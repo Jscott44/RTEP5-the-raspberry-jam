@@ -6,3 +6,7 @@
 /home/user/repos/RTEP5-the-raspberry-jam/AlsaEffects/CMakeFiles/test.dir
 /home/user/repos/RTEP5-the-raspberry-jam/AlsaEffects/CMakeFiles/rebuild_cache.dir
 /home/user/repos/RTEP5-the-raspberry-jam/AlsaEffects/CMakeFiles/AlsaEffects.dir
+/home/user/repos/RTEP5-the-raspberry-jam/test/CMakeFiles/rebuild_cache.dir
+/home/user/repos/RTEP5-the-raspberry-jam/test/CMakeFiles/edit_cache.dir
+/home/user/repos/RTEP5-the-raspberry-jam/test/CMakeFiles/test.dir
+/home/user/repos/RTEP5-the-raspberry-jam/test/CMakeFiles/Test.dir

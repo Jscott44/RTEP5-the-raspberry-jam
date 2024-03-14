@@ -12,6 +12,24 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.16.3/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.16.3/CMakeSystem.cmake"
   "CMakeLists.txt"
+  "test/CMakeLists.txt"
+  "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0/BoostConfig.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0/BoostConfigVersion.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/BoostDetectToolset-1.71.0.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_filesystem-1.71.0/boost_filesystem-config-version.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_filesystem-1.71.0/boost_filesystem-config.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_filesystem-1.71.0/libboost_filesystem-variant-shared.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_filesystem-1.71.0/libboost_filesystem-variant-static.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_headers-1.71.0/boost_headers-config-version.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_headers-1.71.0/boost_headers-config.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_system-1.71.0/boost_system-config-version.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_system-1.71.0/boost_system-config.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_system-1.71.0/libboost_system-variant-shared.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_system-1.71.0/libboost_system-variant-static.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_unit_test_framework-1.71.0/boost_unit_test_framework-config-version.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_unit_test_framework-1.71.0/boost_unit_test_framework-config.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_unit_test_framework-1.71.0/libboost_unit_test_framework-variant-shared.cmake"
+  "/usr/lib/x86_64-linux-gnu/cmake/boost_unit_test_framework-1.71.0/libboost_unit_test_framework-variant-static.cmake"
   "/usr/share/cmake-3.16/Modules/CMakeCInformation.cmake"
   "/usr/share/cmake-3.16/Modules/CMakeCXXInformation.cmake"
   "/usr/share/cmake-3.16/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake"
@@ -26,6 +44,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.16/Modules/Compiler/GNU-CXX.cmake"
   "/usr/share/cmake-3.16/Modules/Compiler/GNU.cmake"
   "/usr/share/cmake-3.16/Modules/FindALSA.cmake"
+  "/usr/share/cmake-3.16/Modules/FindBoost.cmake"
   "/usr/share/cmake-3.16/Modules/FindPackageHandleStandardArgs.cmake"
   "/usr/share/cmake-3.16/Modules/FindPackageMessage.cmake"
   "/usr/share/cmake-3.16/Modules/Internal/CMakeCheckCompilerFlag.cmake"
@@ -46,10 +65,12 @@ set(CMAKE_MAKEFILE_OUTPUTS
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   "AlsaEffects/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "test/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/rpj.dir/DependInfo.cmake"
   "AlsaEffects/CMakeFiles/AlsaEffects.dir/DependInfo.cmake"
+  "test/CMakeFiles/Test.dir/DependInfo.cmake"
   )

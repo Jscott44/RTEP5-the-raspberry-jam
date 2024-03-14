@@ -20,6 +20,18 @@ ALSA_INCLUDE_DIR:PATH=/usr/include
 //The ALSA (asound) library
 ALSA_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libasound.so
 
+//The directory containing a CMake configuration file for Boost.
+Boost_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0
+
+Boost_FILESYSTEM_LIBRARY_RELEASE:STRING=/usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0
+
+//Path to a file.
+Boost_INCLUDE_DIR:PATH=/usr/include
+
+Boost_SYSTEM_LIBRARY_RELEASE:STRING=/usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0
+
+Boost_UNIT_TEST_FRAMEWORK_LIBRARY_RELEASE:STRING=/usr/lib/x86_64-linux-gnu/libboost_unit_test_framework.so.1.71.0
+
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=/usr/bin/addr2line
 
@@ -221,6 +233,18 @@ RTEP-the-raspberry-jam_BINARY_DIR:STATIC=/home/user/repos/RTEP5-the-raspberry-ja
 //Value Computed by CMake
 RTEP-the-raspberry-jam_SOURCE_DIR:STATIC=/home/user/repos/RTEP5-the-raspberry-jam
 
+//The directory containing a CMake configuration file for boost_filesystem.
+boost_filesystem_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/boost_filesystem-1.71.0
+
+//The directory containing a CMake configuration file for boost_headers.
+boost_headers_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/boost_headers-1.71.0
+
+//The directory containing a CMake configuration file for boost_system.
+boost_system_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/boost_system-1.71.0
+
+//The directory containing a CMake configuration file for boost_unit_test_framework.
+boost_unit_test_framework_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/boost_unit_test_framework-1.71.0
+
 
 ########################
 # INTERNAL cache entries
@@ -230,6 +254,8 @@ RTEP-the-raspberry-jam_SOURCE_DIR:STATIC=/home/user/repos/RTEP5-the-raspberry-ja
 ALSA_INCLUDE_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: ALSA_LIBRARY
 ALSA_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: Boost_DIR
+Boost_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_ADDR2LINE
 CMAKE_ADDR2LINE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
@@ -330,7 +356,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=2
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=3
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -375,4 +401,14 @@ CMAKE_UNAME:INTERNAL=/usr/bin/uname
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding ALSA
 FIND_PACKAGE_MESSAGE_DETAILS_ALSA:INTERNAL=[/usr/lib/x86_64-linux-gnu/libasound.so][/usr/include][v1.2.2()]
+//Details about finding Boost
+FIND_PACKAGE_MESSAGE_DETAILS_Boost:INTERNAL=[/usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0/BoostConfig.cmake][cfound components: system filesystem unit_test_framework ][v1.71.0()]
+//ADVANCED property for variable: boost_filesystem_DIR
+boost_filesystem_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_headers_DIR
+boost_headers_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_system_DIR
+boost_system_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_unit_test_framework_DIR
+boost_unit_test_framework_DIR-ADVANCED:INTERNAL=1
 

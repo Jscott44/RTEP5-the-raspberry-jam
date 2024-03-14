@@ -35,3 +35,6 @@
 .vscode
 .vs
 out
+
+#CMake
+CMkakeFiles/

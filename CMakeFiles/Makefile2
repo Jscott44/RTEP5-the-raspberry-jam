@@ -55,17 +55,20 @@ CMAKE_BINARY_DIR = /home/user/repos/RTEP5-the-raspberry-jam
 # The main recursive "all" target.
 all: CMakeFiles/rpj.dir/all
 all: AlsaEffects/all
+all: test/all
 
 .PHONY : all
 
 # The main recursive "preinstall" target.
 preinstall: AlsaEffects/preinstall
+preinstall: test/preinstall
 
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/rpj.dir/clean
 clean: AlsaEffects/clean
+clean: test/clean
 
 .PHONY : clean
 
@@ -88,13 +91,31 @@ AlsaEffects/clean: AlsaEffects/CMakeFiles/AlsaEffects.dir/clean
 .PHONY : AlsaEffects/clean
 
 #=============================================================================
+# Directory level rules for directory test
+
+# Recursive "all" directory target.
+test/all: test/CMakeFiles/Test.dir/all
+
+.PHONY : test/all
+
+# Recursive "preinstall" directory target.
+test/preinstall:
+
+.PHONY : test/preinstall
+
+# Recursive "clean" directory target.
+test/clean: test/CMakeFiles/Test.dir/clean
+
+.PHONY : test/clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/rpj.dir
 
 # All Build rule for target.
 CMakeFiles/rpj.dir/all: AlsaEffects/CMakeFiles/AlsaEffects.dir/all
 	$(MAKE) -f CMakeFiles/rpj.dir/build.make CMakeFiles/rpj.dir/depend
 	$(MAKE) -f CMakeFiles/rpj.dir/build.make CMakeFiles/rpj.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/repos/RTEP5-the-raspberry-jam/CMakeFiles --progress-num=8,9 "Built target rpj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/repos/RTEP5-the-raspberry-jam/CMakeFiles --progress-num=10,11 "Built target rpj"
 .PHONY : CMakeFiles/rpj.dir/all
 
 # Build rule for subdir invocation for target.
@@ -140,6 +161,33 @@ AlsaEffects: AlsaEffects/CMakeFiles/AlsaEffects.dir/rule
 AlsaEffects/CMakeFiles/AlsaEffects.dir/clean:
 	$(MAKE) -f AlsaEffects/CMakeFiles/AlsaEffects.dir/build.make AlsaEffects/CMakeFiles/AlsaEffects.dir/clean
 .PHONY : AlsaEffects/CMakeFiles/AlsaEffects.dir/clean
+
+#=============================================================================
+# Target rules for target test/CMakeFiles/Test.dir
+
+# All Build rule for target.
+test/CMakeFiles/Test.dir/all:
+	$(MAKE) -f test/CMakeFiles/Test.dir/build.make test/CMakeFiles/Test.dir/depend
+	$(MAKE) -f test/CMakeFiles/Test.dir/build.make test/CMakeFiles/Test.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/user/repos/RTEP5-the-raspberry-jam/CMakeFiles --progress-num=8,9 "Built target Test"
+.PHONY : test/CMakeFiles/Test.dir/all
+
+# Build rule for subdir invocation for target.
+test/CMakeFiles/Test.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/repos/RTEP5-the-raspberry-jam/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/Test.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/user/repos/RTEP5-the-raspberry-jam/CMakeFiles 0
+.PHONY : test/CMakeFiles/Test.dir/rule
+
+# Convenience name for target.
+Test: test/CMakeFiles/Test.dir/rule
+
+.PHONY : Test
+
+# clean rule for target.
+test/CMakeFiles/Test.dir/clean:
+	$(MAKE) -f test/CMakeFiles/Test.dir/build.make test/CMakeFiles/Test.dir/clean
+.PHONY : test/CMakeFiles/Test.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
