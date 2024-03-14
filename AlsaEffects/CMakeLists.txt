@@ -1,2 +1,2 @@
-add_library(AlsaEffects STATIC AlsaBufferConverter.cpp EffectsManager.cpp AlsaListener.cpp ThreadBlocker.cpp)
+add_library(AlsaEffects STATIC AlsaBufferConverter.cpp EffectsManager.cpp AlsaListener.cpp ThreadBlocker.cpp PcmAudioBase.cpp PcmAudioCapture.cpp PcmAudioBase.cpp)
 target_include_directories(AlsaEffects PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
