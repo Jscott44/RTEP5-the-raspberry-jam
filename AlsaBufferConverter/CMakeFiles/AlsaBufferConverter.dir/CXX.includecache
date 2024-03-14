@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/user/repos/RTEP5-the-raspberry-jam/AlsaBufferConverter/AlsaBufferConverter.cpp
+AlsaBufferConverter.h
+/home/user/repos/RTEP5-the-raspberry-jam/AlsaBufferConverter/AlsaBufferConverter.h
+
+AlsaBufferConverter/include/AlsaBufferConverter.h
+cstdint
+-
+

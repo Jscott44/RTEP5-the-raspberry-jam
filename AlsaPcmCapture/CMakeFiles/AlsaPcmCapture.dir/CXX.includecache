@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/user/repos/RTEP5-the-raspberry-jam/AlsaPcmCapture/AlsaPcmCapture.cpp
+alsa/asoundlib.h
+-
+AlsaPcmCapture.h
+/home/user/repos/RTEP5-the-raspberry-jam/AlsaPcmCapture/AlsaPcmCapture.h
+iostream
+-
+
+include/AlsaPcmCapture.h
+alsa/asoundlib.h
+-
+

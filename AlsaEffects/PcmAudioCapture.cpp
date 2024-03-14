@@ -36,10 +36,10 @@ void PcmAudioCapture::start()
 		fprintf(stderr, "Callback not registered");
 		return;
 	}
-	if (m_running = false && m_pcmThread == nullptr)
+	if (m_running = false && m_thread == nullptr)
 	{
 		m_running = true;
-		m_pcmThread = new std::thread(PcmAudioBase::pcmLoop, this);
+		m_thread = new std::thread(&PcmAudioCapture::pcmLoop, this);
 	}
 }
 
@@ -48,10 +48,10 @@ void PcmAudioCapture::stop()
 	if (m_running = true)
 	{
 		m_running = false;
-		m_pcmThread->join();
+		m_thread->join();
 
-		delete m_pcmThread;
-		m_pcmThread == nullptr;
+		delete m_thread;
+		m_thread == nullptr;
 	}
 }
 
@@ -81,7 +81,7 @@ void PcmAudioCapture::pcmLoop()
 		}
 		else
 		{
-			fprint(stdout, "i2s read successful");
+			fprintf(stdout, "i2s read successful");
 		}
 
 		m_callbackPtr->hasBuffer(m_buffer);

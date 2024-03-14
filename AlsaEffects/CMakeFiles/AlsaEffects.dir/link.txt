@@ -1,0 +1,2 @@
+/usr/bin/ar qc libAlsaEffects.a  CMakeFiles/AlsaEffects.dir/AlsaBufferConverter.cpp.o CMakeFiles/AlsaEffects.dir/EffectsManager.cpp.o CMakeFiles/AlsaEffects.dir/AlsaListener.cpp.o CMakeFiles/AlsaEffects.dir/ThreadBlocker.cpp.o CMakeFiles/AlsaEffects.dir/PcmAudioBase.cpp.o CMakeFiles/AlsaEffects.dir/PcmAudioCapture.cpp.o
+/usr/bin/ranlib libAlsaEffects.a

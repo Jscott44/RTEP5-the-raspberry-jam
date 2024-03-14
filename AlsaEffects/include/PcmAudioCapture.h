@@ -1,8 +1,10 @@
 #ifndef PCMAUDIOCAPTURE_H
 #define PCMAUDIOCAPTURE_H
 
+#include "AlsaListener.h"
 #include "PcmAudioBase.h"
 #include <thread>
+
 
 class PcmAudioCapture : public PcmAudioBase
 {
@@ -31,11 +33,6 @@ private:
 };
 
 
-// PLACEHOLDER: DELETE LATER
-class AlsaListener
-{
-public:
-	virtual void hasBuffer(uint8_t* buffer) = 0;
-};
+
 
 #endif // !PCMAUDIOCAPTURE_H

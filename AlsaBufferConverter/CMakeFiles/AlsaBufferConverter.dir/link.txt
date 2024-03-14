@@ -1,0 +1,2 @@
+/usr/bin/ar qc libAlsaBufferConverter.a  CMakeFiles/AlsaBufferConverter.dir/AlsaBufferConverter.cpp.o
+/usr/bin/ranlib libAlsaBufferConverter.a

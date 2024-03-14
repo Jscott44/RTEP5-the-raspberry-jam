@@ -4,6 +4,18 @@
 #include <cstdint>
 #include <alsa/asoundlib.h>
 
+
+struct PcmAudioSettings
+{
+	const char* device_name; /* device name (default pcm device) */
+	snd_pcm_access_t access; /* data access type */
+	snd_pcm_format_t format;/* digital audio format */
+	snd_pcm_uframes_t frames; /* number of audio frames stored in buffer (period size))*/
+	unsigned int rate; /* sample rate */
+	unsigned int nchannels; /* number of channels */
+	int buffer_size; /* buffer size should be enough to contain one period */
+};
+
 class PcmAudioBase
 {
 public:
@@ -28,15 +40,6 @@ private:
 };
 
 
-struct PcmAudioSettings
-{
-	const char* device_name; /* device name (default pcm device) */
-	snd_pcm_access_t access; /* data access type */
-	snd_pcm_format_t format;/* digital audio format */
-	snd_pcm_uframes_t frames; /* number of audio frames stored in buffer (period size))*/
-	unsigned int rate; /* sample rate */
-	unsigned int nchannels; /* number of channels */
-	int buffer_size; /* buffer size should be enough to contain one period */
-};
+
 
 #endif // !PCMAUDIOBASE_H

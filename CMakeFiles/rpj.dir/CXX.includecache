@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/user/repos/RTEP5-the-raspberry-jam/AlsaEffects/include/AlsaBufferConverter.h
+cstdint
+-
+memory
+-
+vector
+-
+
+/home/user/repos/RTEP5-the-raspberry-jam/main.cpp
+alsa/asoundlib.h
+-
+iostream
+-
+AlsaEffects/include/AlsaBufferConverter.h
+/home/user/repos/RTEP5-the-raspberry-jam/AlsaEffects/include/AlsaBufferConverter.h
+memory
+-
+

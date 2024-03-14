@@ -1,0 +1,2 @@
+/usr/bin/ar qc libAlsaPcmCapture.a  CMakeFiles/AlsaPcmCapture.dir/AlsaPcmCapture.o
+/usr/bin/ranlib libAlsaPcmCapture.a

@@ -23,7 +23,7 @@ PcmAudioBase::~PcmAudioBase()
 void PcmAudioBase::initBaseSettings()
 {
 	m_settings->device_name = "default";
-	m_settings->pcm_access = SND_PCM_ACCESS_RW_INTERLEAVED;
+	m_settings->access = SND_PCM_ACCESS_RW_INTERLEAVED;
 	m_settings->format = SND_PCM_FORMAT_S24_BE;
 	m_settings->rate = 44100;
 	m_settings->nchannels = 2;
