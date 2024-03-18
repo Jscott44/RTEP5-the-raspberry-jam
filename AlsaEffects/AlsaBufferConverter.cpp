@@ -62,7 +62,7 @@ std::unique_ptr<uint8_t> AlsaBufferConverter::getBuffer(ChannelSamples samples)
 void AlsaBufferConverter::getBuffer(uint8_t* ret_buffer, ChannelSamples samples)
 {
     // Loop through all int32 samples
-    for (unsigned int sampleIndex = 0; sampleIndex < FRAMES_PER_BUFFER; ++sampleIndex)
+    for (unsigned int sampleIndex = 0; sampleIndex < samples.getFramesCount(); ++sampleIndex)
     {
         // For each sample, obtain the uint8 buffer equivalent
         std::unique_ptr<uint8_t> leftBuffer = getBufferFromInt32(samples.getLeftElement(sampleIndex));

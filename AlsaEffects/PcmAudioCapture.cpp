@@ -6,6 +6,7 @@ PcmAudioCapture::PcmAudioCapture()
 	  m_thread(nullptr),
 	  m_buffer(new uint8_t[getBufferSize()])
 {
+	openPcmDevice(SND_PCM_STREAM_CAPTURE);
 }
 
 PcmAudioCapture::~PcmAudioCapture()
@@ -17,11 +18,6 @@ PcmAudioCapture::~PcmAudioCapture()
 		delete m_buffer;
 		m_buffer == nullptr;
 	}
-}
-
-snd_pcm_stream_t PcmAudioCapture::getStreamDirection()
-{
-	return SND_PCM_STREAM_CAPTURE;
 }
 
 void PcmAudioCapture::registerCallback(AlsaListener* callback_ptr)
@@ -36,7 +32,8 @@ void PcmAudioCapture::start()
 		fprintf(stderr, "Callback not registered");
 		return;
 	}
-	if (m_running = false && m_thread == nullptr)
+
+	if (m_running == false && m_thread == nullptr)
 	{
 		m_running = true;
 		m_thread = new std::thread(&PcmAudioCapture::pcmLoop, this);
@@ -45,7 +42,7 @@ void PcmAudioCapture::start()
 
 void PcmAudioCapture::stop()
 {
-	if (m_running = true)
+	if (m_running = true && m_thread != nullptr)
 	{
 		m_running = false;
 		m_thread->join();
@@ -81,7 +78,7 @@ void PcmAudioCapture::pcmLoop()
 		}
 		else
 		{
-			fprintf(stdout, "i2s read successful");
+			fprintf(stdout, "i2s read successful. %d frames have been read.\n", rc);
 		}
 
 		m_callbackPtr->hasBuffer(m_buffer);

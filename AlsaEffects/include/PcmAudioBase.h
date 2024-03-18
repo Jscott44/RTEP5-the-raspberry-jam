@@ -27,11 +27,11 @@ protected:
 	int getBufferSize();
 	snd_pcm_uframes_t getFrames();
 	snd_pcm_t* getHandlePtr();
-private:
-	virtual snd_pcm_stream_t getStreamDirection() = 0; // Initialises Pcm Stream Direction. Must be initialised for each child to ensure the stream is desired
 
+	void openPcmDevice(snd_pcm_stream_t direction); // MUST BE CALLED IN EACH CHILDS CONSTRUCTOR
+
+private:
 	void initBaseSettings();
-	void openPcmDevice();
 
 	snd_pcm_t* m_handle;
 

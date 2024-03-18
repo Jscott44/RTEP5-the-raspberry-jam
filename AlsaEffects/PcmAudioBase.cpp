@@ -5,7 +5,6 @@ PcmAudioBase::PcmAudioBase()
 	  m_settings(new PcmAudioSettings)
 {
 	initBaseSettings();
-	openPcmDevice();
 }
 
 PcmAudioBase::~PcmAudioBase()
@@ -31,7 +30,7 @@ void PcmAudioBase::initBaseSettings()
 	m_settings->buffer_size = m_settings->frames * 3 * 2; /*3 bytes per channel, 2 channels */
 }
 
-void PcmAudioBase::openPcmDevice()
+void PcmAudioBase::openPcmDevice(snd_pcm_stream_t direction)
 {
 	// Inspired by:
 	//	   https://www.linuxjournal.com/article/6735
@@ -41,7 +40,7 @@ void PcmAudioBase::openPcmDevice()
 	int dir;
 
 	/* Open PCM device for playback. */
-	rc = snd_pcm_open(&m_handle, "default", getStreamDirection(), 0);
+	rc = snd_pcm_open(&m_handle, "default", direction, 0);
 	if (rc < 0) 
 	{
 		fprintf(stderr, "unable to open pcm device: %s\n", snd_strerror(rc));
@@ -67,11 +66,15 @@ void PcmAudioBase::openPcmDevice()
 
 	/* 44100 bits/second sampling rate (CD quality) */
 	unsigned int rate = m_settings->rate;
-	snd_pcm_hw_params_set_rate_near(m_handle, params, &rate, &dir);
+	//snd_pcm_hw_params_set_rate_near(m_handle, params, &rate, &dir);
+	snd_pcm_hw_params_set_rate_near(m_handle, params, &m_settings->rate, &dir);
+
 
 	/* Set period size to 32 frames. */
 	snd_pcm_uframes_t frames = m_settings->frames;
-	snd_pcm_hw_params_set_period_size_near(m_handle, params, &frames, &dir);
+	//snd_pcm_hw_params_set_period_size_near(m_handle, params, &frames, &dir);
+	snd_pcm_hw_params_set_period_size_near(m_handle, params, &m_settings->frames, &dir);
+
 
 	/* Write the parameters to the driver */
 	rc = snd_pcm_hw_params(m_handle, params);
@@ -82,7 +85,7 @@ void PcmAudioBase::openPcmDevice()
 	}
 
 	/* Free params*/
-	snd_pcm_hw_params_free(params);
+	//snd_pcm_hw_params_free(params);
 }
 
 int PcmAudioBase::getBufferSize()

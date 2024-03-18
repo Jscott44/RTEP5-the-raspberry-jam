@@ -46,7 +46,7 @@ private:
 
 	bool m_running;
 	std::vector<EffectBase*> m_activeEffects;
-	std::thread* m_effectThread;
+	std::thread* m_thread;
 };
 
 #endif

@@ -12,9 +12,6 @@ public:
 	~PcmAudioPlayback();
 
 private:
-	// Pcm Audio Base
-	snd_pcm_stream_t getStreamDirection() override;
-
 	// Effect Listener
 	void hasAlteredBuffer(uint8_t* buffer) override;
 };

@@ -19,9 +19,6 @@ public:
 	void start();
 	void stop();
 private:
-	// Pcm Audio Base
-	snd_pcm_stream_t getStreamDirection() override;
-
 	void pcmLoop();
 
 	bool m_running;

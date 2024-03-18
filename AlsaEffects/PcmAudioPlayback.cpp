@@ -3,15 +3,11 @@
 PcmAudioPlayback::PcmAudioPlayback()
 	: PcmAudioBase()
 {
+	openPcmDevice(SND_PCM_STREAM_PLAYBACK);
 }
 
 PcmAudioPlayback::~PcmAudioPlayback()
 {
-}
-
-snd_pcm_stream_t PcmAudioPlayback::getStreamDirection()
-{
-	return SND_PCM_STREAM_PLAYBACK;
 }
 
 void PcmAudioPlayback::hasAlteredBuffer(uint8_t* buffer)

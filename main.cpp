@@ -21,5 +21,9 @@ int main()
 
     getchar();
 
+    delete em;
+    delete play;
+    delete cap;
+
     return 0;
 }

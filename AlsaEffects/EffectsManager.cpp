@@ -1,17 +1,24 @@
 #include "include/EffectsManager.h"
 
 EffectsManager::EffectsManager()
-	:	m_newBuffer(false)
+	:	GuiListener(),
+		AlsaListener(),
+		m_newBuffer(false),
+		m_running(false)
 {
 	// Reserve some memory to make it more effecient 
 	m_activeEffects.reserve(10);
+
+	m_alteringEffects = false;
 
 	// Allocate callback buffer on heap
 	uint16_t callbackBufferSize = m_bufConverter.getFramesPerBuffer() * m_bufConverter.getSamplesPerFrame() * m_bufConverter.getBytesPerSample();
 	m_callbackBuffer = new uint8_t[callbackBufferSize];
 
 	// Initialise thread. Won't start until it receives first signal from callback
-	m_effectThread = new std::thread(&EffectsManager::effectLoop, this);
+	m_running = true;
+	m_thread = new std::thread(&EffectsManager::effectLoop, this);
+
 
 }
 
@@ -19,14 +26,13 @@ EffectsManager::~EffectsManager()
 {
 	// Stop thread
 	m_running = false;
-	//m_threadInterface.unblockSignal();
 
 	// Wait for thread to safely terminate
-	m_effectThread->join();
+	m_thread->join();
 
 	// Delete thread
-	delete m_effectThread;
-	m_effectThread = nullptr;
+	delete m_thread;
+	m_thread = nullptr;
 
 	// Delete buffer
 	delete m_callbackBuffer;
@@ -45,18 +51,24 @@ void EffectsManager::hasBuffer(uint8_t* buffer)
 
 	// Unblock effect loop to process data that has been transfered
 	m_newBuffer = true;
-	//m_threadInterface.unblockSignal();
+
 }
 
 
 void EffectsManager::effectLoop()
 {
+	printf("Entering effect loop");
+
 	while (m_running) // Turn false to stop
 	{
 		//m_threadInterface.waitForSignal(); // Blocking
 		
 		if (m_newBuffer)
 		{
+			printf("new buffer received \n");
+
+			m_newBuffer = false;
+
 			// Convert buffer into left and right channel ints
 			ChannelSamples incomingSamples = m_bufConverter.getSamples(m_listenerBuffer);
 
@@ -78,6 +90,8 @@ void EffectsManager::effectLoop()
 			m_callbackPtr->hasAlteredBuffer(m_callbackBuffer); // Unblock m_listenerPtr
 		}
 	}
+
+	printf("Exiting effect loop");
 
 }
 
