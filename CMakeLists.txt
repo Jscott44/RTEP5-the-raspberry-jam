@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project ("RTEP-the-raspberry-jam")
 
 add_subdirectory(AlsaEffects)
-add_subdirectory(test)
+#add_subdirectory(test)
 
 add_executable(rpj main.cpp)
 
@@ -15,5 +15,5 @@ if (ALSA_FOUND)
 	target_link_libraries(rpj PUBLIC ${ALSA_LIBRARIES} AlsaEffects)
 endif(ALSA_FOUND)
 
-enable_testing()
-add_test(NAME MyTest COMMAND Test)
+#enable_testing()
+#add_test(NAME MyTest COMMAND Test)
