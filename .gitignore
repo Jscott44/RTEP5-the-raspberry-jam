@@ -37,4 +37,4 @@
 out
 
 #CMake
-CMkakeFiles/
+build/
