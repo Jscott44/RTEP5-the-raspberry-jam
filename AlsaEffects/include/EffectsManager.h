@@ -33,7 +33,6 @@ public:
 	void hasBuffer(uint8_t* buffer) override;
 
 private:
-	ChannelSamples applyEffect(ChannelSamples initial_data);
 	void applyEffect(ChannelSamples final_data, ChannelSamples initial_data);
 
 	void effectLoop();

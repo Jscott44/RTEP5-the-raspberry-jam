@@ -154,27 +154,8 @@ void EffectsManager::removeEffect(EffectBase* effect)
 	m_alteringEffects = false;
 }
 
-ChannelSamples EffectsManager::applyEffect(ChannelSamples initial_data)
-{
-	// Create struct to store altered data
-	ChannelSamples finalData(initial_data.getFramesCount());
 
-	// For each effect stored
-	for (auto it = m_activeEffects.begin(); it != m_activeEffects.end(); ++it)
-	{
-		// For each frame
-		for (uint16_t sampleIndx = 0; sampleIndx < initial_data.getFramesCount(); ++sampleIndx)
-		{
-			// Apply effect to both samples within frame
-			finalData.appendLeft((*it)->applyEffect(initial_data.getLeftElement(sampleIndx)));
-			finalData.appendRight((*it)->applyEffect(initial_data.getRightElement(sampleIndx)));
-		}
-	}
-
-	return finalData;
-}
-
-void EffectsManager::applyEffect(ChannelSamples final_data, ChannelSamples initial_data);
+void EffectsManager::applyEffect(ChannelSamples final_data, ChannelSamples initial_data)
 {
 	// For each effect stored
 	for (auto it = m_activeEffects.begin(); it != m_activeEffects.end(); ++it)
@@ -184,14 +165,9 @@ void EffectsManager::applyEffect(ChannelSamples final_data, ChannelSamples initi
 		{
 			// Apply effect to both samples within frame
 			final_data.insertLeft(sampleIndx, (*it)->applyEffect(initial_data.getLeftElement(sampleIndx)));
-			final_data.appendRight(sampleIndx, (*it)->applyEffect(initial_data.getRightElement(sampleIndx)));
-
-			//final_data.appendLeft((*it)->applyEffect(initial_data.getLeftElement(sampleIndx)));
-			//final_data.appendRight((*it)->applyEffect(initial_data.getRightElement(sampleIndx)));
+			final_data.insertRight(sampleIndx, (*it)->applyEffect(initial_data.getRightElement(sampleIndx)));
 		}
 	}
-
-	return finalData;
 }
 
 

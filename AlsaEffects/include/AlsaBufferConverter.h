@@ -7,8 +7,8 @@
 class ChannelSamples
 {
 public:
-    ChannelSamples2(uint16_t num_of_frames);
-    ~ChannelSamples2();
+    ChannelSamples(uint16_t num_of_frames);
+    ~ChannelSamples();
     void insertLeft(uint16_t index, int32_t value);
     void insertRight(uint16_t index, int32_t value);
     int32_t getLeftElement(uint16_t index);

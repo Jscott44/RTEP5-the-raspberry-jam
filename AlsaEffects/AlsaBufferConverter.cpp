@@ -126,14 +126,14 @@ void AlsaBufferConverter::getBufferFromInt32(uint8_t* ret_buffer, int32_t desire
 
 
 
-ChannelSamples::ChannelSamples2(uint16_t num_of_frames)
+ChannelSamples::ChannelSamples(uint16_t num_of_frames)
 {
     left = new int32_t[num_of_frames];
     right = new int32_t[num_of_frames];
     m_framesCount = num_of_frames;
 }
 
-ChannelSamples::~ChannelSamples2()
+ChannelSamples::~ChannelSamples()
 {
     delete left;
     left = nullptr;
