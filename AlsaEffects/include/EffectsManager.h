@@ -41,7 +41,8 @@ private:
 	EffectListener* m_callbackPtr;
 	uint8_t* m_callbackBuffer;
 
-	ThreadBlocker m_threadInterface;
+	//ThreadBlocker m_threadInterface;
+	bool m_newBuffer;
 
 	bool m_running;
 	std::vector<EffectBase*> m_activeEffects;

@@ -3,6 +3,7 @@
 
 #include "EffectListener.h"
 #include "PcmAudioBase.h"
+#include <cstdint>
 
 class PcmAudioPlayback : public PcmAudioBase , public EffectListener
 {

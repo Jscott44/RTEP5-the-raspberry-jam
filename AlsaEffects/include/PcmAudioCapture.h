@@ -3,6 +3,7 @@
 
 #include "AlsaListener.h"
 #include "PcmAudioBase.h"
+#include <cstdint>
 #include <thread>
 
 

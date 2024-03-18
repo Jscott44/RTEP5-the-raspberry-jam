@@ -2,12 +2,13 @@
 #define GUILISTENER_H
 
 #include "EffectBase.h"
+#include <cstdint>
 
 class GuiListener
 {
 public:
-	GuiListener();
-	~GuiListener();
+	//GuiListener();
+	//~GuiListener();
 
 	virtual EffectBase* addEffect(EffectIndx desired_effect) = 0;
 	virtual void removeEffect(EffectBase* effect) = 0;

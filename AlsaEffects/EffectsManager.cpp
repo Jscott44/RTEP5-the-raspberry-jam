@@ -1,6 +1,7 @@
 #include "include/EffectsManager.h"
 
 EffectsManager::EffectsManager()
+	:	m_newBuffer(false)
 {
 	// Reserve some memory to make it more effecient 
 	m_activeEffects.reserve(10);
@@ -18,7 +19,7 @@ EffectsManager::~EffectsManager()
 {
 	// Stop thread
 	m_running = false;
-	m_threadInterface.unblockSignal();
+	//m_threadInterface.unblockSignal();
 
 	// Wait for thread to safely terminate
 	m_effectThread->join();
@@ -43,7 +44,8 @@ void EffectsManager::hasBuffer(uint8_t* buffer)
 	m_listenerBuffer = buffer;
 
 	// Unblock effect loop to process data that has been transfered
-	m_threadInterface.unblockSignal();
+	m_newBuffer = true;
+	//m_threadInterface.unblockSignal();
 }
 
 
@@ -51,27 +53,30 @@ void EffectsManager::effectLoop()
 {
 	while (m_running) // Turn false to stop
 	{
-		m_threadInterface.waitForSignal(); // Blocking
-
-		// Convert buffer into left and right channel ints
-		ChannelSamples incomingSamples = m_bufConverter.getSamples(m_listenerBuffer);
-
-		if (!m_alteringEffects) // Will be true if the main thread's GUI is adjusting the values
+		//m_threadInterface.waitForSignal(); // Blocking
+		
+		if (m_newBuffer)
 		{
-			// Apply effects
-			ChannelSamples outgoingSamples = applyEffect(incomingSamples);
+			// Convert buffer into left and right channel ints
+			ChannelSamples incomingSamples = m_bufConverter.getSamples(m_listenerBuffer);
 
-			// Convert new struct back into buffer and store at m_callbackBuffer
-			m_bufConverter.getBuffer(m_callbackBuffer, outgoingSamples);
-		}
-		else // In case GUI is adjusting the effects
-		{
-			// Convert struct back into buffer and store at m_callbackBuffer
-			m_bufConverter.getBuffer(m_callbackBuffer, incomingSamples);
-		}
+			if (!m_alteringEffects) // Will be true if the main thread's GUI is adjusting the values
+			{
+				// Apply effects
+				ChannelSamples outgoingSamples = applyEffect(incomingSamples);
 
-		// Callback
-		m_callbackPtr->hasAlteredBuffer(m_callbackBuffer); // Unblock m_listenerPtr
+				// Convert new struct back into buffer and store at m_callbackBuffer
+				m_bufConverter.getBuffer(m_callbackBuffer, outgoingSamples);
+			}
+			else // In case GUI is adjusting the effects
+			{
+				// Convert struct back into buffer and store at m_callbackBuffer
+				m_bufConverter.getBuffer(m_callbackBuffer, incomingSamples);
+			}
+
+			// Callback
+			m_callbackPtr->hasAlteredBuffer(m_callbackBuffer); // Unblock m_listenerPtr
+		}
 	}
 
 }
@@ -147,4 +152,10 @@ ChannelSamples EffectsManager::applyEffect(ChannelSamples initial_data)
 	}
 
 	return finalData;
+}
+
+
+void EffectsManager::alterEffect(EffectBase* effect, ParamIndx parameter, int32_t new_val)
+{
+	return; // Placeholder
 }

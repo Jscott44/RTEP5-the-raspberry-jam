@@ -1,4 +1,4 @@
-#ifndef ALSALISTNER_H
+#ifndef ALSALISTENER_H
 #define ALSALISTENER_H
 
 #include <memory>
@@ -7,8 +7,8 @@
 class AlsaListener
 {
 public:
-	AlsaListener();
-	~AlsaListener();
+	//AlsaListener();
+	//~AlsaListener();
 
 	virtual void hasBuffer(uint8_t* buffer) = 0;
 
@@ -17,4 +17,4 @@ protected:
 };
 
 
-#endif // !ALSALISTNER_H
+#endif // !ALSALISTENER_H
