@@ -10,6 +10,12 @@ AlsaBufferConverter::~AlsaBufferConverter()
     
 }
 
+void AlsaBufferConverter::getSamples(ChannelSamples ret_samples, uint8_t* buffer)
+{
+
+}
+
+
 /// @brief Get object containing the equivalent int32 values as the int24 values that were stored in a uint8 buffer for each channel (left and right).
 /// @param Uint8 buffer containing the int24 data that should be converted into usable int32s
 /// @return ChannelSamples object containing int32 value equivalents for each channel.
@@ -174,4 +180,47 @@ int32_t ChannelSamples::getLeftElement(uint16_t index)
 int32_t ChannelSamples::getRightElement(uint16_t index)
 {
     return right[index];
+}
+
+
+ChannelSamples2::ChannelSamples2(uint16_t num_of_frames)
+{
+    left = new int32_t[num_of_frames];
+    right = new int32_t[num_of_frames];
+    m_framesCount = num_of_frames;
+}
+
+ChannelSamples2::~ChannelSamples2()
+{
+    delete left;
+    left = nullptr;
+
+    delete right;
+    right = nullptr;
+}
+
+
+void ChannelSamples2::insertLeft(uint16_t index, int32_t value)
+{
+    left[index] = value;
+}
+
+void ChannelSamples2::insertRight(uint16_t index, int32_t value)
+{
+    right[index] = value;
+}
+
+int32_t ChannelSamples2::getLeftElement(uint16_t index)
+{
+    return left[index];
+}
+
+int32_t ChannelSamples2::getRightElement(uint16_t index)
+{
+    return right[index];
+}
+
+uint16_t ChannelSamples2::getFramesCount()
+{
+    return m_framesCount;
 }

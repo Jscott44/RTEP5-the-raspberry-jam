@@ -20,6 +20,23 @@ private:
     uint16_t m_framesCount;
 };
 
+
+class ChannelSamples2
+{
+public:
+    ChannelSamples2(uint16_t num_of_frames);
+    ~ChannelSamples2();
+    void insertLeft(uint16_t index, int32_t value);
+    void insertRight(uint16_t index, int32_t value);
+    int32_t getLeftElement(uint16_t index);
+    int32_t getRightElement(uint16_t index);
+    uint16_t getFramesCount();
+private:
+    int32_t* left;
+    int32_t* right;
+    uint16_t m_framesCount;
+};
+
 class AlsaBufferConverter
 {
 public:
@@ -27,6 +44,8 @@ public:
     ~AlsaBufferConverter();
 
     ChannelSamples getSamples(uint8_t* buffer);
+    void getSamples(ChannelSamples ret_samples, uint8_t* buffer);
+
     std::unique_ptr<uint8_t> getBuffer(ChannelSamples samples);
     void getBuffer(uint8_t* ret_buffer, ChannelSamples samples);
 
