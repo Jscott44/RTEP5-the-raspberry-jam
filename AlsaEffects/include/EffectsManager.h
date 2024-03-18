@@ -34,6 +34,7 @@ public:
 
 private:
 	ChannelSamples applyEffect(ChannelSamples initial_data);
+	void applyEffect(ChannelSamples final_data, ChannelSamples initial_data);
 
 	void effectLoop();
 

@@ -1,27 +1,10 @@
 #include <cstdint>
-#include <memory>
 #include <vector>
 
 #ifndef ALSABUFFERCONVERTER_H
 #define ALSABUFFERCONVERTER_H
 
 class ChannelSamples
-{
-public:
-    ChannelSamples(uint16_t num_of_frames);
-    void appendLeft(int32_t value);
-    void appendRight(int32_t value);
-    int32_t getLeftElement(uint16_t index);
-    int32_t getRightElement(uint16_t index);
-    uint16_t getFramesCount();
-private:
-    std::vector<int32_t> left;
-    std::vector<int32_t> right;
-    uint16_t m_framesCount;
-};
-
-
-class ChannelSamples2
 {
 public:
     ChannelSamples2(uint16_t num_of_frames);
@@ -43,10 +26,10 @@ public:
     AlsaBufferConverter();
     ~AlsaBufferConverter();
 
-    ChannelSamples getSamples(uint8_t* buffer);
+    //ChannelSamples getSamples(uint8_t* buffer);
     void getSamples(ChannelSamples ret_samples, uint8_t* buffer);
 
-    std::unique_ptr<uint8_t> getBuffer(ChannelSamples samples);
+    //std::unique_ptr<uint8_t> getBuffer(ChannelSamples samples);
     void getBuffer(uint8_t* ret_buffer, ChannelSamples samples);
 
     const uint8_t getBytesPerSample() { return BYTES_PER_SAMPLE; };
@@ -54,7 +37,11 @@ public:
     const uint16_t getFramesPerBuffer() { return FRAMES_PER_BUFFER; };
 private:
     int32_t getInt32FromBuffer(uint8_t* buffer);
-    std::unique_ptr<uint8_t> getBufferFromInt32(int32_t desired_value);
+    //std::unique_ptr<uint8_t> getBufferFromInt32(int32_t desired_value);
+    void getBufferFromInt32(uint8_t* ret_buffer, int32_t desired_value);
+
+    uint8_t* m_leftBuffer;
+    uint8_t* m_rightBuffer;
 
     const uint8_t BYTES_PER_SAMPLE = 3; // = 3; For 24 bit I2S messages
     const uint8_t SAMPLES_PER_FRAME = 2; // = 2; Only using right and left channels
