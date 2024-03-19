@@ -5,6 +5,7 @@
 #include "AlsaEffects/include/PcmAudioCapture.h"
 #include "AlsaEffects/include/PcmAudioPlayback.h"
 #include <memory>
+#include "AlsaEffects/include/EffectBase.h"
 
 int main()
 {
@@ -32,16 +33,23 @@ int main()
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 };
     uint8_t finalData[264];
 
-    printf("1\n");
     AlsaBufferConverter* test = new AlsaBufferConverter;
-    printf("1\n");
-    ChannelSamples* exampleSamples = new ChannelSamples(44);
-    printf("1\n");
-    test->getSamples(exampleSamples,originalData);
-    printf("1\n");
-    test->getBuffer(finalData, exampleSamples);
-    printf("1\n");
+    ChannelSamples* initial_data = new ChannelSamples(44);
 
+    test->getSamples(initial_data,originalData);
+
+    EffectBase* dist = new Distortion;
+    ChannelSamples* final_data = new ChannelSamples(44);
+
+    // For each frame
+    for (uint16_t sampleIndx = 0; sampleIndx < initial_data->getFramesCount(); ++sampleIndx)
+    {
+        // Apply effect to both samples within frame
+        final_data->insertLeft(sampleIndx, dist->applyEffect(initial_data->getLeftElement(sampleIndx)));
+        final_data->insertRight(sampleIndx, dist->applyEffect(initial_data->getRightElement(sampleIndx)));
+    }
+
+    test->getBuffer(finalData, final_data);
 
     for (size_t i = 0; i < sizeof(originalData); i += 12)
     {
@@ -52,7 +60,11 @@ int main()
     delete test;
 
     printf("Deleting samples\n");
-    delete exampleSamples;
+    delete initial_data;
+    delete final_data;
+
+    printf("Deleting distortion effect\n");
+    delete dist;
 
     return 0;
 }

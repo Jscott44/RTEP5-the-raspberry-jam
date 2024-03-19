@@ -40,9 +40,6 @@ void AlsaBufferConverter::getBuffer(uint8_t* ret_buffer, ChannelSamples* samples
         getBufferFromInt32(m_leftBuffer, samples->getLeftElement(sampleIndex));
         getBufferFromInt32(m_rightBuffer, samples->getRightElement(sampleIndex));
         
-        //std::unique_ptr<uint8_t> leftBuffer = getBufferFromInt32(samples.getLeftElement(sampleIndex));
-        //std::unique_ptr<uint8_t> rightBuffer = getBufferFromInt32(samples.getRightElement(sampleIndex));
-
         // Store values into return buffer at correct index
         unsigned int rawBytesIndex = sampleIndex * BYTES_PER_SAMPLE * SAMPLES_PER_FRAME;
         for (int byteIndex = 0; byteIndex < BYTES_PER_SAMPLE; ++byteIndex)
@@ -66,34 +63,6 @@ int32_t AlsaBufferConverter::getInt32FromBuffer(uint8_t* buffer)
     int32_t retVal = ((buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8)) >> 8;
     return retVal;
 }
-
-///// @brief Converts signed 32 bit integer into 3 byte buffer containing the values for a signed 24 int value
-///// @param buffer int32 value that should be converted into signed 24 int buffer
-///// @return Unique ptr to buffer containing 24 bit signed value stored as uint8s
-//std::unique_ptr<uint8_t> AlsaBufferConverter::getBufferFromInt32(int32_t desired_value)
-//{
-//    // Ensure desired_value is not greater than the maximum or less that the minimum signed 24 bit values
-//    //If they are, alter value to be max/min
-//    const int32_t MAX_INT_24 = 0x7FFFFF;
-//    const int32_t MIN_INT_24 = 0Xff800000;
-//
-//    if (desired_value < MIN_INT_24)
-//    {
-//        desired_value = MIN_INT_24;
-//    }
-//    else if (desired_value > MAX_INT_24)
-//    {
-//        desired_value = MAX_INT_24;
-//    }
-//
-//    // Perform bitwise shifts to store relevant values in our return buffer
-//    std::unique_ptr<uint8_t> retBuffer(new uint8_t[3]);
-//    retBuffer.get()[0] = desired_value >> 16;
-//    retBuffer.get()[1] = desired_value >> 8;
-//    retBuffer.get()[2] = desired_value;
-//
-//    return retBuffer;
-//}
 
 void AlsaBufferConverter::getBufferFromInt32(uint8_t* ret_buffer, int32_t desired_value)
 {
