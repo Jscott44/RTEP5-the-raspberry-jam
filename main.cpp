@@ -32,24 +32,27 @@ int main()
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 };
     uint8_t finalData[264];
 
-    printf("1");
-	AlsaBufferConverter test;
-    printf("1");
-    ChannelSamples exampleSamples(44);
-    printf("1");
-    test.getSamples(exampleSamples,originalData);
-    printf("1");
-    //test.getBuffer(finalData, exampleSamples);
-    printf("1");
+    printf("1\n");
+    AlsaBufferConverter* test = new AlsaBufferConverter;
+    printf("1\n");
+    ChannelSamples* exampleSamples = new ChannelSamples(44);
+    printf("1\n");
+    test->getSamples(exampleSamples,originalData);
+    printf("1\n");
+    test->getBuffer(finalData, exampleSamples);
+    printf("1\n");
 
 
-    for (size_t i = 0; i < sizeof(originalData); ++i)
+    for (size_t i = 0; i < sizeof(originalData); i += 12)
     {
-        printf("%X %X %X %X %X %X %X %X %X %X %X %X\n", finalData[i], finalData[i+1], finalData[i +2], finalData[i+3], finalData[i+4], finalData[i+5], finalData[i +6], finalData[i+7], finalData[i+8], finalData[i+9], finalData[i +10], finalData[i+11]);
+        printf("%02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X %02X\n", finalData[i], finalData[i+1], finalData[i +2], finalData[i+3], finalData[i+4], finalData[i+5], finalData[i +6], finalData[i+7], finalData[i+8], finalData[i+9], finalData[i +10], finalData[i+11]);
     }
 
+    printf("Deleting test\n");
+    delete test;
 
-    getchar();
+    printf("Deleting samples\n");
+    delete exampleSamples;
 
     return 0;
 }

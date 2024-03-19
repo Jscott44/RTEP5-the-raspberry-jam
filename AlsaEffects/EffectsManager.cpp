@@ -75,7 +75,7 @@ void EffectsManager::effectLoop()
 
 			// Convert buffer into left and right channel ints
 			//ChannelSamples incomingSamples = m_bufConverter.getSamples(m_listenerBuffer);
-			m_bufConverter.getSamples(incomingSamples, m_listenerBuffer);
+			m_bufConverter.getSamples(&incomingSamples, m_listenerBuffer);
 
 			if (!m_alteringEffects) // Will be true if the main thread's GUI is adjusting the values
 			{
@@ -84,21 +84,18 @@ void EffectsManager::effectLoop()
 
 
 				// Convert new struct back into buffer and store at m_callbackBuffer
-				m_bufConverter.getBuffer(m_callbackBuffer, outgoingSamples);
+				m_bufConverter.getBuffer(m_callbackBuffer, &outgoingSamples);
 			}
 			else // In case GUI is adjusting the effects
 			{
 				// Convert struct back into buffer and store at m_callbackBuffer
-				m_bufConverter.getBuffer(m_callbackBuffer, incomingSamples);
+				m_bufConverter.getBuffer(m_callbackBuffer, &incomingSamples);
 			}
 
 			// Callback
 			m_callbackPtr->hasAlteredBuffer(m_callbackBuffer); // Unblock m_listenerPtr
 		}
 	}
-
-	printf("Exiting effect loop");
-
 }
 
 

@@ -1,4 +1,5 @@
 #include "include/AlsaBufferConverter.h"
+#include <stdio.h>
 
 AlsaBufferConverter::AlsaBufferConverter()
     : m_leftBuffer(new uint8_t[3]),
@@ -16,28 +17,28 @@ AlsaBufferConverter::~AlsaBufferConverter()
     m_rightBuffer = nullptr;;
 }
 
-void AlsaBufferConverter::getSamples(ChannelSamples ret_samples, uint8_t* buffer)
+void AlsaBufferConverter::getSamples(ChannelSamples* ret_samples, uint8_t* buffer)
 {
     // Loop through all samples stored int the uint8 buffer
     for (unsigned int sampleIndex = 0; sampleIndex < FRAMES_PER_BUFFER; ++sampleIndex)
     {
         // Calculate the buffer index based on the bytes per sample and samples per frame
         unsigned int bufferIndex = sampleIndex * BYTES_PER_SAMPLE * SAMPLES_PER_FRAME;
-
+    
         // Store calculated samples for each channel
-        ret_samples.insertLeft(sampleIndex, getInt32FromBuffer(buffer + bufferIndex));
-        ret_samples.insertRight(sampleIndex, getInt32FromBuffer(buffer + bufferIndex + BYTES_PER_SAMPLE));
+        ret_samples->insertLeft(sampleIndex, getInt32FromBuffer(buffer + bufferIndex));
+        ret_samples->insertRight(sampleIndex, getInt32FromBuffer(buffer + bufferIndex + BYTES_PER_SAMPLE));
     }
 }
 
-void AlsaBufferConverter::getBuffer(uint8_t* ret_buffer, ChannelSamples samples)
+void AlsaBufferConverter::getBuffer(uint8_t* ret_buffer, ChannelSamples* samples)
 {
     // Loop through all int32 samples
-    for (unsigned int sampleIndex = 0; sampleIndex < samples.getFramesCount(); ++sampleIndex)
+    for (unsigned int sampleIndex = 0; sampleIndex < samples->getFramesCount(); ++sampleIndex)
     {
         // For each sample, obtain the uint8 buffer equivalent
-        getBufferFromInt32(m_leftBuffer, samples.getLeftElement(sampleIndex));
-        getBufferFromInt32(m_rightBuffer, samples.getRightElement(sampleIndex));
+        getBufferFromInt32(m_leftBuffer, samples->getLeftElement(sampleIndex));
+        getBufferFromInt32(m_rightBuffer, samples->getRightElement(sampleIndex));
         
         //std::unique_ptr<uint8_t> leftBuffer = getBufferFromInt32(samples.getLeftElement(sampleIndex));
         //std::unique_ptr<uint8_t> rightBuffer = getBufferFromInt32(samples.getRightElement(sampleIndex));
@@ -135,10 +136,10 @@ ChannelSamples::ChannelSamples(uint16_t num_of_frames)
 
 ChannelSamples::~ChannelSamples()
 {
-    delete left;
+    delete[] left;
     left = nullptr;
 
-    delete right;
+    delete[] right;
     right = nullptr;
 }
 

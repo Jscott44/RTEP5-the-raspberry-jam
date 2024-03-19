@@ -27,10 +27,10 @@ public:
     ~AlsaBufferConverter();
 
     //ChannelSamples getSamples(uint8_t* buffer);
-    void getSamples(ChannelSamples ret_samples, uint8_t* buffer);
+    void getSamples(ChannelSamples* ret_samples, uint8_t* buffer);
 
     //std::unique_ptr<uint8_t> getBuffer(ChannelSamples samples);
-    void getBuffer(uint8_t* ret_buffer, ChannelSamples samples);
+    void getBuffer(uint8_t* ret_buffer, ChannelSamples* samples);
 
     const uint8_t getBytesPerSample() { return BYTES_PER_SAMPLE; };
     const uint16_t getSamplesPerFrame() { return SAMPLES_PER_FRAME; };
