@@ -1,4 +1,5 @@
 #include "include/EffectsManager.h"
+#include <stdio.h>
 
 EffectsManager::EffectsManager()
 	:	GuiListener(),

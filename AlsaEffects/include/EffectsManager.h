@@ -6,9 +6,6 @@
 #include "EffectBase.h"
 #include "AlsaBufferConverter.h"
 
-// Thread safe interactions
-#include "ThreadBlocker.h"
-
 // Will trigger callback
 #include "AlsaListener.h"
 #include "GuiListener.h"
