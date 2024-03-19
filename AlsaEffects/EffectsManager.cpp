@@ -3,6 +3,8 @@
 EffectsManager::EffectsManager()
 	:	GuiListener(),
 		AlsaListener(),
+		m_incomingSamples(new ChannelSamples(44)),
+		m_outgoingSamples(new ChannelSamples(44)),
 		m_newBuffer(false),
 		m_running(false)
 {
@@ -29,6 +31,12 @@ EffectsManager::~EffectsManager()
 
 	// Wait for thread to safely terminate
 	m_thread->join();
+
+	// Delete ChannelSamples
+	delete m_incomingSamples;
+	m_incomingSamples = nullptr;
+	delete m_outgoingSamples;
+	m_outgoingSamples = nullptr;
 
 	// Delete thread
 	delete m_thread;
@@ -59,10 +67,6 @@ void EffectsManager::effectLoop()
 {
 	printf("Entering effect loop");
 
-	ChannelSamples incomingSamples(44);
-	ChannelSamples outgoingSamples(44);
-
-
 	while (m_running) // Turn false to stop
 	{		
 		if (m_newBuffer)
@@ -72,20 +76,20 @@ void EffectsManager::effectLoop()
 			m_newBuffer = false;
 
 			// Convert buffer into left and right channel ints
-			m_bufConverter.getSamples(&incomingSamples, m_listenerBuffer);
+			m_bufConverter.getSamples(m_incomingSamples, m_listenerBuffer);
 
 			if (!m_alteringEffects) // Will be true if the main thread's GUI is adjusting the values
 			{
 				// Apply effects
-				applyEffect(&outgoingSamples, &incomingSamples);
+				applyEffect(m_outgoingSamples, m_incomingSamples);
 
 				// Convert new struct back into buffer and store at m_callbackBuffer
-				m_bufConverter.getBuffer(m_callbackBuffer, &outgoingSamples);
+				m_bufConverter.getBuffer(m_callbackBuffer, m_outgoingSamples);
 			}
 			else // In case GUI is adjusting the effects
 			{
 				// Convert struct back into buffer and store at m_callbackBuffer
-				m_bufConverter.getBuffer(m_callbackBuffer, &incomingSamples);
+				m_bufConverter.getBuffer(m_callbackBuffer, m_incomingSamples);
 			}
 
 			// Callback
