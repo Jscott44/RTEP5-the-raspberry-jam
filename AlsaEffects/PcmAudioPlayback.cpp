@@ -32,6 +32,6 @@ void PcmAudioPlayback::hasAlteredBuffer(uint8_t* buffer)
 	}
 	else
 	{
-		fprintf(stdout, "i2s write successful");
+		fprintf(stdout, "i2s write successful\n");
 	}
 }

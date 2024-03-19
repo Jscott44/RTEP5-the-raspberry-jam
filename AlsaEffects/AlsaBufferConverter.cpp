@@ -1,22 +1,27 @@
 #include "include/AlsaBufferConverter.h"
 #include <stdio.h>
 
+/// @brief Object can be used to convert uint8 buffers into ChannelSample objects filled with int32s.
 AlsaBufferConverter::AlsaBufferConverter()
     : m_leftBuffer(new uint8_t[3]),
     m_rightBuffer(new uint8_t[3])
 {
-
+    // Buffers initialsed are used when in getBuffer()
 }
 
+/// @brief Frees buffers associated with object.
 AlsaBufferConverter::~AlsaBufferConverter()
 {
-    delete m_leftBuffer;
+    delete[] m_leftBuffer;
     m_leftBuffer = nullptr;
 
-    delete m_rightBuffer;
+    delete[] m_rightBuffer;
     m_rightBuffer = nullptr;;
 }
 
+/// @brief Converts a buffer of int24s into usable values stored within a ChannelSamples object.
+/// @param ret_samples RETURN. Fills channel samples with data from buffer.
+/// @param buffer A buffer containing interleaved int24s.
 void AlsaBufferConverter::getSamples(ChannelSamples* ret_samples, uint8_t* buffer)
 {
     // Loop through all samples stored int the uint8 buffer
@@ -31,39 +36,50 @@ void AlsaBufferConverter::getSamples(ChannelSamples* ret_samples, uint8_t* buffe
     }
 }
 
+/// @brief Converts a ChannelSamples object into a buffer storing interleaved int24s.
+/// @param ret_buffer RETURN. Fills buffer with data from samples object. Must be 3 * number of frames * number of channels long.
+/// @param samples Object containing data that should be converted into an interleaved int24 buffer.
 void AlsaBufferConverter::getBuffer(uint8_t* ret_buffer, ChannelSamples* samples)
 {
-    // Loop through all int32 samples
+    // Loop through all frames stored in structure
     for (unsigned int sampleIndex = 0; sampleIndex < samples->getFramesCount(); ++sampleIndex)
     {
-        // For each sample, obtain the uint8 buffer equivalent
+        // For each frame, extract the sample and convert into int24 (in form of 3 uint8s)
         getBufferFromInt32(m_leftBuffer, samples->getLeftElement(sampleIndex));
         getBufferFromInt32(m_rightBuffer, samples->getRightElement(sampleIndex));
         
+        // Calculate the buffer index based on the bytes per sample and samples per frame
+        unsigned int bufferIndex = sampleIndex * BYTES_PER_SAMPLE * SAMPLES_PER_FRAME;
+
         // Store values into return buffer at correct index
-        unsigned int rawBytesIndex = sampleIndex * BYTES_PER_SAMPLE * SAMPLES_PER_FRAME;
+        // Will store left channel at index sampleIndex + (0,1,2) and right channel at index sampleIndex + (3,4,5)
         for (int byteIndex = 0; byteIndex < BYTES_PER_SAMPLE; ++byteIndex)
         {
-            ret_buffer[rawBytesIndex + byteIndex] = m_leftBuffer[byteIndex];
-            ret_buffer[rawBytesIndex + byteIndex + BYTES_PER_SAMPLE] = m_rightBuffer[byteIndex];
+            ret_buffer[bufferIndex + byteIndex] = m_leftBuffer[byteIndex];
+            ret_buffer[bufferIndex + byteIndex + BYTES_PER_SAMPLE] = m_rightBuffer[byteIndex];
         }
     }
 
 }
 
 
-/// @brief Converts signed int buffer into signed 32 bit integer
-/// @param buffer Buffer containing signed integer obtained by ALSA
-/// @return Signed 32 bit integer that can be used in C++
+/// @brief Converts buffer containing int24s into usable int32s.
+/// @param buffer Contains int24 buffer that should be converted.
+/// @return Int32 value equal to the int24 (including sign).
 int32_t AlsaBufferConverter::getInt32FromBuffer(uint8_t* buffer)
 {
-    // 0. Start with 0x00000000 and 0x800000
-    // 1. Shift 24 bits to end of 32 bit integer (0x80000000)
-    // 2. Shift 24 bits back 8 bits. This continues the signing of the integer and fills the top byte based off the signed (0xFF800000)
+    // Example to understand procedure:
+    // 0. Lets say int24 value ox 0x800000
+    // 1. Shift int24 to end of the int32 (0x80000000)
+    // 2. Shift int24 back 8 bits. This maintains the sign of the integer and fills the top byte based off the signed (0xFF800000)
+    
     int32_t retVal = ((buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8)) >> 8;
     return retVal;
 }
 
+/// @brief Converts int32 values int buffer containing int24s. Clips values if they are > MAX_INT_24 or < MIN_INT_24 before conversion.
+/// @param ret_buffer RETURN. Buffer storing int24s. Must be at least 3 bytes long.
+/// @param desired_value Int32 that should be converted into an int24 buffer
 void AlsaBufferConverter::getBufferFromInt32(uint8_t* ret_buffer, int32_t desired_value)
 {
     // Ensure desired_value is not greater than the maximum or less that the minimum signed 24 bit values

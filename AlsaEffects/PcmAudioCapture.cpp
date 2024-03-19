@@ -42,7 +42,8 @@ void PcmAudioCapture::start()
 
 void PcmAudioCapture::stop()
 {
-	if (m_running = true && m_thread != nullptr)
+	printf("entering stop");
+	if (m_running == true && m_thread != nullptr)
 	{
 		m_running = false;
 		m_thread->join();
@@ -50,6 +51,7 @@ void PcmAudioCapture::stop()
 		delete m_thread;
 		m_thread == nullptr;
 	}
+	printf("entering stop");
 }
 
 void PcmAudioCapture::pcmLoop()

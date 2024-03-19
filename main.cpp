@@ -22,9 +22,17 @@ int main()
 
     getchar();
 
+    printf("1");
+
     delete em;
+        printf("1");
+
     delete play;
+        printf("1");
+
     delete cap;
+        printf("1");
+
 
     return 0;
 }

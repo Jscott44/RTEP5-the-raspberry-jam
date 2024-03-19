@@ -1,6 +1,8 @@
 #include "include/EffectsManager.h"
 #include <stdio.h>
 
+
+/// @brief Object can be used to process samples. Implements GUI and Alsa callbacks.
 EffectsManager::EffectsManager()
 	:	GuiListener(),
 		AlsaListener(),
@@ -12,6 +14,7 @@ EffectsManager::EffectsManager()
 	// Reserve some memory to make it more effecient 
 	m_activeEffects.reserve(10);
 
+	// Indicates whether the GUI is attempting to access the effects
 	m_alteringEffects = false;
 
 	// Allocate callback buffer on heap
@@ -21,10 +24,9 @@ EffectsManager::EffectsManager()
 	// Initialise thread. Won't start until it receives first signal from callback
 	m_running = true;
 	m_thread = new std::thread(&EffectsManager::effectLoop, this);
-
-
 }
 
+/// @brief Safely stops thread before deleting all members.
 EffectsManager::~EffectsManager()
 {
 	// Stop thread
@@ -44,15 +46,19 @@ EffectsManager::~EffectsManager()
 	m_thread = nullptr;
 
 	// Delete buffer
-	delete m_callbackBuffer;
+	delete[] m_callbackBuffer;
 	m_callbackBuffer = nullptr;
 }
 
+/// @brief Register object that will handle callbacks after data is processed.
+/// @param callback_ptr Object that implements callback.
 void EffectsManager::registerCallback(EffectListener* callback_ptr)
 {
 	m_callbackPtr = callback_ptr;
 }
 
+/// @brief From AlsaListener. Stores buffer reference to be used by EffectsManager.
+/// @param buffer Buffer reference that should be used.
 void EffectsManager::hasBuffer(uint8_t* buffer)
 {
 	// Store pointer to buffer
@@ -63,48 +69,55 @@ void EffectsManager::hasBuffer(uint8_t* buffer)
 
 }
 
-
+/// @brief Processes buffer obtained and passes processed buffer to next object using callback.
 void EffectsManager::effectLoop()
 {
 	printf("Entering effect loop");
 
 	while (m_running) // Turn false to stop
-	{		
+	{	
+		// If new buffer has been received
 		if (m_newBuffer)
 		{
-			printf("new buffer received \n");
+			printf("new buffer received \n"); // DEBUG
 
+			// Reset to wait for next callback
 			m_newBuffer = false;
 
-			// Convert buffer into left and right channel ints
+			// Convert buffer into ChannelSamples object
 			m_bufConverter.getSamples(m_incomingSamples, m_listenerBuffer);
 
-			if (!m_alteringEffects) // Will be true if the main thread's GUI is adjusting the values
+			// If GUI is currently not adjusting effects
+			if (!m_alteringEffects)
 			{
 				// Apply effects
 				applyEffect(m_outgoingSamples, m_incomingSamples);
 
-				// Convert new struct back into buffer and store at m_callbackBuffer
+				// Convert processed ChannelSamples struct back into buffer
 				m_bufConverter.getBuffer(m_callbackBuffer, m_outgoingSamples);
 			}
-			else // In case GUI is adjusting the effects
+			else
 			{
-				// Convert struct back into buffer and store at m_callbackBuffer
+				// Convert original ChannelSamples struct back into buffer (bypasses effects)
 				m_bufConverter.getBuffer(m_callbackBuffer, m_incomingSamples);
 			}
 
-			// Callback
-			m_callbackPtr->hasAlteredBuffer(m_callbackBuffer); // Unblock m_listenerPtr
+			// Trigger callback
+			m_callbackPtr->hasAlteredBuffer(m_callbackBuffer);
 		}
 	}
 }
 
 
-EffectBase* EffectsManager::addEffect(EffectIndx desired_effect) //Ptr return will be used to give GUI the pointer it should use when accessing effects
+/// @brief Add effect that should be used when processing samples.
+/// @param desired_effect Enum of effect that should be added.
+/// @return Ptr should be used when attempting to access effect with any other GuiListener method.
+EffectBase* EffectsManager::addEffect(EffectIndx desired_effect)
 {
-	// Tell object that it is not allowed to apply effects
+	// Tell this that it is not allowed to apply effects in effectLoop
 	m_alteringEffects = true;
 
+	// Init pointer that will be returned
 	EffectBase* retPtr = nullptr;
 
 	// Create desired effect object
@@ -124,17 +137,21 @@ EffectBase* EffectsManager::addEffect(EffectIndx desired_effect) //Ptr return wi
 		break;
 	}
 
-	// Tell object that is is allowed to apply effects
+	// Tell this that is is allowed to apply effects again
 	m_alteringEffects = false;
 
-	// Return pointer to new object to be used by GUI when accessing effect
+	// Return pointer to new object
 	return retPtr;
 }
 
+/// @brief Removes effect being used to process samples.
+/// @param effect Ptr to effect that should be removed.
 void EffectsManager::removeEffect(EffectBase* effect)
 {
 	// Tell object that it is not allowed to apply effects
 	m_alteringEffects = true;
+
+	bool effectRemoved = false;
 
 	// Loop through all stored effects
 	for (auto it = m_activeEffects.begin(); it != m_activeEffects.end(); ++it)
@@ -144,8 +161,15 @@ void EffectsManager::removeEffect(EffectBase* effect)
 			delete* it;
 			*it = nullptr;
 			m_activeEffects.erase(it);
+			effectRemoved = true;
 			break;
 		}
+	}
+
+	if (!removeEffect)
+	{
+		printf("Effect was not found and could not be removed. Throwing...\n");
+		throw;
 	}
 
 	// Tell object that it is allowed to apply effects
@@ -153,22 +177,35 @@ void EffectsManager::removeEffect(EffectBase* effect)
 }
 
 
+/// @brief Processes all samples using the registered effects.
+/// @param final_data RETURN. Object containing processed samples.
+/// @param initial_data Object containing samples that should be processed.
 void EffectsManager::applyEffect(ChannelSamples* final_data, ChannelSamples* initial_data)
 {
+	// No point going into loop if we have no effects
+	if (m_activeEffects.size() == 0)
+	{
+		return;
+	}
+
 	// For each effect stored
 	for (auto it = m_activeEffects.begin(); it != m_activeEffects.end(); ++it)
 	{
 		// For each frame
 		for (uint16_t sampleIndx = 0; sampleIndx < initial_data->getFramesCount(); ++sampleIndx)
 		{
-			// Apply effect to both samples within frame
+			// Apply effect to the samples for each channel
 			final_data->insertLeft(sampleIndx, (*it)->applyEffect(initial_data->getLeftElement(sampleIndx)));
 			final_data->insertRight(sampleIndx, (*it)->applyEffect(initial_data->getRightElement(sampleIndx)));
 		}
 	}
 }
 
-
+// TODO: Implement alterEffect
+/// @brief 
+/// @param effect 
+/// @param parameter 
+/// @param new_val 
 void EffectsManager::alterEffect(EffectBase* effect, ParamIndx parameter, int32_t new_val)
 {
 	return; // Placeholder
