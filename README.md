@@ -72,6 +72,55 @@ cd RTEP5-the-raspberry-jam
 # List files in the repository
 ls
 ```
+For use with a generic sound card a device tree overlay needs to be created.
+
+To make sound card master and Raspberry Pi on I2S bus (credit: https://github.com/AkiyukiOkayasu/RaspberryPi_I2S_Slave):
+```bash
+#Change to device tree directory
+cd deviceTree
+
+#Compile on Raspberry Pi  
+dtc -@ -H epapr -O dtb -o genericstereoaudiocodec.dtbo -Wno-unit_address_vs_reg genericstereoaudiocodec.dts
+
+# Copy i2smaster.dtbo to /boot/overlays  
+sudo cp genericstereoaudiocodec.dtbo /boot/overlays
+
+#Return to repository directory
+cd ..
+```
+
+Edit /boot/config.txt   
+```/boot/config.txt    # Uncomment some or all of these to enable the optional hardware interface
+#dtparam=i2c_arm=on
+dtparam=i2s=on
+#dtparam=spi=on
+dtoverlay=genericstereoaudiocodec
+```
+To make sound card slave and Raspberry Pi master on I2S bus (credit: https://github.com/AkiyukiOkayasu/RaspberryPi_I2S_Master):
+
+```bash
+#Compile on Raspberry Pi
+#Change to device tree directory
+cd deviceTree
+
+dtc -@ -H epapr -O dtb -o i2smaster.dtbo -Wno-unit_address_vs_reg i2smaster.dts
+
+#Copy i2smaster.dtbo to /boot/overlays  
+sudo cp i2smaster.dtbo /boot/overlays
+
+#Return to repository directory
+cd ..
+```
+
+Edit /boot/config.txt  
+```/boot/config.txt
+# Uncomment some or all of these to enable the optional hardware interface
+#dtparam=i2c_arm=on
+dtparam=i2s=on
+#dtparam=spi=on
+dtoverlay=i2smaster
+```
+
 Bulding the project with CMake
 ```bash 
 # Create a build directory (optional)
