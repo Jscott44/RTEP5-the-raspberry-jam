@@ -1,85 +1,51 @@
 #include "include/AlsaBufferConverter.h"
+#include <stdio.h>
 
 AlsaBufferConverter::AlsaBufferConverter()
+    : m_leftBuffer(new uint8_t[3]),
+    m_rightBuffer(new uint8_t[3])
 {
 
 }
 
 AlsaBufferConverter::~AlsaBufferConverter()
 {
-    
+    delete m_leftBuffer;
+    m_leftBuffer = nullptr;
+
+    delete m_rightBuffer;
+    m_rightBuffer = nullptr;;
 }
 
-void AlsaBufferConverter::getSamples(ChannelSamples ret_samples, uint8_t* buffer)
+void AlsaBufferConverter::getSamples(ChannelSamples* ret_samples, uint8_t* buffer)
 {
-
-}
-
-
-/// @brief Get object containing the equivalent int32 values as the int24 values that were stored in a uint8 buffer for each channel (left and right).
-/// @param Uint8 buffer containing the int24 data that should be converted into usable int32s
-/// @return ChannelSamples object containing int32 value equivalents for each channel.
-ChannelSamples AlsaBufferConverter::getSamples(uint8_t* buffer)
-{
-    ChannelSamples retObj(FRAMES_PER_BUFFER);
-    
     // Loop through all samples stored int the uint8 buffer
     for (unsigned int sampleIndex = 0; sampleIndex < FRAMES_PER_BUFFER; ++sampleIndex)
     {
         // Calculate the buffer index based on the bytes per sample and samples per frame
         unsigned int bufferIndex = sampleIndex * BYTES_PER_SAMPLE * SAMPLES_PER_FRAME;
-
+    
         // Store calculated samples for each channel
-        retObj.appendLeft(getInt32FromBuffer(buffer + bufferIndex));
-        retObj.appendRight(getInt32FromBuffer(buffer + bufferIndex + BYTES_PER_SAMPLE));
+        ret_samples->insertLeft(sampleIndex, getInt32FromBuffer(buffer + bufferIndex));
+        ret_samples->insertRight(sampleIndex, getInt32FromBuffer(buffer + bufferIndex + BYTES_PER_SAMPLE));
     }
-
-    //return retSamples;
-    return retObj;
 }
 
-/// @brief Get buffer containing int24s stored as uint8s that are equivalent to the original sample values.
-/// @param Int32 array containing samples that should be converted.
-/// @return Unique ptr to the buffer. If the sample is greater/less than the max/min of int24s, the returned value is capped.
-std::unique_ptr<uint8_t> AlsaBufferConverter::getBuffer(ChannelSamples samples)
+void AlsaBufferConverter::getBuffer(uint8_t* ret_buffer, ChannelSamples* samples)
 {
-    // Store on heap as unique pointer will be passed around
-    std::unique_ptr<uint8_t> retBuffer(new uint8_t[BYTES_PER_SAMPLE * SAMPLES_PER_FRAME * FRAMES_PER_BUFFER]);
-
     // Loop through all int32 samples
-    for (unsigned int sampleIndex = 0; sampleIndex < FRAMES_PER_BUFFER; ++sampleIndex)
+    for (unsigned int sampleIndex = 0; sampleIndex < samples->getFramesCount(); ++sampleIndex)
     {
         // For each sample, obtain the uint8 buffer equivalent
-        std::unique_ptr<uint8_t> leftBuffer = getBufferFromInt32(samples.getLeftElement(sampleIndex));
-        std::unique_ptr<uint8_t> rightBuffer = getBufferFromInt32(samples.getRightElement(sampleIndex));
-
+        getBufferFromInt32(m_leftBuffer, samples->getLeftElement(sampleIndex));
+        getBufferFromInt32(m_rightBuffer, samples->getRightElement(sampleIndex));
+        
         // Store values into return buffer at correct index
         unsigned int rawBytesIndex = sampleIndex * BYTES_PER_SAMPLE * SAMPLES_PER_FRAME;
         for (int byteIndex = 0; byteIndex < BYTES_PER_SAMPLE; ++byteIndex)
         {
-            retBuffer.get()[rawBytesIndex + byteIndex] = leftBuffer.get()[byteIndex];
-            retBuffer.get()[rawBytesIndex + byteIndex + BYTES_PER_SAMPLE] = rightBuffer.get()[byteIndex];
-        }
-    }
-
-    return retBuffer;
-}
-
-void AlsaBufferConverter::getBuffer(uint8_t* ret_buffer, ChannelSamples samples)
-{
-    // Loop through all int32 samples
-    for (unsigned int sampleIndex = 0; sampleIndex < samples.getFramesCount(); ++sampleIndex)
-    {
-        // For each sample, obtain the uint8 buffer equivalent
-        std::unique_ptr<uint8_t> leftBuffer = getBufferFromInt32(samples.getLeftElement(sampleIndex));
-        std::unique_ptr<uint8_t> rightBuffer = getBufferFromInt32(samples.getRightElement(sampleIndex));
-
-        // Store values into return buffer at correct index
-        unsigned int rawBytesIndex = sampleIndex * BYTES_PER_SAMPLE * SAMPLES_PER_FRAME;
-        for (int byteIndex = 0; byteIndex < BYTES_PER_SAMPLE; ++byteIndex)
-        {
-            ret_buffer[rawBytesIndex + byteIndex] = leftBuffer.get()[byteIndex];
-            ret_buffer[rawBytesIndex + byteIndex + BYTES_PER_SAMPLE] = rightBuffer.get()[byteIndex];
+            ret_buffer[rawBytesIndex + byteIndex] = m_leftBuffer[byteIndex];
+            ret_buffer[rawBytesIndex + byteIndex + BYTES_PER_SAMPLE] = m_rightBuffer[byteIndex];
         }
     }
 
@@ -98,10 +64,7 @@ int32_t AlsaBufferConverter::getInt32FromBuffer(uint8_t* buffer)
     return retVal;
 }
 
-/// @brief Converts signed 32 bit integer into 3 byte buffer containing the values for a signed 24 int value
-/// @param buffer int32 value that should be converted into signed 24 int buffer
-/// @return Unique ptr to buffer containing 24 bit signed value stored as uint8s
-std::unique_ptr<uint8_t> AlsaBufferConverter::getBufferFromInt32(int32_t desired_value)
+void AlsaBufferConverter::getBufferFromInt32(uint8_t* ret_buffer, int32_t desired_value)
 {
     // Ensure desired_value is not greater than the maximum or less that the minimum signed 24 bit values
     //If they are, alter value to be max/min
@@ -118,12 +81,9 @@ std::unique_ptr<uint8_t> AlsaBufferConverter::getBufferFromInt32(int32_t desired
     }
 
     // Perform bitwise shifts to store relevant values in our return buffer
-    std::unique_ptr<uint8_t> retBuffer(new uint8_t[3]);
-    retBuffer.get()[0] = desired_value >> 16;
-    retBuffer.get()[1] = desired_value >> 8;
-    retBuffer.get()[2] = desired_value;
-
-    return retBuffer;
+    ret_buffer[0] = desired_value >> 16;
+    ret_buffer[1] = desired_value >> 8;
+    ret_buffer[2] = desired_value;
 }
 
 
@@ -135,92 +95,45 @@ std::unique_ptr<uint8_t> AlsaBufferConverter::getBufferFromInt32(int32_t desired
 
 
 
-/// @brief Creates object storing samples for each channel. 
-/// @param num_of_frames The number of frames that should be stored (each channel stores this many samples)
+
 ChannelSamples::ChannelSamples(uint16_t num_of_frames)
-    : m_framesCount(num_of_frames)
-{
-    // Reserve memory once so that the program does not need to constantly find and area large enough to store all values
-    left.reserve(num_of_frames);
-    right.reserve(num_of_frames);
-}
-
-uint16_t ChannelSamples::getFramesCount()
-{
-    return m_framesCount;
-}
-
-/// @brief Appends value onto the end of the left channel
-/// @param value that should be appended
-void ChannelSamples::appendLeft(int32_t value)
-{
-    left.push_back(value);
-    return;
-}
-
-/// @brief Appends value onto the end of the right channel
-/// @param value that should be appended
-void ChannelSamples::appendRight(int32_t value)
-{
-    right.push_back(value);
-    return;
-}
-
-/// @brief Returns the value that has been stored in the left channel container for the given index
-/// @param index desired index of value
-/// @return The element that has been stored for the given index
-int32_t ChannelSamples::getLeftElement(uint16_t index)
-{
-    return left[index];
-}
-
-/// @brief Returns the value that has been stored in the right channel container for the given index
-/// @param index desired index of value
-/// @return The element that has been stored for the given index
-int32_t ChannelSamples::getRightElement(uint16_t index)
-{
-    return right[index];
-}
-
-
-ChannelSamples2::ChannelSamples2(uint16_t num_of_frames)
 {
     left = new int32_t[num_of_frames];
     right = new int32_t[num_of_frames];
     m_framesCount = num_of_frames;
 }
 
-ChannelSamples2::~ChannelSamples2()
+ChannelSamples::~ChannelSamples()
 {
-    delete left;
+    delete[] left;
     left = nullptr;
 
-    delete right;
+    delete[] right;
     right = nullptr;
 }
 
 
-void ChannelSamples2::insertLeft(uint16_t index, int32_t value)
+void ChannelSamples::insertLeft(uint16_t index, int32_t value)
 {
     left[index] = value;
 }
 
-void ChannelSamples2::insertRight(uint16_t index, int32_t value)
+void ChannelSamples::insertRight(uint16_t index, int32_t value)
 {
     right[index] = value;
 }
 
-int32_t ChannelSamples2::getLeftElement(uint16_t index)
+int32_t ChannelSamples::getLeftElement(uint16_t index)
 {
     return left[index];
 }
 
-int32_t ChannelSamples2::getRightElement(uint16_t index)
+int32_t ChannelSamples::getRightElement(uint16_t index)
 {
     return right[index];
 }
 
-uint16_t ChannelSamples2::getFramesCount()
+uint16_t ChannelSamples::getFramesCount()
 {
     return m_framesCount;
 }

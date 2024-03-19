@@ -5,6 +5,7 @@
 #include "AlsaEffects/include/PcmAudioCapture.h"
 #include "AlsaEffects/include/PcmAudioPlayback.h"
 #include <memory>
+#include "AlsaEffects/include/EffectBase.h"
 
 int main()
 {

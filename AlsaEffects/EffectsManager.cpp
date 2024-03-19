@@ -3,6 +3,8 @@
 EffectsManager::EffectsManager()
 	:	GuiListener(),
 		AlsaListener(),
+		m_incomingSamples(new ChannelSamples(44)),
+		m_outgoingSamples(new ChannelSamples(44)),
 		m_newBuffer(false),
 		m_running(false)
 {
@@ -29,6 +31,12 @@ EffectsManager::~EffectsManager()
 
 	// Wait for thread to safely terminate
 	m_thread->join();
+
+	// Delete ChannelSamples
+	delete m_incomingSamples;
+	m_incomingSamples = nullptr;
+	delete m_outgoingSamples;
+	m_outgoingSamples = nullptr;
 
 	// Delete thread
 	delete m_thread;
@@ -60,9 +68,7 @@ void EffectsManager::effectLoop()
 	printf("Entering effect loop");
 
 	while (m_running) // Turn false to stop
-	{
-		//m_threadInterface.waitForSignal(); // Blocking
-		
+	{		
 		if (m_newBuffer)
 		{
 			printf("new buffer received \n");
@@ -70,29 +76,26 @@ void EffectsManager::effectLoop()
 			m_newBuffer = false;
 
 			// Convert buffer into left and right channel ints
-			ChannelSamples incomingSamples = m_bufConverter.getSamples(m_listenerBuffer);
+			m_bufConverter.getSamples(m_incomingSamples, m_listenerBuffer);
 
 			if (!m_alteringEffects) // Will be true if the main thread's GUI is adjusting the values
 			{
 				// Apply effects
-				ChannelSamples outgoingSamples = applyEffect(incomingSamples);
+				applyEffect(m_outgoingSamples, m_incomingSamples);
 
 				// Convert new struct back into buffer and store at m_callbackBuffer
-				m_bufConverter.getBuffer(m_callbackBuffer, outgoingSamples);
+				m_bufConverter.getBuffer(m_callbackBuffer, m_outgoingSamples);
 			}
 			else // In case GUI is adjusting the effects
 			{
 				// Convert struct back into buffer and store at m_callbackBuffer
-				m_bufConverter.getBuffer(m_callbackBuffer, incomingSamples);
+				m_bufConverter.getBuffer(m_callbackBuffer, m_incomingSamples);
 			}
 
 			// Callback
 			m_callbackPtr->hasAlteredBuffer(m_callbackBuffer); // Unblock m_listenerPtr
 		}
 	}
-
-	printf("Exiting effect loop");
-
 }
 
 
@@ -148,24 +151,20 @@ void EffectsManager::removeEffect(EffectBase* effect)
 	m_alteringEffects = false;
 }
 
-ChannelSamples EffectsManager::applyEffect(ChannelSamples initial_data)
-{
-	// Create struct to store altered data
-	ChannelSamples finalData(initial_data.getFramesCount());
 
+void EffectsManager::applyEffect(ChannelSamples* final_data, ChannelSamples* initial_data)
+{
 	// For each effect stored
 	for (auto it = m_activeEffects.begin(); it != m_activeEffects.end(); ++it)
 	{
 		// For each frame
-		for (uint16_t sampleIndx = 0; sampleIndx < initial_data.getFramesCount(); ++sampleIndx)
+		for (uint16_t sampleIndx = 0; sampleIndx < initial_data->getFramesCount(); ++sampleIndx)
 		{
 			// Apply effect to both samples within frame
-			finalData.appendLeft((*it)->applyEffect(initial_data.getLeftElement(sampleIndx)));
-			finalData.appendRight((*it)->applyEffect(initial_data.getRightElement(sampleIndx)));
+			final_data->insertLeft(sampleIndx, (*it)->applyEffect(initial_data->getLeftElement(sampleIndx)));
+			final_data->insertRight(sampleIndx, (*it)->applyEffect(initial_data->getRightElement(sampleIndx)));
 		}
 	}
-
-	return finalData;
 }
 
 
