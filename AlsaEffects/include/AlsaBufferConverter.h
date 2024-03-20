@@ -37,15 +37,14 @@ public:
     const uint16_t getFramesPerBuffer() { return FRAMES_PER_BUFFER; };
 private:
     int32_t getInt32FromBuffer(uint8_t* buffer);
-    //std::unique_ptr<uint8_t> getBufferFromInt32(int32_t desired_value);
     void getBufferFromInt32(uint8_t* ret_buffer, int32_t desired_value);
 
     uint8_t* m_leftBuffer;
     uint8_t* m_rightBuffer;
 
-    const uint8_t BYTES_PER_SAMPLE = 3; // = 3; For 24 bit I2S messages
+    const uint8_t BYTES_PER_SAMPLE = 3; // = 3 OR 2 (INT24 or INT16)
     const uint8_t SAMPLES_PER_FRAME = 2; // = 2; Only using right and left channels
-    const uint16_t FRAMES_PER_BUFFER = 44; // = 44; Buffer will fill every 1ms when ADC is transmitting at 44kHz
+    const uint16_t FRAMES_PER_BUFFER = 128; // = 128
 };
 
 #endif

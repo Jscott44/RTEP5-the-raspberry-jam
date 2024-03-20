@@ -33,10 +33,12 @@ private:
 	void applyEffect(ChannelSamples* final_data, ChannelSamples* initial_data);
 
 	void effectLoop();
+
+	AlsaBufferConverter m_bufConverter;
+
 	ChannelSamples* m_incomingSamples;
 	ChannelSamples* m_outgoingSamples;
 
-	AlsaBufferConverter m_bufConverter;
 	EffectListener* m_callbackPtr;
 	uint8_t* m_callbackBuffer;
 

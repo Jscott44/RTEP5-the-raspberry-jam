@@ -6,8 +6,9 @@
 EffectsManager::EffectsManager()
 	:	GuiListener(),
 		AlsaListener(),
-		m_incomingSamples(new ChannelSamples(44)),
-		m_outgoingSamples(new ChannelSamples(44)),
+		m_bufConverter(),
+		m_incomingSamples(new ChannelSamples(m_bufConverter.getFramesPerBuffer())),
+		m_outgoingSamples(new ChannelSamples(m_bufConverter.getFramesPerBuffer())),
 		m_newBuffer(false),
 		m_running(false)
 {
