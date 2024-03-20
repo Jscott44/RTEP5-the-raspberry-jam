@@ -1,14 +1,14 @@
 #include "include/PcmAudioCapture.h"
 
 /// @brief Object can be used to capture I2S Int24s being received at the PCM pins on the RPI.
-PcmAudioCapture::PcmAudioCapture()
+PcmAudioCapture::PcmAudioCapture(const char* device_name)
 	: PcmAudioBase(),
 	  m_running(false),
 	  m_thread(nullptr),
 	  m_buffer(new uint8_t[getBufferSize()])
 {
 	// Open device and specify that this object captures
-	openPcmDevice(SND_PCM_STREAM_CAPTURE);
+	openPcmDevice(device_name, SND_PCM_STREAM_CAPTURE);
 }
 
 /// @brief Safely stops capture and frees allocated memory.

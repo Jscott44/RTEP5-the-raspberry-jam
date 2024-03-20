@@ -10,7 +10,7 @@
 class PcmAudioCapture : public PcmAudioBase
 {
 public:
-	PcmAudioCapture();
+	PcmAudioCapture(const char* device_name);
 	~PcmAudioCapture();
 
 	void registerCallback(AlsaListener* callback_ptr);

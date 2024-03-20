@@ -30,7 +30,6 @@ PcmAudioBase::~PcmAudioBase()
 /// @brief Initialises common ALSA settings used.
 void PcmAudioBase::initBaseSettings()
 {
-	m_settings->device_name = "default"; // Use default device
 	m_settings->access = SND_PCM_ACCESS_RW_INTERLEAVED; // Right Left Interleaved
 	m_settings->format = SND_PCM_FORMAT_S24_BE; // Signed 24 bits
 	m_settings->rate = 44100; // 44.1KHz sample rate
@@ -41,7 +40,7 @@ void PcmAudioBase::initBaseSettings()
 
 /// @brief Opens PCM handle using common settings.
 /// @param direction Direction of PCM device (capture or playback)
-void PcmAudioBase::openPcmDevice(snd_pcm_stream_t direction)
+void PcmAudioBase::openPcmDevice(const char* device_name, snd_pcm_stream_t direction)
 {
 	// Inspired by:
 	//	   https://www.linuxjournal.com/article/6735
@@ -51,7 +50,7 @@ void PcmAudioBase::openPcmDevice(snd_pcm_stream_t direction)
 	int dir;
 
 	/* Open PCM device for playback. */
-	rc = snd_pcm_open(&m_handle, "default", direction, 0);
+	rc = snd_pcm_open(&m_handle, device_name, direction, 0);
 	if (rc < 0) 
 	{
 		fprintf(stderr, "unable to open pcm device: %s\n", snd_strerror(rc));
