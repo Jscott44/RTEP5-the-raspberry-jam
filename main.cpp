@@ -11,9 +11,9 @@ int main()
 {
     EffectsManager* em = new EffectsManager;
 
-    PcmAudioPlayback* play = new PcmAudioPlayback;
+    PcmAudioPlayback* play = new PcmAudioPlayback("default");
 
-    PcmAudioCapture* cap = new PcmAudioCapture;
+    PcmAudioCapture* cap = new PcmAudioCapture("hw:1,1");
 
     cap->registerCallback(em);
     em->registerCallback(play);

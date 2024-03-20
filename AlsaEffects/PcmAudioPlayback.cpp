@@ -1,11 +1,11 @@
 #include "include/PcmAudioPlayback.h"
 
 /// @brief Object can be used to write I2S Int24s to the PCM pins of the RPI.
-PcmAudioPlayback::PcmAudioPlayback()
+PcmAudioPlayback::PcmAudioPlayback(const char* device_name)
 	: PcmAudioBase()
 {
 	// Open device and specify that this object is used for playback
-	openPcmDevice(SND_PCM_STREAM_PLAYBACK);
+	openPcmDevice(device_name, SND_PCM_STREAM_PLAYBACK);
 }
 
 

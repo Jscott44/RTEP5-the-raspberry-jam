@@ -7,7 +7,6 @@
 
 struct PcmAudioSettings
 {
-	const char* device_name; /* device name (default pcm device) */
 	snd_pcm_access_t access; /* data access type */
 	snd_pcm_format_t format;/* digital audio format */
 	snd_pcm_uframes_t frames; /* number of audio frames stored in buffer (period size))*/
@@ -28,7 +27,7 @@ protected:
 	snd_pcm_uframes_t getFrames();
 	snd_pcm_t* getHandlePtr();
 
-	void openPcmDevice(snd_pcm_stream_t direction); // MUST BE CALLED IN EACH CHILDS CONSTRUCTOR
+	void openPcmDevice(const char* device_name, snd_pcm_stream_t direction); // MUST BE CALLED IN EACH CHILDS CONSTRUCTOR
 
 private:
 	void initBaseSettings();
