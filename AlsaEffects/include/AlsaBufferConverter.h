@@ -42,9 +42,9 @@ private:
     uint8_t* m_leftBuffer;
     uint8_t* m_rightBuffer;
 
-    const uint8_t BYTES_PER_SAMPLE = 3; // = 3 OR 2 (INT24 or INT16)
+    const uint8_t BYTES_PER_SAMPLE = 2; // = 3 OR 2 (INT24 or INT16)
     const uint8_t SAMPLES_PER_FRAME = 2; // = 2; Only using right and left channels
-    const uint16_t FRAMES_PER_BUFFER = 128; // = 128
+    const uint16_t FRAMES_PER_BUFFER = 66; // 
 };
 
 #endif
