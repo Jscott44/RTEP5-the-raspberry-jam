@@ -42,7 +42,7 @@ void AlsaBufferConverter::getSamples(ChannelSamples* ret_samples, uint8_t* buffe
 void AlsaBufferConverter::getBuffer(uint8_t* ret_buffer, ChannelSamples* samples)
 {
     // Loop through all frames stored in structure
-    for (unsigned int sampleIndex = 0; sampleIndex < samples->getFramesCount(); ++sampleIndex)
+    for (unsigned int sampleIndex = 0; sampleIndex < FRAMES_PER_BUFFER; ++sampleIndex)
     {
         // For each frame, extract the sample and convert into int24 (in form of 3 uint8s)
         getBufferFromInt32(m_leftBuffer, samples->getLeftElement(sampleIndex));

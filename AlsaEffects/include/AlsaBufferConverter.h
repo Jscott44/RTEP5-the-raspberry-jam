@@ -20,6 +20,12 @@ private:
     uint16_t m_framesCount;
 };
 
+enum eDataEndianness
+{
+    bigE = 0,
+    litE
+};
+
 class AlsaBufferConverter
 {
 public:
@@ -42,9 +48,10 @@ private:
     uint8_t* m_leftBuffer;
     uint8_t* m_rightBuffer;
 
+    eDataEndianness m_endian = litE;
     const uint8_t BYTES_PER_SAMPLE = 2; // = 3 OR 2 (INT24 or INT16)
     const uint8_t SAMPLES_PER_FRAME = 2; // = 2; Only using right and left channels
-    const uint16_t FRAMES_PER_BUFFER = 66; // 
+    const uint16_t FRAMES_PER_BUFFER = 128; // 
 };
 
 #endif

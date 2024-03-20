@@ -90,11 +90,17 @@ void EffectsManager::effectLoop()
 			// Convert buffer into ChannelSamples object
 			m_bufConverter.getSamples(m_incomingSamples, m_listenerBuffer);
 
+			//printf("%02X\n", m_listenerBuffer[0]);
+
+			//printf("l: %d \tr: %d\n", m_incomingSamples->getLeftElement(0), m_incomingSamples->getRightElement(0));
+
 			// If GUI is currently not adjusting effects
 			if (!m_alteringEffects)
 			{
 				// Apply effects
 				applyEffect(m_outgoingSamples, m_incomingSamples);
+
+				//printf("l: %d \tr: %d\n", m_outgoingSamples->getLeftElement(0), m_outgoingSamples->getRightElement(0));
 
 				// Convert processed ChannelSamples struct back into buffer
 				m_bufConverter.getBuffer(m_callbackBuffer, m_outgoingSamples);
@@ -105,6 +111,7 @@ void EffectsManager::effectLoop()
 				m_bufConverter.getBuffer(m_callbackBuffer, m_incomingSamples);
 			}
 
+			//printf("%02X\n", m_callbackBuffer[0]);
 			// Trigger callback
 			m_callbackPtr->hasAlteredBuffer(m_callbackBuffer);
 		}
@@ -188,6 +195,13 @@ void EffectsManager::applyEffect(ChannelSamples* final_data, ChannelSamples* ini
 	// No point going into loop if we have no effects
 	if (m_activeEffects.size() == 0)
 	{
+		// For each frame
+		for (uint16_t sampleIndx = 0; sampleIndx < initial_data->getFramesCount(); ++sampleIndx)
+		{
+			// Move data from initial to final
+			final_data->insertLeft(sampleIndx, initial_data->getLeftElement(sampleIndx));
+			final_data->insertRight(sampleIndx, initial_data->getRightElement(sampleIndx));
+		}
 		return;
 	}
 
