@@ -11,9 +11,7 @@ PcmAudioBase::PcmAudioBase()
 /// @brief Safely closes ALSA and frees members.
 PcmAudioBase::~PcmAudioBase()
 {
-	printf("draining\n");
-	// Drain and close ALSA buffer
-	snd_pcm_drain(m_handle);
+	printf("handle: %p, addr: %p\n", m_handle, &m_handle);
 	printf("closing\n");
 	snd_pcm_close(m_handle);
 	printf("done\n");

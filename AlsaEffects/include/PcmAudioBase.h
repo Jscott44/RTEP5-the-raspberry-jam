@@ -30,10 +30,12 @@ protected:
 
 	void openPcmDevice(snd_pcm_stream_t direction); // MUST BE CALLED IN EACH CHILDS CONSTRUCTOR
 
+	snd_pcm_t* m_handle;
+
 private:
 	void initBaseSettings();
 
-	snd_pcm_t* m_handle;
+	//snd_pcm_t* m_handle;
 
 	/* settings object */
 	PcmAudioSettings* m_settings;

@@ -21,6 +21,7 @@ PcmAudioCapture::~PcmAudioCapture()
 		delete m_buffer;
 		m_buffer == nullptr;
 	}
+
 	printf("Capture destroyed\n");
 }
 
@@ -79,17 +80,20 @@ void PcmAudioCapture::pcmLoop()
 		rc = snd_pcm_readi(getHandlePtr(), m_buffer, getFrames()); // Blocking
 		if (rc == -EPIPE)
 		{
-			/* EPIPE means underrun */
-			fprintf(stderr, "underrun occurred\n");
+			/* EPIPE means overrun */
+			fprintf(stderr, "overrun occurred\n");
 			snd_pcm_prepare(getHandlePtr());
+			continue;
 		}
 		else if (rc < 0)
 		{
 			fprintf(stderr, "error from readi: %s\n", snd_strerror(rc));
+			continue;
 		}
 		else if (rc != (int)getFrames())
 		{
 			fprintf(stderr, "short read, read %d frames\n", rc);
+			continue;
 		}
 		else
 		{
@@ -100,3 +104,92 @@ void PcmAudioCapture::pcmLoop()
 		m_callbackPtr->hasBuffer(m_buffer);
 	}
 }
+
+// /// @brief Continually reads PCM signals before using callback.
+// void PcmAudioCapture::pcmLoop()
+// {
+// 	// Inspired by:
+// 	//	   https://www.linuxjournal.com/article/6735
+
+// 	snd_pcm_hw_params_t* params;
+// 	int rc;
+// 	int dir;
+
+// 	int size;
+// 	unsigned int val;
+// 	snd_pcm_uframes_t frames;
+
+// 	/* Open PCM device for playback. */
+// 	rc = snd_pcm_open(&m_handle, "default", SND_PCM_STREAM_CAPTURE, 0);
+// 	if (rc < 0) 
+// 	{
+// 		fprintf(stderr, "unable to open pcm device: %s\n", snd_strerror(rc));
+// 		exit(1);
+// 	}
+
+// 	/* Allocate a hardware parameters object. */
+// 	snd_pcm_hw_params_alloca(&params);
+
+// 	/* Fill it in with default values. */
+// 	snd_pcm_hw_params_any(m_handle, params);
+
+// 	/* Set the desired hardware parameters. */
+
+// 	/* Interleaved mode */
+// 	snd_pcm_hw_params_set_access(m_handle, params, SND_PCM_ACCESS_RW_INTERLEAVED);
+
+// 	/* Signed 16-bit little-endian format */
+// 	snd_pcm_hw_params_set_format(m_handle, params, SND_PCM_FORMAT_S24_BE);
+
+// 	/* Two channels (stereo) */
+// 	snd_pcm_hw_params_set_channels(m_handle, params, 2);
+
+// 	/* 44100 bits/second sampling rate (CD quality) */
+// 	val = 44100;
+// 	snd_pcm_hw_params_set_rate_near(m_handle, params, &val, &dir);
+
+// 	/* Set period size to 32 frames. */
+// 	frames = 44;
+// 	snd_pcm_hw_params_set_period_size_near(m_handle, params, &frames, &dir);
+
+// 	/* Write the parameters to the driver */
+// 	rc = snd_pcm_hw_params(m_handle, params);
+// 	if (rc < 0) 
+// 	{
+// 		fprintf(stderr, "unable to set hw parameters: %s\n", snd_strerror(rc));
+// 		exit(1);
+// 	}
+
+// 	while (m_running) 
+// 	{
+// 		rc = snd_pcm_readi(getHandlePtr(), m_buffer, getFrames()); // Blocking
+// 		if (rc == -EPIPE)
+// 		{
+// 			/* EPIPE means underrun */
+// 			fprintf(stderr, "underrun occurred\n");
+// 			snd_pcm_prepare(getHandlePtr());
+// 		}
+// 		else if (rc < 0)
+// 		{
+// 			fprintf(stderr, "error from readi: %s\n", snd_strerror(rc));
+// 		}
+// 		else if (rc != (int)getFrames())
+// 		{
+// 			fprintf(stderr, "short read, read %d frames\n", rc);
+// 		}
+// 		else
+// 		{
+// 			fprintf(stdout, "i2s read successful\n");
+// 		}
+
+// 		// Pass buffer to callback interface
+// 		m_callbackPtr->hasBuffer(m_buffer);
+// 	}
+
+// 	printf("draining\n");
+// 	// Drain and close ALSA buffer
+// 	snd_pcm_drain(m_handle);
+// 	printf("closing\n");
+// 	snd_pcm_close(m_handle);
+// 	printf("done\n");
+// }

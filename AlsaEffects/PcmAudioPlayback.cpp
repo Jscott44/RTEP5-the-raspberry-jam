@@ -11,6 +11,10 @@ PcmAudioPlayback::PcmAudioPlayback()
 
 PcmAudioPlayback::~PcmAudioPlayback()
 {
+	// Drain ALSA buffer
+	printf("draining\n");
+	snd_pcm_drain(m_handle);
+	printf("done\n");
 }
 
 /// @brief From EffectListener. Writes received buffer to the PCM pins.

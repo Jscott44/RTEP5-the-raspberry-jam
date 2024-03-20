@@ -9,6 +9,7 @@ EffectsManager::EffectsManager()
 		m_incomingSamples(new ChannelSamples(44)),
 		m_outgoingSamples(new ChannelSamples(44)),
 		m_newBuffer(false),
+		m_dataProcessed(true),
 		m_running(false)
 {
 	// Reserve some memory to make it more effecient 
@@ -63,12 +64,16 @@ void EffectsManager::registerCallback(EffectListener* callback_ptr)
 /// @param buffer Buffer reference that should be used.
 void EffectsManager::hasBuffer(uint8_t* buffer)
 {
-	// Store pointer to buffer
-	m_listenerBuffer = buffer;
+	if (m_dataProcessed)
+	{
+		m_dataProcessed = false;
 
-	// Unblock effect loop to process data that has been transfered
-	m_newBuffer = true;
+		// Store pointer to buffer
+		m_listenerBuffer = buffer;
 
+		// Unblock effect loop to process data that has been transfered
+		m_newBuffer = true;
+	}
 }
 
 /// @brief Processes buffer obtained and passes processed buffer to next object using callback.
@@ -88,6 +93,9 @@ void EffectsManager::effectLoop()
 
 			// Convert buffer into ChannelSamples object
 			m_bufConverter.getSamples(m_incomingSamples, m_listenerBuffer);
+
+			// Indicate that we can receive the next buffer
+			m_dataProcessed = true;
 
 			// If GUI is currently not adjusting effects
 			if (!m_alteringEffects)
