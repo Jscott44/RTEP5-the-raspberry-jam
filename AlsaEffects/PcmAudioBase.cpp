@@ -11,9 +11,13 @@ PcmAudioBase::PcmAudioBase()
 /// @brief Safely closes ALSA and frees members.
 PcmAudioBase::~PcmAudioBase()
 {
+	printf("draining\n");
 	// Drain and close ALSA buffer
 	snd_pcm_drain(m_handle);
+	printf("closing\n");
 	snd_pcm_close(m_handle);
+	printf("done\n");
+
 
 	// Free settings object
 	if (m_settings != nullptr)
@@ -31,7 +35,7 @@ void PcmAudioBase::initBaseSettings()
 	m_settings->format = SND_PCM_FORMAT_S24_BE; // Signed 24 bits
 	m_settings->rate = 44100; // 44.1KHz sample rate
 	m_settings->nchannels = 2; // 2 channels
-	m_settings->frames = 44; // 44 frames should be stored per buffer
+	m_settings->frames = (snd_pcm_uframes_t)44; // 44 frames should be stored per buffer
 	m_settings->buffer_size = m_settings->frames * 3 * 2; // Size of buffer to store ALSA data (3 bytes per channel, 2 channels)
 }
 

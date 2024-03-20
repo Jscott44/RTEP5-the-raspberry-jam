@@ -29,21 +29,23 @@ EffectsManager::EffectsManager()
 /// @brief Safely stops thread before deleting all members.
 EffectsManager::~EffectsManager()
 {
+	printf("entering em stop\n");
+
 	// Stop thread
 	m_running = false;
 
 	// Wait for thread to safely terminate
 	m_thread->join();
 
+	// Delete thread
+	delete m_thread;
+	m_thread = nullptr;
+
 	// Delete ChannelSamples
 	delete m_incomingSamples;
 	m_incomingSamples = nullptr;
 	delete m_outgoingSamples;
 	m_outgoingSamples = nullptr;
-
-	// Delete thread
-	delete m_thread;
-	m_thread = nullptr;
 
 	// Delete buffer
 	delete[] m_callbackBuffer;
@@ -72,7 +74,7 @@ void EffectsManager::hasBuffer(uint8_t* buffer)
 /// @brief Processes buffer obtained and passes processed buffer to next object using callback.
 void EffectsManager::effectLoop()
 {
-	printf("Entering effect loop");
+	printf("Entering effect loop\n");
 
 	while (m_running) // Turn false to stop
 	{	
@@ -166,7 +168,7 @@ void EffectsManager::removeEffect(EffectBase* effect)
 		}
 	}
 
-	if (!removeEffect)
+	if (!effectRemoved)
 	{
 		printf("Effect was not found and could not be removed. Throwing...\n");
 		throw;

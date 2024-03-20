@@ -19,20 +19,16 @@ int main()
     em->registerCallback(play);
 
     cap->start();
+    //cap->stop();
+
 
     getchar();
 
-    printf("1");
-
-    delete em;
-        printf("1");
-
-    delete play;
-        printf("1");
-
+    printf("\ndeleting cap\n");
     delete cap;
-        printf("1");
-
-
+    printf("\ndeleting em\n");
+    delete em;
+    printf("\ndeleting play\n");
+    delete play;
     return 0;
 }
