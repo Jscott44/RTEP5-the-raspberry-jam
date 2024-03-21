@@ -45,18 +45,18 @@ int main() {
 
   /* Signed 16-bit little-endian format */
   snd_pcm_hw_params_set_format(handle, params,
-                              SND_PCM_FORMAT_S16_LE);
+                              SND_PCM_FORMAT_S16_BE);
 
   /* Two channels (stereo) */
   snd_pcm_hw_params_set_channels(handle, params, 2);
 
   /* 44100 bits/second sampling rate (CD quality) */
-  val = 44100;
+  val = 96000;
   snd_pcm_hw_params_set_rate_near(handle, params,
                                   &val, &dir);
 
   /* Set period size to 32 frames. */
-  frames = 32;
+  frames = 128;
   snd_pcm_hw_params_set_period_size_near(handle,
                               params, &frames, &dir);
 

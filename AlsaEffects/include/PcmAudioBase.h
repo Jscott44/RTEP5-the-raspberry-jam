@@ -19,7 +19,7 @@ class PcmAudioBase
 {
 public:
 
-	PcmAudioBase();
+	PcmAudioBase(snd_pcm_format_t format, snd_pcm_uframes_t frame_count, unsigned int sample_rate);
 	~PcmAudioBase(); //destructor
 protected:
 	// Methods used by children classes
@@ -27,10 +27,11 @@ protected:
 	snd_pcm_uframes_t getFrames();
 	snd_pcm_t* getHandlePtr();
 
+	//void openPcmDevice(const char* device_name, snd_pcm_stream_t direction); // MUST BE CALLED IN EACH CHILDS CONSTRUCTOR
 	void openPcmDevice(const char* device_name, snd_pcm_stream_t direction); // MUST BE CALLED IN EACH CHILDS CONSTRUCTOR
 
 private:
-	void initBaseSettings();
+	void initBaseSettings(snd_pcm_format_t format, snd_pcm_uframes_t frame_count, unsigned int sample_rate);
 
 	snd_pcm_t* m_handle;
 
