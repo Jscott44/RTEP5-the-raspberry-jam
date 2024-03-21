@@ -3,10 +3,10 @@
 
 
 /// @brief Object can be used to process samples. Implements GUI and Alsa callbacks.
-EffectsManager::EffectsManager()
+EffectsManager::EffectsManager(eEndianness endian, uint8_t bytes_per_sample, uint16_t frames_per_buffer)
 	:	GuiListener(),
 		AlsaListener(),
-		m_bufConverter(),
+		m_bufConverter(endian, bytes_per_sample, frames_per_buffer),
 		m_incomingSamples(new ChannelSamples(m_bufConverter.getFramesPerBuffer())),
 		m_outgoingSamples(new ChannelSamples(m_bufConverter.getFramesPerBuffer())),
 		m_newBuffer(false),

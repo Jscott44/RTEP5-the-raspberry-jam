@@ -3,6 +3,7 @@
 
 #include "AlsaListener.h"
 #include "PcmAudioBase.h"
+#include "DataFormat.h"
 #include <cstdint>
 #include <thread>
 
@@ -10,7 +11,8 @@
 class PcmAudioCapture : public PcmAudioBase
 {
 public:
-	PcmAudioCapture(const char* device_name);
+	//PcmAudioCapture(const char* device_name);
+	PcmAudioCapture(const char* device_name, snd_pcm_format_t format, snd_pcm_uframes_t frame_count, unsigned int sample_rate);
 	~PcmAudioCapture();
 
 	void registerCallback(AlsaListener* callback_ptr);
