@@ -8,7 +8,7 @@
 class PcmAudioPlayback : public PcmAudioBase , public EffectListener
 {
 public:
-	PcmAudioPlayback(const char* device_name);
+	PcmAudioPlayback(const char* device_name, snd_pcm_format_t format, snd_pcm_uframes_t frame_count, unsigned int sample_rate);
 	~PcmAudioPlayback();
 
 private:

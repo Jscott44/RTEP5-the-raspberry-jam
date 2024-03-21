@@ -16,7 +16,7 @@
 class EffectsManager : public AlsaListener , public GuiListener
 {
 public:
-	EffectsManager(); // Placeholder
+	EffectsManager(eEndianness endian, uint8_t bytes_per_sample, uint16_t frames_per_buffer); // Placeholder
 	~EffectsManager(); // Placeholder
 
 	void registerCallback(EffectListener* callback_ptr);

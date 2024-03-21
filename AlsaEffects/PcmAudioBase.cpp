@@ -1,11 +1,11 @@
 #include "include/PcmAudioBase.h"
 
 /// @brief Object handles basics of ALSA setup.
-PcmAudioBase::PcmAudioBase()
+PcmAudioBase::PcmAudioBase(snd_pcm_format_t format, snd_pcm_uframes_t frame_count, unsigned int sample_rate)
 	: m_handle(),
 	  m_settings(new PcmAudioSettings)
 {
-	initBaseSettings();
+	initBaseSettings(format, frame_count, sample_rate);
 }
 
 /// @brief Safely closes ALSA and frees members.
@@ -28,14 +28,37 @@ PcmAudioBase::~PcmAudioBase()
 }
 
 /// @brief Initialises common ALSA settings used.
-void PcmAudioBase::initBaseSettings()
+void PcmAudioBase::initBaseSettings(snd_pcm_format_t format, snd_pcm_uframes_t frame_count, unsigned int sample_rate)
 {
+	// Base settings that are never changed.
 	m_settings->access = SND_PCM_ACCESS_RW_INTERLEAVED; // Right Left Interleaved
-	m_settings->format = SND_PCM_FORMAT_S16_LE; // Signed 24 bits
-	m_settings->rate = 96000; // 44.1KHz sample rate
 	m_settings->nchannels = 2; // 2 channels
-	m_settings->frames = (snd_pcm_uframes_t)128; // 44 frames should be stored per buffer
-	m_settings->buffer_size = m_settings->frames * 2 * 2; // Size of buffer to store ALSA data (3 bytes per channel, 2 channels)
+
+	// Update parameters from arguments
+	m_settings->format = format;
+	m_settings->frames = frame_count;
+	m_settings->rate = sample_rate; //Change?
+	int bytesPerSample = 0;
+	switch (format)
+	{
+	case SND_PCM_FORMAT_S16_LE:
+		bytesPerSample = 2;
+		break;
+	case SND_PCM_FORMAT_S16_BE:
+		bytesPerSample = 2;
+		break;
+	case SND_PCM_FORMAT_S24_LE:
+		bytesPerSample = 3;
+		break;
+	case SND_PCM_FORMAT_S24_BE:
+		bytesPerSample = 3;
+		break;
+	default:
+		fprintf(stderr, "Invalid Data Format. Throwing...");
+		throw;
+		break;
+	}
+	m_settings->buffer_size = m_settings->frames * m_settings->nchannels * bytesPerSample;
 }
 
 /// @brief Opens PCM handle using common settings.

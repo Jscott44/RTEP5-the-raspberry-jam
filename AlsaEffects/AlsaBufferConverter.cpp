@@ -2,8 +2,11 @@
 #include <stdio.h>
 
 /// @brief Object can be used to convert uint8 buffers into ChannelSample objects filled with int32s.
-AlsaBufferConverter::AlsaBufferConverter()
-    : m_leftBuffer(new uint8_t[BYTES_PER_SAMPLE]),
+AlsaBufferConverter::AlsaBufferConverter(eEndianness endian, uint8_t bytes_per_sample, uint16_t frames_per_buffer)
+    : ENDIANNESS(endian),
+    BYTES_PER_SAMPLE(bytes_per_sample),
+    FRAMES_PER_BUFFER(frames_per_buffer),
+    m_leftBuffer(new uint8_t[BYTES_PER_SAMPLE]),
     m_rightBuffer(new uint8_t[BYTES_PER_SAMPLE])
 {
     // Buffers initialsed are used when in getBuffer()
@@ -71,16 +74,16 @@ int32_t AlsaBufferConverter::getInt32FromBuffer(uint8_t* buffer)
     int32_t retVal = 0;
     if (BYTES_PER_SAMPLE == 2)
     {
-        switch (m_endian)
+        switch (ENDIANNESS)
         {
-        case bigE:
+        case eBIG:
             retVal = ((buffer[0] << 24) | (buffer[1] << 16)) >> 16;
             break;
-        case litE:
+        case eLITTLE:
             retVal = ((buffer[1] << 24) | (buffer[0] << 16)) >> 16;
             break;
         default:
-            fprintf(stderr, "Invalid endiannes: %d", m_endian);
+            fprintf(stderr, "Invalid endiannes: %d", ENDIANNESS);
             break;
         }
     }
@@ -90,16 +93,16 @@ int32_t AlsaBufferConverter::getInt32FromBuffer(uint8_t* buffer)
         // 0. Lets say int24 value ox 0x800000
         // 1. Shift int24 to end of the int32 (0x80000000)
         // 2. Shift int24 back 8 bits. This maintains the sign of the integer and fills the top byte based off the signed (0xFF800000)
-        switch (m_endian)
+        switch (ENDIANNESS)
         {
-        case bigE:
+        case eBIG:
             retVal = ((buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8)) >> 8;
             break;
-        case litE:
+        case eLITTLE:
             retVal = ((buffer[2] << 24) | (buffer[1] << 16) | (buffer[0] << 8)) >> 8;
             break;
         default:
-            fprintf(stderr, "Invalid endiannes: %d", m_endian);
+            fprintf(stderr, "Invalid endiannes: %d", ENDIANNESS);
             break;
         }
     }
@@ -122,20 +125,20 @@ void AlsaBufferConverter::getBufferFromInt32(uint8_t* ret_buffer, int32_t desire
             desired_value = INT16_MAX;
         }
 
-        switch (m_endian)
+        switch (ENDIANNESS)
         {
-        case bigE:
+        case eBIG:
             // Perform bitwise shifts to store relevant values in our return buffer
             ret_buffer[0] = desired_value >> 8;
             ret_buffer[1] = desired_value;
             break;
-        case litE:
+        case eLITTLE:
             // Perform bitwise shifts to store relevant values in our return buffer
             ret_buffer[1] = desired_value >> 8;
             ret_buffer[0] = desired_value;
             break;
         default:
-            fprintf(stderr, "Invalid endiannes: %d", m_endian);
+            fprintf(stderr, "Invalid endiannes: %d", ENDIANNESS);
             break;
         }
     }
@@ -155,22 +158,22 @@ void AlsaBufferConverter::getBufferFromInt32(uint8_t* ret_buffer, int32_t desire
             desired_value = MAX_INT_24;
         }
 
-        switch (m_endian)
+        switch (ENDIANNESS)
         {
-        case bigE:
+        case eBIG:
             // Perform bitwise shifts to store relevant values in our return buffer
             ret_buffer[0] = desired_value >> 16;
             ret_buffer[1] = desired_value >> 8;
             ret_buffer[2] = desired_value;
             break;
-        case litE:
+        case eLITTLE:
             // Perform bitwise shifts to store relevant values in our return buffer
             ret_buffer[2] = desired_value >> 16;
             ret_buffer[1] = desired_value >> 8;
             ret_buffer[0] = desired_value;
             break;
         default:
-            fprintf(stderr, "Invalid endiannes: %d", m_endian);
+            fprintf(stderr, "Invalid endiannes: %d", ENDIANNESS);
             break;
         }
     }

@@ -1,8 +1,9 @@
-#include <cstdint>
-#include <vector>
-
 #ifndef ALSABUFFERCONVERTER_H
 #define ALSABUFFERCONVERTER_H
+
+#include <cstdint>
+#include <vector>
+#include "DataFormat.h"
 
 class ChannelSamples
 {
@@ -20,16 +21,10 @@ private:
     uint16_t m_framesCount;
 };
 
-enum eDataEndianness
-{
-    bigE = 0,
-    litE
-};
-
 class AlsaBufferConverter
 {
 public:
-    AlsaBufferConverter();
+    AlsaBufferConverter(eEndianness endian, uint8_t bytes_per_sample, uint16_t frames_per_buffer);
     ~AlsaBufferConverter();
 
     //ChannelSamples getSamples(uint8_t* buffer);
@@ -45,13 +40,13 @@ private:
     int32_t getInt32FromBuffer(uint8_t* buffer);
     void getBufferFromInt32(uint8_t* ret_buffer, int32_t desired_value);
 
+    const eEndianness ENDIANNESS; // eBig or eLittle
+    const uint8_t BYTES_PER_SAMPLE; // = 3 OR 2 (INT24 or INT16)
+    const uint8_t SAMPLES_PER_FRAME = 2; // = 2; Only using right and left channels
+    const uint16_t FRAMES_PER_BUFFER; // Varies
+
     uint8_t* m_leftBuffer;
     uint8_t* m_rightBuffer;
-
-    eDataEndianness m_endian = litE;
-    const uint8_t BYTES_PER_SAMPLE = 2; // = 3 OR 2 (INT24 or INT16)
-    const uint8_t SAMPLES_PER_FRAME = 2; // = 2; Only using right and left channels
-    const uint16_t FRAMES_PER_BUFFER = 128; // 
 };
 
 #endif
