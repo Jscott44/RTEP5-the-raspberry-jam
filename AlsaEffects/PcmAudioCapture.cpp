@@ -106,7 +106,7 @@ void PcmAudioCapture::pcmLoop()
 		}
 		else
 		{
-			fprintf(stdout, "i2s read successful\n");
+			//fprintf(stdout, "i2s read successful\n");
 		}
 
 		// Pass buffer to callback interface
