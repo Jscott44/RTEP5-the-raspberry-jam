@@ -31,10 +31,10 @@ PcmAudioBase::~PcmAudioBase()
 void PcmAudioBase::initBaseSettings()
 {
 	m_settings->access = SND_PCM_ACCESS_RW_INTERLEAVED; // Right Left Interleaved
-	m_settings->format = SND_PCM_FORMAT_S16_BE; // Signed 24 bits
+	m_settings->format = SND_PCM_FORMAT_S16_LE; // Signed 24 bits
 	m_settings->rate = 96000; // 44.1KHz sample rate
 	m_settings->nchannels = 2; // 2 channels
-	m_settings->frames = (snd_pcm_uframes_t)128; // 44 frames should be stored per buffer
+	m_settings->frames = (snd_pcm_uframes_t)9600; // 44 frames should be stored per buffer
 	m_settings->buffer_size = m_settings->frames * 2 * 2; // Size of buffer to store ALSA data (3 bytes per channel, 2 channels)
 }
 

@@ -75,14 +75,14 @@ void EffectsManager::hasBuffer(uint8_t* buffer)
 /// @brief Processes buffer obtained and passes processed buffer to next object using callback.
 void EffectsManager::effectLoop()
 {
-	printf("Entering effect loop\n");
+	//printf("Entering effect loop\n");
 
 	while (m_running) // Turn false to stop
 	{	
 		// If new buffer has been received
 		if (m_newBuffer)
 		{
-			printf("new buffer received \n"); // DEBUG
+			printf("n\n"); // DEBUG
 
 			// Reset to wait for next callback
 			m_newBuffer = false;
