@@ -16,7 +16,7 @@
 class EffectsManager : public AlsaListener , public GuiListener
 {
 public:
-	EffectsManager(); // Placeholder
+	EffectsManager(eEndianness endian, uint8_t bytes_per_sample, uint16_t frames_per_buffer); // Placeholder
 	~EffectsManager(); // Placeholder
 
 	void registerCallback(EffectListener* callback_ptr);
@@ -33,10 +33,12 @@ private:
 	void applyEffect(ChannelSamples* final_data, ChannelSamples* initial_data);
 
 	void effectLoop();
+
+	AlsaBufferConverter m_bufConverter;
+
 	ChannelSamples* m_incomingSamples;
 	ChannelSamples* m_outgoingSamples;
 
-	AlsaBufferConverter m_bufConverter;
 	EffectListener* m_callbackPtr;
 	uint8_t* m_callbackBuffer;
 

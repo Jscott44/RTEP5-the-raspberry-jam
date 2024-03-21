@@ -2,9 +2,12 @@
 #include <stdio.h>
 
 /// @brief Object can be used to convert uint8 buffers into ChannelSample objects filled with int32s.
-AlsaBufferConverter::AlsaBufferConverter()
-    : m_leftBuffer(new uint8_t[3]),
-    m_rightBuffer(new uint8_t[3])
+AlsaBufferConverter::AlsaBufferConverter(eEndianness endian, uint8_t bytes_per_sample, uint16_t frames_per_buffer)
+    : ENDIANNESS(endian),
+    BYTES_PER_SAMPLE(bytes_per_sample),
+    FRAMES_PER_BUFFER(frames_per_buffer),
+    m_leftBuffer(new uint8_t[BYTES_PER_SAMPLE]),
+    m_rightBuffer(new uint8_t[BYTES_PER_SAMPLE])
 {
     // Buffers initialsed are used when in getBuffer()
 }
@@ -42,7 +45,7 @@ void AlsaBufferConverter::getSamples(ChannelSamples* ret_samples, uint8_t* buffe
 void AlsaBufferConverter::getBuffer(uint8_t* ret_buffer, ChannelSamples* samples)
 {
     // Loop through all frames stored in structure
-    for (unsigned int sampleIndex = 0; sampleIndex < samples->getFramesCount(); ++sampleIndex)
+    for (unsigned int sampleIndex = 0; sampleIndex < FRAMES_PER_BUFFER; ++sampleIndex)
     {
         // For each frame, extract the sample and convert into int24 (in form of 3 uint8s)
         getBufferFromInt32(m_leftBuffer, samples->getLeftElement(sampleIndex));
@@ -68,12 +71,41 @@ void AlsaBufferConverter::getBuffer(uint8_t* ret_buffer, ChannelSamples* samples
 /// @return Int32 value equal to the int24 (including sign).
 int32_t AlsaBufferConverter::getInt32FromBuffer(uint8_t* buffer)
 {
-    // Example to understand procedure:
-    // 0. Lets say int24 value ox 0x800000
-    // 1. Shift int24 to end of the int32 (0x80000000)
-    // 2. Shift int24 back 8 bits. This maintains the sign of the integer and fills the top byte based off the signed (0xFF800000)
-    
-    int32_t retVal = ((buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8)) >> 8;
+    int32_t retVal = 0;
+    if (BYTES_PER_SAMPLE == 2)
+    {
+        switch (ENDIANNESS)
+        {
+        case eBIG:
+            retVal = ((buffer[0] << 24) | (buffer[1] << 16)) >> 16;
+            break;
+        case eLITTLE:
+            retVal = ((buffer[1] << 24) | (buffer[0] << 16)) >> 16;
+            break;
+        default:
+            fprintf(stderr, "Invalid endiannes: %d", ENDIANNESS);
+            break;
+        }
+    }
+    else if (BYTES_PER_SAMPLE == 3)
+    {
+        // Example to understand procedure:
+        // 0. Lets say int24 value ox 0x800000
+        // 1. Shift int24 to end of the int32 (0x80000000)
+        // 2. Shift int24 back 8 bits. This maintains the sign of the integer and fills the top byte based off the signed (0xFF800000)
+        switch (ENDIANNESS)
+        {
+        case eBIG:
+            retVal = ((buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8)) >> 8;
+            break;
+        case eLITTLE:
+            retVal = ((buffer[2] << 24) | (buffer[1] << 16) | (buffer[0] << 8)) >> 8;
+            break;
+        default:
+            fprintf(stderr, "Invalid endiannes: %d", ENDIANNESS);
+            break;
+        }
+    }
     return retVal;
 }
 
@@ -82,24 +114,69 @@ int32_t AlsaBufferConverter::getInt32FromBuffer(uint8_t* buffer)
 /// @param desired_value Int32 that should be converted into an int24 buffer
 void AlsaBufferConverter::getBufferFromInt32(uint8_t* ret_buffer, int32_t desired_value)
 {
-    // Ensure desired_value is not greater than the maximum or less that the minimum signed 24 bit values
-    //If they are, alter value to be max/min
-    const int32_t MAX_INT_24 = 0x7FFFFF;
-    const int32_t MIN_INT_24 = 0Xff800000;
-
-    if (desired_value < MIN_INT_24)
+    if (BYTES_PER_SAMPLE == 2)
     {
-        desired_value = MIN_INT_24;
-    }
-    else if (desired_value > MAX_INT_24)
-    {
-        desired_value = MAX_INT_24;
-    }
+        if (desired_value < INT16_MIN)
+        {
+            desired_value = INT16_MIN;
+        }
+        else if (desired_value > INT16_MAX)
+        {
+            desired_value = INT16_MAX;
+        }
 
-    // Perform bitwise shifts to store relevant values in our return buffer
-    ret_buffer[0] = desired_value >> 16;
-    ret_buffer[1] = desired_value >> 8;
-    ret_buffer[2] = desired_value;
+        switch (ENDIANNESS)
+        {
+        case eBIG:
+            // Perform bitwise shifts to store relevant values in our return buffer
+            ret_buffer[0] = desired_value >> 8;
+            ret_buffer[1] = desired_value;
+            break;
+        case eLITTLE:
+            // Perform bitwise shifts to store relevant values in our return buffer
+            ret_buffer[1] = desired_value >> 8;
+            ret_buffer[0] = desired_value;
+            break;
+        default:
+            fprintf(stderr, "Invalid endiannes: %d", ENDIANNESS);
+            break;
+        }
+    }
+    else if (BYTES_PER_SAMPLE == 3)
+    {
+        // Ensure desired_value is not greater than the maximum or less that the minimum signed 24 bit values
+        //If they are, alter value to be max/min
+        const int32_t MAX_INT_24 = 0x7FFFFF;
+        const int32_t MIN_INT_24 = 0Xff800000;
+
+        if (desired_value < MIN_INT_24)
+        {
+            desired_value = MIN_INT_24;
+        }
+        else if (desired_value > MAX_INT_24)
+        {
+            desired_value = MAX_INT_24;
+        }
+
+        switch (ENDIANNESS)
+        {
+        case eBIG:
+            // Perform bitwise shifts to store relevant values in our return buffer
+            ret_buffer[0] = desired_value >> 16;
+            ret_buffer[1] = desired_value >> 8;
+            ret_buffer[2] = desired_value;
+            break;
+        case eLITTLE:
+            // Perform bitwise shifts to store relevant values in our return buffer
+            ret_buffer[2] = desired_value >> 16;
+            ret_buffer[1] = desired_value >> 8;
+            ret_buffer[0] = desired_value;
+            break;
+        default:
+            fprintf(stderr, "Invalid endiannes: %d", ENDIANNESS);
+            break;
+        }
+    }
 }
 
 
