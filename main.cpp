@@ -83,7 +83,7 @@ int main()
 
     PcmAudioPlayback* play = new PcmAudioPlayback("default");
 
-    PcmAudioCapture* cap = new PcmAudioCapture("default");
+    PcmAudioCapture* cap = new PcmAudioCapture("hw:1,1");
 
     cap->registerCallback(em);
     em->registerCallback(play);
