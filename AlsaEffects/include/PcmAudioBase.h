@@ -7,7 +7,6 @@
 
 struct PcmAudioSettings
 {
-	const char* device_name; /* device name (default pcm device) */
 	snd_pcm_access_t access; /* data access type */
 	snd_pcm_format_t format;/* digital audio format */
 	snd_pcm_uframes_t frames; /* number of audio frames stored in buffer (period size))*/
@@ -20,18 +19,19 @@ class PcmAudioBase
 {
 public:
 
-	PcmAudioBase();
+	PcmAudioBase(snd_pcm_format_t format, snd_pcm_uframes_t frame_count, unsigned int sample_rate);
 	~PcmAudioBase(); //destructor
 protected:
 	// Methods used by children classes
 	int getBufferSize();
 	snd_pcm_uframes_t getFrames();
 	snd_pcm_t* getHandlePtr();
-private:
-	virtual snd_pcm_stream_t getStreamDirection() = 0; // Initialises Pcm Stream Direction. Must be initialised for each child to ensure the stream is desired
 
-	void initBaseSettings();
-	void openPcmDevice();
+	//void openPcmDevice(const char* device_name, snd_pcm_stream_t direction); // MUST BE CALLED IN EACH CHILDS CONSTRUCTOR
+	void openPcmDevice(const char* device_name, snd_pcm_stream_t direction); // MUST BE CALLED IN EACH CHILDS CONSTRUCTOR
+
+private:
+	void initBaseSettings(snd_pcm_format_t format, snd_pcm_uframes_t frame_count, unsigned int sample_rate);
 
 	snd_pcm_t* m_handle;
 

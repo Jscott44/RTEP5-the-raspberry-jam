@@ -1,3 +1,0 @@
-MyTest 0 0
----
-MyTest

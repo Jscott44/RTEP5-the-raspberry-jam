@@ -1,25 +1,26 @@
 #include "include/PcmAudioPlayback.h"
 
-PcmAudioPlayback::PcmAudioPlayback()
-	: PcmAudioBase()
+/// @brief Object can be used to write I2S Int24s to the PCM pins of the RPI.
+PcmAudioPlayback::PcmAudioPlayback(const char* device_name, snd_pcm_format_t format, snd_pcm_uframes_t frame_count, unsigned int sample_rate)
+	: PcmAudioBase(format, frame_count, sample_rate)
 {
+	// Open device and specify that this object is used for playback
+	openPcmDevice(device_name, SND_PCM_STREAM_PLAYBACK);
 }
+
 
 PcmAudioPlayback::~PcmAudioPlayback()
 {
 }
 
-snd_pcm_stream_t PcmAudioPlayback::getStreamDirection()
-{
-	return SND_PCM_STREAM_PLAYBACK;
-}
-
+/// @brief From EffectListener. Writes received buffer to the PCM pins.
+/// @param buffer Buffer containing Int24s that should be written.
 void PcmAudioPlayback::hasAlteredBuffer(uint8_t* buffer)
 {
 	// Inspired by:
 	//	   https://www.linuxjournal.com/article/6735
 
-	int rc = snd_pcm_writei(getHandlePtr(), buffer, getFrames());
+	int rc = snd_pcm_writei(getHandlePtr(), buffer, getFrames()); //Blocking
 	if (rc == -EPIPE)
 	{
 		/* EPIPE means underrun */
@@ -36,6 +37,6 @@ void PcmAudioPlayback::hasAlteredBuffer(uint8_t* buffer)
 	}
 	else
 	{
-		fprintf(stdout, "i2s write successful");
+		//fprintf(stdout, "i2s write successful\n");
 	}
 }

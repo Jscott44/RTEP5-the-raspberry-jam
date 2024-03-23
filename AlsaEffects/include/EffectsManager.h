@@ -6,9 +6,6 @@
 #include "EffectBase.h"
 #include "AlsaBufferConverter.h"
 
-// Thread safe interactions
-#include "ThreadBlocker.h"
-
 // Will trigger callback
 #include "AlsaListener.h"
 #include "GuiListener.h"
@@ -19,7 +16,7 @@
 class EffectsManager : public AlsaListener , public GuiListener
 {
 public:
-	EffectsManager(); // Placeholder
+	EffectsManager(eEndianness endian, uint8_t bytes_per_sample, uint16_t frames_per_buffer); // Placeholder
 	~EffectsManager(); // Placeholder
 
 	void registerCallback(EffectListener* callback_ptr);
@@ -33,19 +30,24 @@ public:
 	void hasBuffer(uint8_t* buffer) override;
 
 private:
-	ChannelSamples applyEffect(ChannelSamples initial_data);
+	void applyEffect(ChannelSamples* final_data, ChannelSamples* initial_data);
 
 	void effectLoop();
 
 	AlsaBufferConverter m_bufConverter;
+
+	ChannelSamples* m_incomingSamples;
+	ChannelSamples* m_outgoingSamples;
+
 	EffectListener* m_callbackPtr;
 	uint8_t* m_callbackBuffer;
 
-	ThreadBlocker m_threadInterface;
+	//ThreadBlocker m_threadInterface;
+	bool m_newBuffer;
 
 	bool m_running;
 	std::vector<EffectBase*> m_activeEffects;
-	std::thread* m_effectThread;
+	std::thread* m_thread;
 };
 
 #endif

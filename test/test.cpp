@@ -27,15 +27,19 @@ BOOST_AUTO_TEST_CASE(PassTest)
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 };
+    uint8_t finalData[264];
 
+	AlsaBufferConverter* test = new AlsaBufferConverter;
+    ChannelSamples* initial_data = new ChannelSamples(44);
+    test->getSamples(initial_data, originalData);
+    test->getBuffer(finalData,initial_data);
 
-	AlsaBufferConverter test;
-    ChannelSamples exampleSamples = test.getSamples(buf);
-    std::unique_ptr<uint8_t> returnedData = test.getBuffer(egSamples);
-	
-    for (int index = 0; index < (test.getBytesPerSample() * test.getSamplesPerFrame * test.getFramesPerBuffer()); ++index)
+    for (size_t i = 0; i < sizeof(originalData); ++i)
     {
-        BOOST_CHECK_EQUAL(originalData[index],returnedData.get()[index]);
+        BOOST_CHECK_EQUAL(originalData[i],finalData.get()[i]);
     }
+
+    delete test;
+    delete initial_data;
 }
 
