@@ -1,11 +1,21 @@
 #define BOOST_TEST_MODULE AlsaBufferConverterTests
 #include <boost/test/unit_test.hpp>
 #include "AlsaBufferConverter.h"
+#include "DataFormat.h"
 
 
 BOOST_AUTO_TEST_CASE(PassTest)
 {
-    uint8_t originalData[] = { 0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
+    // Test Setup:
+    eEndianness testEndian = eBIG;
+    uint8_t testBytesPerSymbol = 3;
+    uint16_t testFramesPerBuffer = 44;
+
+    // Create objects to be used in test
+	AlsaBufferConverter* testConverter = new AlsaBufferConverter(testEndian,testBytesPerSymbol,testFramesPerBuffer);
+    ChannelSamples* testSamples = new ChannelSamples(testFramesPerBuffer);
+
+    uint8_t input[] = { 0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
@@ -27,19 +37,20 @@ BOOST_AUTO_TEST_CASE(PassTest)
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 ,
                       0x7F, 0xFF, 0xFF, 0x40, 0x00, 0x00, 0xc0, 0x00, 0x00, 0x80, 0x00, 0x00 };
-    uint8_t finalData[264];
+    uint8_t output[sizeof(input)];
 
-	AlsaBufferConverter* test = new AlsaBufferConverter;
-    ChannelSamples* initial_data = new ChannelSamples(44);
-    test->getSamples(initial_data, originalData);
-    test->getBuffer(finalData,initial_data);
+    // Perform conversion
+    testConverter->getSamples(testSamples, input);
+    testConverter->getBuffer(output, testSamples);
 
-    for (size_t i = 0; i < sizeof(originalData); ++i)
+    // Test to see if conversion was successful
+    for (size_t i = 0; i < sizeof(input); ++i)
     {
-        BOOST_CHECK_EQUAL(originalData[i],finalData.get()[i]);
+        BOOST_CHECK_EQUAL(input[i],output[i]);
     }
 
-    delete test;
-    delete initial_data;
+    // Free memory allocated for test
+    delete testConverter;
+    delete testSamples;
 }
 
