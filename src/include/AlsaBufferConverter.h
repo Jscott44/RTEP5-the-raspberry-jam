@@ -27,10 +27,8 @@ public:
     AlsaBufferConverter(eEndianness endian, uint8_t bytes_per_sample, uint16_t frames_per_buffer);
     ~AlsaBufferConverter();
 
-    //ChannelSamples getSamples(uint8_t* buffer);
     void getSamples(ChannelSamples* ret_samples, uint8_t* buffer);
 
-    //std::unique_ptr<uint8_t> getBuffer(ChannelSamples samples);
     void getBuffer(uint8_t* ret_buffer, ChannelSamples* samples);
 
     const uint8_t getBytesPerSample() { return BYTES_PER_SAMPLE; };
@@ -42,7 +40,7 @@ private:
 
     const eEndianness ENDIANNESS; // eBig or eLittle
     const uint8_t BYTES_PER_SAMPLE; // = 3 OR 2 (INT24 or INT16)
-    const uint8_t SAMPLES_PER_FRAME = 2; // = 2; Only using right and left channels
+    const uint8_t SAMPLES_PER_FRAME = 2; // = 2; Stereo
     const uint16_t FRAMES_PER_BUFFER; // Varies
 
     uint8_t* m_leftBuffer;

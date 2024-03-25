@@ -55,6 +55,8 @@ BOOST_AUTO_TEST_CASE(INT24BigEndian)
     BOOST_TEST(input == output);
 }
 
+
+
 BOOST_AUTO_TEST_CASE(INT24LittleEndian)
 {
     // Test Setup: INT24 Little Endian
@@ -105,9 +107,11 @@ BOOST_AUTO_TEST_CASE(INT24LittleEndian)
     BOOST_TEST(input == output);
 }
 
+
+
 BOOST_AUTO_TEST_CASE(INT16BigEndian)
 {
-    // Test Setup: INT24 Big Endian
+    // Test Setup: INT16 Big Endian
     eEndianness testEndian = eBIG;
     uint8_t testBytesPerSymbol = 2;
 
@@ -155,9 +159,11 @@ BOOST_AUTO_TEST_CASE(INT16BigEndian)
     BOOST_TEST(input == output);
 }
 
+
+
 BOOST_AUTO_TEST_CASE(INT16LittleEndian)
 {
-    // Test Setup: INT24 Little Endian
+    // Test Setup: INT16 Little Endian
     eEndianness testEndian = eLITTLE;
     uint8_t testBytesPerSymbol = 2;
 

@@ -7,9 +7,6 @@
 class AlsaListener
 {
 public:
-	//AlsaListener();
-	//~AlsaListener();
-
 	virtual void hasBuffer(uint8_t* buffer) = 0;
 
 protected:

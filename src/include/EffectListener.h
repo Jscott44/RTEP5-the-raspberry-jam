@@ -6,9 +6,6 @@
 class EffectListener
 {
 public:
-	//EffectListener();
-	//~EffectListener();
-
 	virtual void hasAlteredBuffer(uint8_t* buffer) = 0;
 
 private:
