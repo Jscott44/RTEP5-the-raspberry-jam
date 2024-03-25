@@ -5,12 +5,12 @@ SET(CMAKE_CXX_FLAGS  "-pthread")
 
 
 project ("RTEP-the-raspberry-jam")
-add_subdirectory(AlsaEffects)
+add_subdirectory(src)
 add_subdirectory(test)
 
 add_executable(rpj main.cpp)
 
-target_link_libraries(rpj PUBLIC AlsaEffects)
+target_link_libraries(rpj PUBLIC src)
 
 find_package(ALSA REQUIRED)
 if (ALSA_FOUND)
