@@ -225,5 +225,17 @@ void EffectsManager::applyEffect(ChannelSamples* final_data, ChannelSamples* ini
 /// @param new_val 
 void EffectsManager::alterEffect(EffectBase* effect, ParamIndx parameter, int32_t new_val)
 {
+	// Tell object that it is not allowed to apply effects
+	m_alteringEffects = true;
+
+	// Loop through all stored effects
+	for (auto it = m_activeEffects.begin(); it != m_activeEffects.end(); ++it)
+	{
+		if (effect == *it) // If the effect given in the method argument == a stored method, delete it
+		{
+			(*it)->alterEffect(parameter, new_val);
+		}
+	}
+
 	return; // Placeholder
 }
