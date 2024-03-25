@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE AlsaBufferConverterTests
+#define BOOST_TEST_MODULE Test
 #include <boost/test/unit_test.hpp>
 #include "AlsaBufferConverter.h"
 #include "DataFormat.h"
@@ -43,14 +43,11 @@ BOOST_AUTO_TEST_CASE(PassTest)
     testConverter->getSamples(testSamples, input);
     testConverter->getBuffer(output, testSamples);
 
-    // Test to see if conversion was successful
-    for (size_t i = 0; i < sizeof(input); ++i)
-    {
-        BOOST_CHECK_EQUAL(input[i],output[i]);
-    }
-
     // Free memory allocated for test
     delete testConverter;
     delete testSamples;
+
+    // Test to see if conversion was successful
+    BOOST_TEST(input == output);
 }
 
