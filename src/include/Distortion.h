@@ -1,33 +1,18 @@
-#include "EffectBase.h"
-
 #ifndef DISTORTION_H
 #define DISTORTION_H
 
+#include "EffectBase.h"
 #include <cstdint>
 #include <iostream>
 
 class Distortion : public EffectBase
 {
 public:
-	
-	int32_t gain;
-
-	enum params {
-		gainParam = 1,
-		} params;
-		
-
-	Distortion(){
-		gain = 1;
-	
-	};
-
+	Distortion();
 	int32_t applyEffect(int32_t current_sample) override;
-
-	void changeParam(int32_t param, float val) override;
-		
-
+	void alterEffect(ParamIndx parameter, float new_val) override;
 private:
+	float m_gain;
 };
 
 #endif
