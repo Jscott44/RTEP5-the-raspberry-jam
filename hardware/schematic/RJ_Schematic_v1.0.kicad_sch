@@ -1,0 +1,123 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid aad73419-e885-44be-b82c-a48aa5e579dd)
+
+  (paper "A4")
+
+  (title_block
+    (title "The Raspberry Jam")
+    (date "2024-02-05")
+    (rev "REV A0")
+    (company "Engineer: Jed Scott")
+  )
+
+  (lib_symbols
+  )
+
+
+  (sheet (at 24.13 25.4) (size 30.48 22.86) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 02b1044c-383d-4a67-a9f6-1751bdb852d0)
+    (property "Sheetname" "Input Connectors and Buffers" (at 24.13 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "InputConnectors.kicad_sch" (at 24.13 48.8446 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "RJ_Schematic_v1.0"
+        (path "/aad73419-e885-44be-b82c-a48aa5e579dd" (page "2"))
+      )
+    )
+  )
+
+  (sheet (at 199.39 25.4) (size 30.48 22.86) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 092454f9-b673-4462-8348-87c8110e784c)
+    (property "Sheetname" "Headphone Output" (at 199.39 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "HPOUT.kicad_sch" (at 199.39 48.8446 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "RJ_Schematic_v1.0"
+        (path "/aad73419-e885-44be-b82c-a48aa5e579dd" (page "6"))
+      )
+    )
+  )
+
+  (sheet (at 110.49 25.4) (size 30.48 22.86) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid ce3cbf13-1279-488b-a86a-e3dad5f22f48)
+    (property "Sheetname" "EXT Connectors" (at 110.49 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "EXTConnectors.kicad_sch" (at 110.49 48.8446 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "RJ_Schematic_v1.0"
+        (path "/aad73419-e885-44be-b82c-a48aa5e579dd" (page "4"))
+      )
+    )
+  )
+
+  (sheet (at 242.57 25.4) (size 30.48 22.86) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid dbe1be6d-0c33-44bd-9323-ec7c97fbfad0)
+    (property "Sheetname" "MECH_REVHIST" (at 242.57 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "MECH_REVHIST.kicad_sch" (at 242.57 48.8446 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "RJ_Schematic_v1.0"
+        (path "/aad73419-e885-44be-b82c-a48aa5e579dd" (page "7"))
+      )
+    )
+  )
+
+  (sheet (at 67.31 25.4) (size 30.48 22.86) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid dcb974ee-3b3a-4100-a5cb-37b7d1d57e80)
+    (property "Sheetname" "CS4271" (at 67.31 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "CS4271.kicad_sch" (at 67.31 48.8446 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "RJ_Schematic_v1.0"
+        (path "/aad73419-e885-44be-b82c-a48aa5e579dd" (page "3"))
+      )
+    )
+  )
+
+  (sheet (at 154.94 25.4) (size 30.48 22.86) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid f8f3490b-5c8d-4808-a04e-2665c0d396d4)
+    (property "Sheetname" "Output Connectors and Buffers" (at 154.94 24.6884 0)
+      (effects (font (size 1.27 1.27)) (justify left bottom))
+    )
+    (property "Sheetfile" "OutputBuffer.kicad_sch" (at 154.94 48.8446 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "RJ_Schematic_v1.0"
+        (path "/aad73419-e885-44be-b82c-a48aa5e579dd" (page "5"))
+      )
+    )
+  )
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)

@@ -1,0 +1,17 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid 3807abd0-3a3c-4e67-9d9b-8ad8f9dcbfa9)
+
+  (paper "A4")
+
+  (title_block
+    (title "The Raspberry Jam")
+    (date "2024-02-05")
+    (rev "REV A0")
+    (company "Engineer: Jed Scott")
+  )
+
+  (lib_symbols
+  )
+
+)
