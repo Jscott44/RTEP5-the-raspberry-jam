@@ -15,9 +15,6 @@ public:
 	float delayMS;
 	float decay;
 	std::vector<double> coefficients;
-	//int32_t* delaySample;
-	//std::vector<double>* coeffs;
-	//Fir1 delayLine(coeffs, delaySample);
 	std::unique_ptr<Fir1> delayLinePtr;
 
 	enum params {
@@ -25,8 +22,6 @@ public:
 		decayParam = 2,
 		} params;
 		
-	
-
 	std::vector<double> createCoeffs(int32_t taps){
 		for (unsigned int i=0; i < taps-1; i++){
 			coefficients.push_back(0);
@@ -40,8 +35,6 @@ public:
 		delayMS = 100;
 		decay = 0.2;
 		int delaySample = delayMS * 0.001 * sampleRate; //Calculates delay based on samplerate	
-		//coeffs = createCoeffs(delaySample);
-		
 
 		delayLinePtr.reset(new Fir1 (createCoeffs(delaySample)));
 	};
