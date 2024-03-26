@@ -1,0 +1,61 @@
+The Raspberry Jam Naming Conventions:
+
+C++:
+- General:
+	- Digits should be avoided in any names unless absolutely necessary
+		- E.g. i2sCounter is fine
+		- E.g. add2() is not fine. Use addTwo() instead.
+	- All classes should use header files and C++ files
+		- Header files should contain all the method and variable declarations
+		- C++ should expand on the methods and implement
+
+- Variables:
+	- Variables should be named using camel case. No single letter variables allowed (even when using 'i' (or similar) in a for loop)
+	- e.g. buttonStateCounter
+	- Name should be as long as necessary to ensure a reader can clearly understand what they are looking at
+		- E.g. buttonStateCounter is preferred over counter (or even worse, 'i')
+	- No acronyms unless you are certain everyone else will be able to easily understand them
+		- common acronyms such as I2S is fine
+		- uncommon acronyms are not fine. E.g. if you have a class called EffectInterface, don't call an object of this class EI
+	- Initialise variables only when they are to start being used
+		- OK:
+			int currentButtonState = getButtonState();
+		- NOT OK:
+			int currentButtonState;
+			// Other code....
+			currentButtonState = getButtonState();
+	- Pointer variables should ensure that the * is next to the type instead of the variable name
+		- E.g. int* myIntegerPointer
+
+- Constant Variables:
+	- Constants should use all caps and have underscores between words
+	- E.g HOUR_TO_SECONDS
+
+- Functions:
+	- Functions should be named using camel case and clearly indicate what the function does.
+	- All functions must start with a verb
+	- Function arguments should all be lower case with underscores between words
+	- E.g. getSumOfVariables(int variable_one, int variable_two)
+
+- Classes:
+	- Class names should use pascal case and should be a noun
+	- E.g. EffectInterface
+
+- Class constructors:
+	- Constructors should use initialisation lists rather than initialising members within the constructor
+
+- Class members
+	- Member should use the name naming conventions as variables, but with a 'm_' prefix
+	- E.g. m_stateCounter
+
+- Class methods:
+	- Methods should use the same naming conventions as functions
+
+
+Files:
+	-C++ Class Header Files and Source Files:
+		- Same as the class name
+	
+	Other files:
+		- Pascal case with dashes between words
+		- E.g. Additional-Text-File.txt
