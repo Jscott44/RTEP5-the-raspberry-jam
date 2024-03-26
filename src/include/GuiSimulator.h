@@ -11,7 +11,7 @@ public:
 
 	EffectBase* addEffect(EffectIndx desired_effect);
 	void removeEffect(EffectBase* effect);
-	void alterEffect(EffectBase* effect, ParamIndx parameter, int32_t new_val);
+	void alterEffect(EffectBase* effect, ParamIndx parameter, float new_val);
 private:
     GuiListener* m_callbackPtr;
 };

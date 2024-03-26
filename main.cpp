@@ -4,6 +4,7 @@
 #include "src/include/PcmAudioCapture.h"
 #include "src/include/PcmAudioPlayback.h"
 #include "src/include/EffectBase.h"
+#include "src/include/GuiSimulator.h"
 
 int main()
 {
@@ -52,17 +53,28 @@ int main()
         break;
     }
 
+    GuiSimulator* gui = new GuiSimulator();
+
     EffectsManager* em = new EffectsManager(endian, bytesPerSample, framesPerBuffer);
 
     PcmAudioPlayback* play = new PcmAudioPlayback(playbackDevice, format, framesPerBuffer, sampleRate);
 
     PcmAudioCapture* cap = new PcmAudioCapture(captureDevice, format, framesPerBuffer, sampleRate);
 
+    gui->registerCallback(em);
     cap->registerCallback(em);
     em->registerCallback(play);
 
     cap->start();
+    getchar();
 
+    EffectBase* effect = gui->addEffect(DistortionIndx);
+    getchar();
+
+    gui->alterEffect(effect,eVolume,0);
+    getchar();
+
+    gui->removeEffect(effect);
     getchar();
 
     printf("\ndeleting cap\n");
@@ -71,5 +83,7 @@ int main()
     delete em;
     printf("\ndeleting play\n");
     delete play;
+    printf("\ndeleting gui\n");
+    delete gui;
     return 0;
 }
