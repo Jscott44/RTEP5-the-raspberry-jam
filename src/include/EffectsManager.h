@@ -29,6 +29,9 @@ public:
 	// Alsa Listener Methods
 	void hasBuffer(uint8_t* buffer) override;
 
+	// Testing
+	size_t getEffectCount();
+
 private:
 	void applyEffect(ChannelSamples* final_data, ChannelSamples* initial_data);
 
