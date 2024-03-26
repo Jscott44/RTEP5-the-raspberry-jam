@@ -1,8 +1,7 @@
+#ifndef REVERB_H
+#define REVERB_H
+
 #include "EffectBase.h"
-
-#ifndef DISTORTION_H
-#define DISTORTION_H
-
 #include <cstdint>
 #include <iostream>
 #include <memory>

@@ -1,5 +1,7 @@
 #include "include/EffectsManager.h"
 #include <stdio.h>
+#include "include/Distortion.h"
+#include "include/Reverb.h"
 
 
 /// @brief Object can be used to process samples. Implements GUI and Alsa callbacks.

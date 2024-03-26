@@ -1,2 +1,2 @@
-add_library(src STATIC AlsaBufferConverter.cpp EffectsManager.cpp AlsaListener.cpp PcmAudioBase.cpp PcmAudioCapture.cpp PcmAudioPlayback.cpp GuiSimulator.cpp)
+add_library(src STATIC AlsaBufferConverter.cpp EffectsManager.cpp AlsaListener.cpp PcmAudioBase.cpp PcmAudioCapture.cpp PcmAudioPlayback.cpp GuiSimulator.cpp Distortion.cpp Reverb.cpp)
 target_include_directories(src PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
