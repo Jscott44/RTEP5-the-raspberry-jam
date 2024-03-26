@@ -239,5 +239,7 @@ void EffectsManager::alterEffect(EffectBase* effect, ParamIndx parameter, float 
 		}
 	}
 
+	m_alteringEffects = false;
+	
 	return; // Placeholder
 }
