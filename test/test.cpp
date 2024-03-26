@@ -1,5 +1,7 @@
 #define BOOST_TEST_MODULE Test
 #include <boost/test/unit_test.hpp>
+
+// Test Suite = BufferConversions
 #include "AlsaBufferConverter.h"
 #include "DataFormat.h"
 
@@ -213,3 +215,102 @@ BOOST_AUTO_TEST_CASE(INT16LittleEndian)
 
 BOOST_AUTO_TEST_SUITE_END();
 
+
+
+
+
+
+
+
+
+
+
+
+
+// Test Suite == GuiEffectsManagerInteractions
+#include "GuiSimulator.h"
+#include "EffectsManager.h"
+
+BOOST_AUTO_TEST_SUITE(GuiEffectsManagerInteractions)
+
+BOOST_AUTO_TEST_CASE(NoEffectsOnStartup)
+{
+    eEndianness endian = eLITTLE;
+    uint8_t bytesPerSample = 2;
+    uint16_t framesPerBuffer = 9600;
+
+    EffectsManager* testEm = new EffectsManager(endian, bytesPerSample, framesPerBuffer);
+
+    size_t testVal = testEm->getEffectCount();
+    BOOST_TEST(testVal == 0);
+
+    delete testEm;
+}
+
+BOOST_AUTO_TEST_CASE(AddEffectSingleCount)
+{
+    eEndianness endian = eLITTLE;
+    uint8_t bytesPerSample = 2;
+    uint16_t framesPerBuffer = 9600;
+
+    GuiSimulator testGui;
+    EffectsManager* testEm = new EffectsManager(endian, bytesPerSample, framesPerBuffer);
+
+    testGui.registerCallback(testEm);
+
+    testGui.addEffect(DistortionIndx);
+
+    size_t testVal = testEm->getEffectCount();
+
+    BOOST_TEST(testVal == 1);
+
+    delete testEm;
+}
+
+BOOST_AUTO_TEST_CASE(AddEffectMultipleCount)
+{
+    eEndianness endian = eLITTLE;
+    uint8_t bytesPerSample = 2;
+    uint16_t framesPerBuffer = 9600;
+
+    GuiSimulator testGui;
+    EffectsManager* testEm = new EffectsManager(endian, bytesPerSample, framesPerBuffer);
+
+    testGui.registerCallback(testEm);
+
+    testGui.addEffect(DistortionIndx);
+    testGui.addEffect(DistortionIndx);
+    testGui.addEffect(DistortionIndx);
+
+    size_t testVal = testEm->getEffectCount();
+
+    BOOST_TEST(testVal == 3);
+
+    delete testEm;
+}
+
+BOOST_AUTO_TEST_CASE(AddRemoveEffectCount)
+{
+    eEndianness endian = eLITTLE;
+    uint8_t bytesPerSample = 2;
+    uint16_t framesPerBuffer = 9600;
+
+    GuiSimulator testGui;
+    EffectsManager* testEm = new EffectsManager(endian, bytesPerSample, framesPerBuffer);
+
+    testGui.registerCallback(testEm);
+
+    testGui.addEffect(DistortionIndx);
+    testGui.addEffect(DistortionIndx);
+    EffectBase* basePtr = testGui.addEffect(DistortionIndx);
+
+    testGui.removeEffect(basePtr);
+
+    size_t testVal = testEm->getEffectCount();
+
+    BOOST_TEST(testVal == 2);
+
+    delete testEm;
+}
+
+BOOST_AUTO_TEST_SUITE_END();
