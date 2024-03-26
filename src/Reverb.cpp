@@ -2,9 +2,10 @@
 
 Reverb::Reverb()
 	: m_delayMS(100),
-	  m_decay(0.2),
-	  m_delayLinePtr(new Fir1(createCoeffs(m_delayMS * 0.001 * m_sampleRate))) //Calculates delay based on samplerate	
+	  m_decay(0.2)
 {
+	int delaySample = m_delayMS * 0.001 * m_sampleRate;
+	//m_delayLinePtr.reset(new Fir1(createCoeffs(delaySample)));
 }
 
 std::vector<double> Reverb::createCoeffs(int32_t taps)
@@ -19,9 +20,10 @@ std::vector<double> Reverb::createCoeffs(int32_t taps)
 
 int32_t Reverb::applyEffect(int32_t current_sample)
 {
-	double tempVal = current_sample/pow(2, 31) + m_decay * m_delayLinePtr->filter(current_sample/pow(2, 31));
-	int32_t retVal = tempVal * pow(2, 31);
-	return retVal;
+	//double tempVal = current_sample/pow(2, 31) + m_decay * m_delayLinePtr->filter(current_sample/pow(2, 31));
+	//int32_t retVal = tempVal * pow(2, 31);
+	//return retVal;
+	return current_sample;
 }
 
 void Reverb::alterEffect(ParamIndx parameter, float new_val)
