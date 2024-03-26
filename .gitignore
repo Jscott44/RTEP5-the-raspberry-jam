@@ -32,5 +32,13 @@
 *.app
 
 # Visual Studio Development
+.vscode
 .vs
 out
+
+#CMake
+build/
+cmake_install.cmake
+CMakeFiles
+Makefile
+CMakeCache.txt
