@@ -1,5 +1,4 @@
 #include "Distortion.h"
-#include "sine_wave_gen/AudioFile.h"
 #include <filesystem>
 
 int32_t Distortion::applyEffect(int32_t current_sample)
@@ -22,30 +21,30 @@ void Distortion::changeParam(int32_t param, float val){
 		}
 }
 
-int main()
-{
-//	AudioFile<int32_t> sinWave;
-//
-//	sinWave.load("genna_blyat.wav");
-//
-//	Distortion distort;
-//	
-//	std::cout << distort.gain << std::endl;
-//
-//	distort.changeParam(distort.gainParam ,50);
-//
-//	std::cout << distort.gain << std::endl;
-//
-//        for (int i = 0; i < sinWave.getNumSamplesPerChannel(); i++)
-//        {
-//            for (int channel = 0; channel < sinWave.getNumChannels(); channel++)
-//            {
-//		//std::cout << sinWave.samples[channel][i] << std::endl;
-//                sinWave.samples[channel][i] = distort.applyEffect(sinWave.samples[channel][i]);
-//		//std::cout << sinWave.samples[channel][i] << std::endl;
-//            }
-//        }
-//	
-//	sinWave.save("distortion_blyat.wav");
-//
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

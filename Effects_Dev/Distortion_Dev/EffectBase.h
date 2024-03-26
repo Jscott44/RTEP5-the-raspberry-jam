@@ -13,7 +13,6 @@ public:
 	EffectBase(){
 		volume = 0.2;
 	}; // Placeholder
-	//~EffectBase(); // Placeholder
 	virtual int32_t applyEffect(int32_t current_sample) = 0; // Dario Note: Override this method when you want to add effect in children classes
 
 	virtual void changeParam(int32_t param, float val) = 0;
