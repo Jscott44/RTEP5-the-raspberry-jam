@@ -71,7 +71,7 @@ int main()
     EffectBase* effect = gui->addEffect(DistortionIndx);
     getchar();
 
-    gui->alterEffect(effect,eVolume,2);
+    gui->alterEffect(effect,eVolume,0);
     getchar();
 
     gui->removeEffect(effect);

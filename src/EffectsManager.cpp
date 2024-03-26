@@ -192,6 +192,8 @@ void EffectsManager::removeEffect(EffectBase* effect)
 /// @param initial_data Object containing samples that should be processed.
 void EffectsManager::applyEffect(ChannelSamples* final_data, ChannelSamples* initial_data)
 {
+	printf("%d", m_activeEffects.size());
+
 	// No point going into loop if we have no effects
 	if (m_activeEffects.size() == 0)
 	{
