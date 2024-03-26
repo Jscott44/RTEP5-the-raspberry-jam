@@ -15,7 +15,7 @@ void GuiSimulator::removeEffect(EffectBase* effect)
     m_callbackPtr->removeEffect(effect);
 }
 
-void GuiSimulator::alterEffect(EffectBase* effect, ParamIndx parameter, int32_t new_val)
+void GuiSimulator::alterEffect(EffectBase* effect, ParamIndx parameter, float new_val)
 {
     m_callbackPtr->alterEffect(effect, parameter, new_val);
 }
