@@ -68,12 +68,31 @@ int main()
     cap->start();
     getchar();
 
+    // Add distortion
     EffectBase* effect = gui->addEffect(DistortionIndx);
     getchar();
 
-    gui->alterEffect(effect,eVolume,2);
+    // Increase gain 1->50
+    gui->alterEffect(effect,eGain,50);
     getchar();
 
+    // Remove distortion
+    gui->removeEffect(effect);
+    getchar();
+
+    // Add reverb
+    effect = gui->addEffect(ReverbIndx);
+    getchar();
+
+    // Change Delay 100 -> 400
+    gui->alterEffect(effect, eDelayMs, 400);
+    getchar();
+
+    // Change Decay 0.2 -> 0.8
+    gui->alterEffect(effect, eDecay, 0.8);
+    getchar();
+
+    // Remove distortion
     gui->removeEffect(effect);
     getchar();
 

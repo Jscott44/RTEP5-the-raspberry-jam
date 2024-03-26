@@ -7,8 +7,6 @@ project ("RTEP-the-raspberry-jam")
 add_subdirectory(src)
 add_subdirectory(test)
 
-#find_package(fir REQUIRED)
-
 add_executable(rpj main.cpp)
 
 target_link_libraries(rpj src)
