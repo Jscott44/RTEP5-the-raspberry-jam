@@ -24,7 +24,7 @@ public:
 	// Gui Listener Methods
 	EffectBase* addEffect(EffectIndx desired_effect) override;
 	void removeEffect(EffectBase* effect) override;
-	void alterEffect(EffectBase* effect, ParamIndx parameter, int32_t new_val) override;
+	void alterEffect(EffectBase* effect, ParamIndx parameter, float new_val) override;
 
 	// Alsa Listener Methods
 	void hasBuffer(uint8_t* buffer) override;

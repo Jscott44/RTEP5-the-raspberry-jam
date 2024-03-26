@@ -223,7 +223,7 @@ void EffectsManager::applyEffect(ChannelSamples* final_data, ChannelSamples* ini
 /// @param effect 
 /// @param parameter 
 /// @param new_val 
-void EffectsManager::alterEffect(EffectBase* effect, ParamIndx parameter, int32_t new_val)
+void EffectsManager::alterEffect(EffectBase* effect, ParamIndx parameter, float new_val)
 {
 	// Tell object that it is not allowed to apply effects
 	m_alteringEffects = true;

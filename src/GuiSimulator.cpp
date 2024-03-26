@@ -7,7 +7,7 @@ void GuiSimulator::registerCallback(GuiListener* ptr)
 
 EffectBase* GuiSimulator::addEffect(EffectIndx desired_effect)
 {
-    m_callbackPtr->addEffect(desired_effect);
+    return m_callbackPtr->addEffect(desired_effect);
 }
 
 void GuiSimulator::removeEffect(EffectBase* effect)

@@ -22,9 +22,9 @@ public:
 	//EffectBase() ; // Placeholder
 	//~EffectBase(); // Placeholder
 	virtual int32_t applyEffect(int32_t current_sample) = 0; // Dario Note: Override this method when you want to add effect in children classes
-	virtual void alterEffect(ParamIndx parameter, int32_t new_val) = 0;
+	virtual void alterEffect(ParamIndx parameter, float new_val) = 0;
 private:
-	int32_t volume = 0;
+	float m_volume = 0;
 };
 
 
@@ -37,7 +37,7 @@ class Distortion : public EffectBase
 		return current_sample / 2;
 	}
 
-	void alterEffect(ParamIndx parameter, int32_t new_val)
+	void alterEffect(ParamIndx parameter, float new_val)
 	{
 		// Will need a switch statement here to alter the desired parameters for this class
 		return;
@@ -50,7 +50,7 @@ class Reverb : public EffectBase
 		return current_sample;
 	}
 
-	void alterEffect(ParamIndx parameter, int32_t new_val)
+	void alterEffect(ParamIndx parameter, float new_val)
 	{
 		return;
 	}
