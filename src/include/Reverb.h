@@ -11,16 +11,31 @@ class Reverb : public EffectBase
 {
 public:
 	Reverb();
-	std::vector<double> createCoeffs(int32_t taps);
+	void write(int32_t current_sample);
+	int32_t applyEffect(int32_t current_sample);
 
-	int32_t applyEffect(int32_t current_sample) override;
-	void alterEffect(ParamIndx parameter, float new_val) override;
+	std::vector<float> delaylineBuff;
+	int32_t writeIndex;
+		
+
 private:
 	float m_delayMS;
 	float m_decay;
 	int32_t m_sampleRate;
-	std::vector<double> m_coefficients;
-	std::unique_ptr<Fir1> m_delayLinePtr;
+
 };
+//public:
+//	Reverb();
+//	std::vector<double> createCoeffs(int32_t taps);
+//
+//	int32_t applyEffect(int32_t current_sample) override;
+//	void alterEffect(ParamIndx parameter, float new_val) override;
+//private:
+//	float m_delayMS;
+//	float m_decay;
+//	int32_t m_sampleRate;
+//	std::vector<double> m_coefficients;
+//	std::unique_ptr<Fir1> m_delayLinePtr;
+//};
 
 #endif
