@@ -19,3 +19,4 @@ void distortionTab::on_horizontalSlider_valueChanged(int value)
     ui->lcdNumber->display(actualVal);
     emit distortionChanged(actualVal);
 }
+

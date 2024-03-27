@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBox->addItem("Distortion");
     ui->comboBox->addItem("Reverb");
     ui->comboBox->addItem("Delay");
-
+1
 }
 
 MainWindow::~MainWindow()
@@ -59,7 +59,6 @@ void MainWindow::on_badButton_3_clicked()
     ui->tabWidget->clear();
 }
 
-
 void MainWindow::on_comboBox_textActivated(const QString &arg1)
 {
     if(arg1 == "Distortion")
@@ -89,7 +88,6 @@ void MainWindow::on_pushButton_pressed()
     ui->pushButton->setStyleSheet("QPushButton{ background-color: rgb(233, 150, 122); border-color: rgb(233, 150, 122); color: white; border-width: 3px; border-style: solid; border-radius: 20px; margin: 5px}");
 }
 
-
 void MainWindow::on_pushButton_released()
 {
     ui->pushButton->setStyleSheet("QPushButton{ background-color: rgb(158, 41, 82); border-color: rgb(158, 41, 82); color: white; border-width: 3px; border-style: solid; border-radius: 20px; margin: 5px}");
@@ -97,6 +95,8 @@ void MainWindow::on_pushButton_released()
 
 void MainWindow::on_pushButton_clicked()
 {
+
+    //send to effects manager
 
 }
 
