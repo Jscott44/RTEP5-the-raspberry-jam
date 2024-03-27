@@ -153,7 +153,7 @@ make
 
 # **Authors and Roles**
 - **Jed Scott**
-  - Project Manager, Social Media Lead, Software (audio driver), Hardware Lead
+  - Project Manager, Software (audio driver), Hardware Lead, Social Media Lead
 - **Dario Petinella**
   - Software Lead (audio driver, effects manager), Hardware (audio)
 - **Alan Hamilton**
