@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <ui_distortiontab.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -42,5 +43,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+protected slots:
+    void distortionChangedHandler(float value);
 };
 #endif // MAINWINDOW_H

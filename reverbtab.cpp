@@ -24,4 +24,3 @@ void reverbTab::on_horizontalSlider_valueChanged(int value)
     float actualVal = (float)value/2;
     ui->lcdNumber_2->display(actualVal);
 }
-
