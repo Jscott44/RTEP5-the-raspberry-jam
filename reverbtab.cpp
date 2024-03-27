@@ -17,10 +17,12 @@ void reverbTab::on_horizontalSlider_2_valueChanged(int value)
 {
     float actualVal = (float)value/2;
     ui->lcdNumber->display(actualVal);
+    emit reverbDelChanged(actualVal);
 }
 
 void reverbTab::on_horizontalSlider_valueChanged(int value)
 {
     float actualVal = (float)value/2;
     ui->lcdNumber_2->display(actualVal);
+    emit reverbDecChanged(actualVal);
 }

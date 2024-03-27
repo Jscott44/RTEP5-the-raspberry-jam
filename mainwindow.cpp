@@ -14,8 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
     //Populate QComboBox
     ui->comboBox->addItem("Distortion");
     ui->comboBox->addItem("Reverb");
-    ui->comboBox->addItem("Delay");
-1
 }
 
 MainWindow::~MainWindow()
@@ -59,6 +57,7 @@ void MainWindow::on_badButton_3_clicked()
     ui->tabWidget->clear();
 }
 
+
 void MainWindow::on_comboBox_textActivated(const QString &arg1)
 {
     if(arg1 == "Distortion")
@@ -67,19 +66,21 @@ void MainWindow::on_comboBox_textActivated(const QString &arg1)
         newDisTab = new distortionTab(this);
         ui->tabWidget->addTab(newDisTab, tr("Distortion"));
         connect(newDisTab, SIGNAL(distortionChanged(float)),this, SLOT(distortionChangedHandler(float)));
+
         //ui->tabWidget->insertTab(ui->tabWidget->count(),new distortionTab(),QIcon(QString("")),"Distortion");
         //ui->tabWidget->setCurrentIndex(ui->tabWidget->count()-1);
 
     }
     else if(arg1 == "Reverb")
     {
-        ui->tabWidget->insertTab(ui->tabWidget->count(),new reverbTab(),QIcon(QString("")),"Reverb");
-        ui->tabWidget->setCurrentIndex(ui->tabWidget->count()-1);
-    }
-    else if(arg1 == "Delay")
-    {
-        ui->tabWidget->insertTab(ui->tabWidget->count(),new delayTab(),QIcon(QString("")),"Delay");
-        ui->tabWidget->setCurrentIndex(ui->tabWidget->count()-1);
+        reverbTab *newRevTab = new reverbTab;
+        newRevTab = new reverbTab(this);
+        ui->tabWidget->addTab(newRevTab, tr("Reverb"));
+        connect(newRevTab, SIGNAL(reverbDelChanged(float)),this, SLOT(reverbDelChangedHandler(float)));
+        connect(newRevTab, SIGNAL(reverbDecChanged(float)),this, SLOT(reverbDecChangedHandler(float)));
+
+        //ui->tabWidget->insertTab(ui->tabWidget->count(),new reverbTab(),QIcon(QString("")),"Reverb");
+        //ui->tabWidget->setCurrentIndex(ui->tabWidget->count()-1);
     }
 }
 
@@ -87,6 +88,7 @@ void MainWindow::on_pushButton_pressed()
 {
     ui->pushButton->setStyleSheet("QPushButton{ background-color: rgb(233, 150, 122); border-color: rgb(233, 150, 122); color: white; border-width: 3px; border-style: solid; border-radius: 20px; margin: 5px}");
 }
+
 
 void MainWindow::on_pushButton_released()
 {
@@ -96,11 +98,19 @@ void MainWindow::on_pushButton_released()
 void MainWindow::on_pushButton_clicked()
 {
 
-    //send to effects manager
-
 }
 
 void MainWindow::distortionChangedHandler(float value)
+{
+    qInfo() << value;
+}
+
+void MainWindow::reverbDelChangedHandler(float value)
+{
+    qInfo() << value;
+}
+
+void MainWindow::reverbDecChangedHandler(float value)
 {
     qInfo() << value;
 }
