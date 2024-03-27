@@ -2,7 +2,6 @@
 #include "./ui_mainwindow.h"
 #include "reverbtab.h"
 #include "distortiontab.h"
-#include "delaytab.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
