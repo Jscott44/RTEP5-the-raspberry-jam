@@ -1,8 +1,9 @@
 #include "Reverb.h"
 
 Reverb::Reverb()
-	: m_delayMS(100),
-	  m_decay(0.2)
+	: m_delayMS(2),
+	  m_decay(0.8), 
+	  m_sampleRate(96000)
 {
 	int delaySample = m_delayMS * 0.001 * m_sampleRate;
 	m_delayLinePtr.reset(new Fir1(createCoeffs(delaySample)));

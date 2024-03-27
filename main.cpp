@@ -85,12 +85,12 @@ int main()
     getchar();
 
     // Change Delay 100 -> 400
-    gui->alterEffect(effect, eDelayMs, 400);
-    getchar();
+    //gui->alterEffect(effect, eDelayMs, 100);
+    //getchar();
 
     // Change Decay 0.2 -> 0.8
-    gui->alterEffect(effect, eDecay, 0.8);
-    getchar();
+    //gui->alterEffect(effect, eDecay, 0.2);
+    //getchar();
 
     // Remove distortion
     gui->removeEffect(effect);
