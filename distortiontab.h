@@ -15,6 +15,12 @@ public:
     explicit distortionTab(QWidget *parent = nullptr);
     ~distortionTab();
 
+signals:
+    void distortionChanged(float value);
+
+private slots:
+    void on_horizontalSlider_valueChanged(int value);
+
 private:
     Ui::distortionTab *ui;
 };

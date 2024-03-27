@@ -26,6 +26,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         reverbtab.h reverbtab.cpp reverbtab.ui
         distortiontab.h distortiontab.cpp distortiontab.ui
         delaytab.h delaytab.cpp delaytab.ui
+        Resources.qrc
+
 
     )
 # Define target properties for Android with Qt 6 as:
