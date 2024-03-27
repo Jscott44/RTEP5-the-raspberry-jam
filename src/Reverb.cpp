@@ -1,30 +1,55 @@
 #include "Reverb.h"
 
 Reverb::Reverb()
-	: m_delayMS(2),
-	  m_decay(0.8), 
+	: m_delayMS(100),
+	  m_decay(0.2),
 	  m_sampleRate(96000)
 {
 	int delaySample = m_delayMS * 0.001 * m_sampleRate;
-	m_delayLinePtr.reset(new Fir1(createCoeffs(delaySample)));
+	delaylineBuff.resize(delaySample + 1);
+	for(int i = 0; i < delaylineBuff.size(); i++){
+		delaylineBuff[i] = 0;
+	}
+	writeIndex = 0;
 }
 
-std::vector<double> Reverb::createCoeffs(int32_t taps)
-{
-	for (unsigned int i=0; i < taps-1; i++)
-	{
-		m_coefficients.push_back(0);
-	}
-	m_coefficients.push_back(1);
-	return m_coefficients;
-}
 
 int32_t Reverb::applyEffect(int32_t current_sample)
 {
-	double tempVal = current_sample/pow(2, 31) + m_decay * m_delayLinePtr->filter(current_sample/pow(2, 31));
+	int32_t currentReading = delaylineBuff[writeIndex];
+	double tempVal = current_sample/pow(2, 31) + m_decay * currentReading/pow(2, 31);
 	int32_t retVal = tempVal * pow(2, 31);
+	delaylineBuff[writeIndex] = retVal;//FOR DELAY REPLACE RETVAL WITH CURRENT_SAMPLE
+	writeIndex = (writeIndex + 1) % delaylineBuff.size();
 	return retVal;
 }
+
+
+//Reverb::Reverb()
+//	: m_delayMS(2),
+//	  m_decay(0.8), 
+//	  m_sampleRate(96000)
+//{
+//	int delaySample = m_delayMS * 0.001 * m_sampleRate;
+//	m_delayLinePtr.reset(new Fir1(createCoeffs(delaySample)));
+//}
+//
+//std::vector<double> Reverb::createCoeffs(int32_t taps)
+//{
+//	for (unsigned int i=0; i < taps-1; i++)
+//	{
+//		m_coefficients.push_back(0);
+//	}
+//	m_coefficients.push_back(1);
+//	return m_coefficients;
+//}
+//
+//int32_t Reverb::applyEffect(int32_t current_sample)
+//{
+//	double tempVal = current_sample/pow(2, 31) + m_decay * m_delayLinePtr->filter(current_sample/pow(2, 31));
+//	int32_t retVal = tempVal * pow(2, 31);
+//	return retVal;
+//}
 
 void Reverb::alterEffect(ParamIndx parameter, float new_val)
 {
