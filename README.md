@@ -151,9 +151,14 @@ make
 [2]: https://www.instagram.com/the_raspberry_jam/ 
 [5]: https://github.com/Jscott44/RTEP5-the-raspberry-jam
 
-# **Authors**
-- Jed Scott
-- Dario Petinella
-- Alan Hamilton
-- Elad Perets
-- Matthew Stewart
+# **Authors and Roles**
+- **Jed Scott**
+  - Project Manager, Social Media Lead, Software (audio driver), Hardware Lead
+- **Dario Petinella**
+  - Software Lead (audio driver, effects manager), Hardware (audio)
+- **Alan Hamilton**
+  - Software (GUI Lead and effects integration), Mechanical Support
+- **Elad Perets**
+  - Software (effects), Hardware (pedal)
+- **Matthew Stewart**
+  - Software (GUI)
