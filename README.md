@@ -155,7 +155,7 @@ make
 - **Jed Scott**
   - Project Manager, Software (audio driver), Hardware Lead, Social Media Lead
 - **Dario Petinella**
-  - Software Lead (audio driver, effects manager), Hardware (audio)
+  - Software Lead (audio driver, effects manager), Integration Lead, Hardware (audio)
 - **Alan Hamilton**
   - Software (GUI Lead and effects integration), Mechanical Support
 - **Elad Perets**
