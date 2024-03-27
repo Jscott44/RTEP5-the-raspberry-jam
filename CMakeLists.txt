@@ -25,7 +25,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         ${PROJECT_SOURCES}
         reverbtab.h reverbtab.cpp reverbtab.ui
         distortiontab.h distortiontab.cpp distortiontab.ui
-        delaytab.h delaytab.cpp delaytab.ui
+
         Resources.qrc
 
 
