@@ -24,7 +24,7 @@ int32_t Reverb::applyEffect(int32_t current_sample)
 	return retVal;
 }
 
-void delayline::alterEffect(ParamIndx parameter, float new_val)
+void Reverb::alterEffect(ParamIndx parameter, float new_val)
 {
 	switch(parameter) {
 		case eVolume:

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <memory>
 //#include "Fir1.h"
+#include <vector>
 
 class Reverb : public EffectBase
 {
