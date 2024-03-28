@@ -24,6 +24,31 @@ int32_t Reverb::applyEffect(int32_t current_sample)
 	return retVal;
 }
 
+void delayline::alterEffect(ParamIndx parameter, float new_val)
+{
+	switch(parameter) {
+		case eVolume:
+			m_volume = new_val;
+			break;
+		case eGain:
+			// No Gain
+			break;
+		case eDelayMs:
+			{
+			int32_t old_val = delaylineBuff.size();
+			int32_t m_delaySample = new_val*0.001*m_sampleRate;
+			delaylineBuff.resize(m_delaySample + 1);
+			if (old_val < m_delaySample) {
+				for (int i=old_val; i<m_delaySample+1;i++) {
+					delaylineBuff[i]=0;
+				}
+			}
+			break;
+			}
+		case eDecay:
+			m_decay = new_val;
+	}
+}
 
 //Reverb::Reverb()
 //	: m_delayMS(2),
@@ -51,22 +76,22 @@ int32_t Reverb::applyEffect(int32_t current_sample)
 //	return retVal;
 //}
 
-void Reverb::alterEffect(ParamIndx parameter, float new_val)
-{
-	switch(parameter) {
-		case eVolume:
-			m_volume = new_val;
-			break;
-		case eGain:
-			// No Gain
-			break;
-		case eDelayMs:
-			m_delayMS = new_val;
-			break;
-		case eDecay:
-			m_decay = new_val;
-	}
-}
+//void Reverb::alterEffect(ParamIndx parameter, float new_val)
+//{
+//	switch(parameter) {
+//		case eVolume:
+//			m_volume = new_val;
+//			break;
+//		case eGain:
+//			// No Gain
+//			break;
+//		case eDelayMs:
+//			m_delayMS = new_val;
+//			break;
+//		case eDecay:
+//			m_decay = new_val;
+//	}
+//}
 
 
 
