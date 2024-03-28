@@ -11,12 +11,11 @@ class Reverb : public EffectBase
 {
 public:
 	Reverb();
-	void write(int32_t current_sample);
-	int32_t applyEffect(int32_t current_sample);
+	int32_t applyEffect(int32_t current_sample) override;
+	void alterEffect(ParamIndx parameter, float new_val) override;
 
 	std::vector<float> delaylineBuff;
 	int32_t writeIndex;
-		
 
 private:
 	float m_delayMS;
